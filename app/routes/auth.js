@@ -1,8 +1,9 @@
 const express = require("express");
 const { body } = require("express-validator");
 
-const User = require("../models/user");
+const Accounts = require("../models/users/accounts");
 const authController = require("../controllers/auth");
+const isAuth = require("../middleware/is-auth");
 
 const router = express.Router();
 
@@ -14,15 +15,14 @@ router.put(
             .isEmail()
             .withMessage("Please enter a valid email")
             .custom(async (value, { req }) => {
-                const userDoc = await User.findOne({ where: { email: value } });
-                if (userDoc) {
+                const accountDoc = await Accounts.findOne({ where: { email: value } });
+                if (accountDoc) {
                     throw new Error("Email address already exists");
                 }
             })
             .normalizeEmail(),
 
         body("password").trim().isLength({ min: 5 }),
-        body("name").trim().not().isEmpty(),
     ],
     authController.signup
 );
@@ -32,9 +32,9 @@ router.post("/login", authController.login);
 
 // PUT /auth/updateaccount
 router.put(
-    "/updateaccount/:userId",
+    "/updateaccount/:account_id",
+    isAuth,
     [
-        body("name").trim().not().isEmpty(),
         body("currentPassword").trim().isLength({ min: 5 }),
         body("newPassword").trim().isLength({ min: 5 }),
         body("confirmPassword")
@@ -52,7 +52,8 @@ router.put(
 
 // DELETE /auth/deleteaccount
 router.delete(
-    "/deleteaccount/:userId",
+    "/deleteaccount/:account_id",
+    isAuth,
     [body("password").trim().isLength({ min: 5 })],
     authController.deleteAccount
 );
