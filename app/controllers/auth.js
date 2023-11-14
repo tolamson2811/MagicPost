@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const Accounts = require("../models/users/accounts");
+const Customers = require("../models/users/customers");
 
 exports.signup = async (req, res, next) => {
     const errors = validationResult(req);
@@ -26,6 +27,10 @@ exports.signup = async (req, res, next) => {
             password: hashedPw,
         });
         const result = await account.save();
+        const customer = new Customers({
+            account_id: result.id,
+        });
+        await customer.save();
         res.status(201).json({
             message: "Tạo tài khoản thành công!",
             id: result.id,
@@ -51,7 +56,6 @@ exports.login = async (req, res, next) => {
         }
         const accountLoaded = account;
         const isEqual = await bcrypt.compare(password, account.password);
-        // const isEqual = password === user.password;
         if (!isEqual) {
             res.status(401).json({
                 message: "Sai mật khẩu!",
