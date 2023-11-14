@@ -28,10 +28,11 @@ const Accounts = sequelize.define("Accounts", {
     hooks: {
         afterCreate: (account, options) => {
             if (account.role === 'Customer') {
-                Customers.create({
+                const customer = new Customers({
                     account_id: account.id,
                     // other fields here
                 });
+                customer.save();
             }
         }
     }
