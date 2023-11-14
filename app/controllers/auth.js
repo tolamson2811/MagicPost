@@ -19,6 +19,7 @@ exports.signup = async (req, res, next) => {
     const email = req.body.email;
     const name = req.body.name;
     const password = req.body.password;
+    const role = req.body.role;
     try {
         const hashedPw = await bcrypt.hash(password, 12);
         const account = new Accounts({
@@ -26,11 +27,15 @@ exports.signup = async (req, res, next) => {
             name: name,
             password: hashedPw,
         });
+        // add user by role
         const result = await account.save();
-        const customer = new Customers({
-            account_id: result.id,
-        });
-        await customer.save();
+        if (!role) {
+            const customer = new Customers({
+                account_id: result.id,
+            });
+            await customer.save();
+        }
+        
         res.status(201).json({
             message: "Tạo tài khoản thành công!",
             id: result.id,
@@ -121,7 +126,7 @@ exports.updateInfo = async (req, res, next) => {
 
         const hashedPw = await bcrypt.hash(newPassword, 12);
         await Accounts.update(
-            { password: hashedPw},
+            { password: hashedPw },
             { where: { id: account_id } }
         );
         res.status(200).json({

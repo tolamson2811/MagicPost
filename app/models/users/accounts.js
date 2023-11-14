@@ -25,19 +25,19 @@ const Accounts = sequelize.define("Accounts", {
         defaultValue: "Customer",
     }
 }, 
-{
-    hooks: {
-        afterCreate: (account, options) => {
-            if (account.role === 'Customer') {
-                const customer = new Customers({
-                    account_id: account.id,
-                    // other fields here
-                });
-                customer.save();
-            }
-        }
-    }
-}
+// {
+//     hooks: {
+//         afterCreate: (account, options) => {
+//             if (account.role === 'Customer') {
+//                 const customer = new Customers({
+//                     account_id: account.id,
+//                     // other fields here
+//                 });
+//                 customer.save();
+//             }
+//         }
+//     }
+// }
 );
 
 module.exports = Accounts;
