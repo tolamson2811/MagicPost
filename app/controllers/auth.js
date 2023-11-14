@@ -27,10 +27,10 @@ exports.signup = async (req, res, next) => {
             password: hashedPw,
         });
         const result = await account.save();
-        // const customer = new Customers({
-        //     account_id: result.id,
-        // });
-        // await customer.save();
+        const customer = new Customers({
+            account_id: result.id,
+        });
+        await customer.save();
         res.status(201).json({
             message: "Tạo tài khoản thành công!",
             id: result.id,
