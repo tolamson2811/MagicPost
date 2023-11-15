@@ -1,19 +1,35 @@
-import { createApp } from 'vue'
-import './index.css'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import { createApp } from "vue";
+import "./index.css";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
 
 //import components
-import BaseDialog from './components/ui/BaseDialog.vue'
-import BaseSpinner from './components/ui/BaseSpinner.vue'
+import BaseDialog from "./components/ui/BaseDialog.vue";
+import BaseSpinner from "./components/ui/BaseSpinner.vue";
+import BaseList from "./components/ui/BaseList.vue";
 
-const app = createApp(App)
-app.use(router)
-app.use(store)
+/* import the fontawesome core */
+import { library } from "@fortawesome/fontawesome-svg-core";
+
+/* import font awesome icon component */
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+/* import specific icons */
+import { faUserSecret, faArrowRight, faChevronDown, faCircleInfo, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+
+/* add icons to the library */
+library.add(faUserSecret, faArrowRight, faChevronDown, faCircleInfo, faArrowRightFromBracket);
+
+const app = createApp(App);
+app.use(router);
+app.use(store);
 
 //use component
-app.component('BaseDialog', BaseDialog)
-app.component('BaseSpinner', BaseSpinner)
+app.component("BaseDialog", BaseDialog);
+app.component("BaseSpinner", BaseSpinner);
+app.component("BaseList", BaseList);
 
-app.mount('#app')
+app.component("font-awesome-icon", FontAwesomeIcon);
+
+app.mount("#app");
