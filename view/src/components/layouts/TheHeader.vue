@@ -1,6 +1,6 @@
 <template>
     <header
-        class="bg-green-200 h-16 lg:h-20 fixed top-0 right-0 left-0 flex items-center justify-between px-10 shadow z-10"
+        class=" bg-indigo-500 h-16 lg:h-20 fixed top-0 right-0 left-0 flex items-center justify-between px-10 shadow z-10"
     >
         <nav class="flex items-center gap-8">
             <router-link to="/homepage">
@@ -12,10 +12,12 @@
             </router-link>
 
             <ul
-                class="flex items-center gap-6 text-xs md:text-sm lg:text-base font-semibold text-sky-900"
+                class="flex items-center gap-6 text-xs md:text-sm lg:text-base font-semibold text-white"
             >
                 <li>
-                    <router-link class="hover:cursor-pointer" to="/homepage">Trang chủ</router-link>
+                    <router-link class="hover:cursor-pointer" to="/homepage"
+                        >Trang chủ</router-link
+                    >
                 </li>
                 <li>
                     <a class="hover:cursor-pointer">Dịch vụ</a>
@@ -27,7 +29,7 @@
         </nav>
 
         <router-link
-            class="hover:cursor-pointer lg:text-base md:text-sm text-xs font-semibold text-sky-900"
+            class="hover:cursor-pointer lg:text-base md:text-sm text-xs font-semibold text-white"
             to="/auth"
             v-if="!isLoggedIn"
             >Đăng nhập / Đăng ký</router-link

@@ -16,10 +16,10 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 /* import specific icons */
-import { faUserSecret, faArrowRight, faChevronDown, faCircleInfo, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faUserSecret, faArrowRight, faChevronDown, faCircleInfo, faArrowRightFromBracket, faMagnifyingGlass, faHandHoldingDollar, faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
-library.add(faUserSecret, faArrowRight, faChevronDown, faCircleInfo, faArrowRightFromBracket);
+library.add(faUserSecret, faArrowRight, faChevronDown, faCircleInfo, faArrowRightFromBracket, faMagnifyingGlass, faHandHoldingDollar, faMapLocationDot);
 
 const app = createApp(App);
 app.use(router);
