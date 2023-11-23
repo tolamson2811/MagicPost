@@ -35,7 +35,7 @@ exports.signup = async (req, res, next) => {
             });
             await customer.save();
         }
-        
+
         res.status(201).json({
             message: "Tạo tài khoản thành công!",
             id: result.id,
