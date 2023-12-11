@@ -33,9 +33,11 @@ Download and install MySQL from the [official MySQL website](https://www.mysql.c
 ```bash
 git clone https://github.com/your-username/magic-post.git
 cd magic-post
+```
 
 ## Step 4: Install Dependencies
 
+```bash
 * Install dependencies for the back-end
 cd app
 npm install
@@ -46,6 +48,7 @@ cd ..
 * Install dependencies for the front-end
 cd view
 npm install
+```
 
 ## Step 5: Configure Enviroment
 
@@ -54,6 +57,7 @@ Open the .env file and adjust the configuration settings, especially the MySQL c
 
 ## Step 6: Run the project
 
+```bash
 * Run the back-end
 cd app
 npm start
@@ -62,5 +66,6 @@ npm start
 * Run the front-end
 cd view
 npm run dev
+```
 
 Congratulations! You have successfully installed the Magic Post project. For more details on usage and contribution, refer to the "Usage" and "Contribution" sections in the README.
