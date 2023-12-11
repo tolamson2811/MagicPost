@@ -1,8 +1,9 @@
 <template>
-    <main class="pt-20 bg-slate-400 h-screen flex items-center justify-center">
+    <main class="pt-20 h-screen flex items-center justify-center wrapper">
+        <!-- login form  -->
         <form
             @submit.prevent="login"
-            class="px-20 py-5 bg-white flex flex-col items-center rounded-lg gap-8"
+            class="px-20 py-5 form text-white flex flex-col items-center rounded-lg gap-8 shadow-2xl"
             v-if="loginForm"
         >
             <h1 class="xs:text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold">
@@ -15,7 +16,7 @@
                         type="text"
                         id="email"
                         placeholder="Email"
-                        class="border border-gray-400 p-2 w-full"
+                        class="border border-gray-400 p-2 w-full text-black"
                         v-model="email.value"
                         @input="email.isValid = true"
                     />
@@ -31,7 +32,7 @@
                         type="password"
                         id="password"
                         placeholder="Mật khẩu"
-                        class="border border-gray-400 p-2 w-full"
+                        class="border border-gray-400 p-2 w-full text-black"
                         v-model="password.value"
                         @input="password.isValid = true"
                     />
@@ -46,7 +47,7 @@
                     <label for="remember">Lưu mật khẩu</label>
                 </div>
                 <button
-                    class="bg-green-300 p-2 mt-2 rounded-md hover:cursor-pointer hover:bg-green-400"
+                    class="bg-white text-black hover:opacity-90 font-bold p-2 mt-2 rounded-md hover:cursor-pointer"
                 >
                     Đăng nhập
                 </button>
@@ -54,7 +55,7 @@
             <span class="flex gap-1 text-xs md:text-sm lg:text-base"
                 >Bạn chưa có tài khoản?
                 <p
-                    class="text-red-500 italic hover:cursor-pointer hover:text-red-600"
+                    class="text-red-500 italic hover:cursor-pointer hover:text-red-600 font-bold"
                     @click="swithForm('register')"
                 >
                     Đăng ký
@@ -62,9 +63,10 @@
             >
         </form>
 
+        <!-- register form  -->
         <form
             @submit.prevent="register"
-            class="px-20 py-5 bg-white flex flex-col items-center rounded-lg gap-8"
+            class="px-20 py-5 flex flex-col items-center rounded-lg gap-8 form shadow-2xl text-white"
             v-else-if="registerForm"
         >
             <h1 class="xs:text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold">
@@ -77,7 +79,7 @@
                         type="text"
                         id="email"
                         placeholder="Email"
-                        class="border border-gray-400 p-2 w-full"
+                        class="border border-gray-400 p-2 w-full text-black"
                         v-model="email.value"
                         @input="email.isValid = true"
                     />
@@ -93,7 +95,7 @@
                         type="password"
                         id="password"
                         placeholder="Mật khẩu"
-                        class="border border-gray-400 p-2 w-full"
+                        class="border border-gray-400 p-2 w-full text-black"
                         v-model="password.value"
                         @input="password.isValid = true"
                     />
@@ -111,7 +113,7 @@
                         type="password"
                         id="confirm-password"
                         placeholder="Mật khẩu"
-                        class="border border-gray-400 p-2 w-full"
+                        class="border border-gray-400 p-2 w-full text-black"
                         v-model="confirmPassword.value"
                         @input="confirmPassword.isValid = true"
                     />
@@ -130,7 +132,7 @@
                             @change="term.isValid = true"
                         />
                         <label for="term"
-                            >Tôi đồng ý với các điều khoản của MagicPost</label
+                            >Tôi đồng ý với các điều khoản của <a href="#" class="italic underline text-red-500">Magic Post</a></label
                         >
                     </span>
                     <span
@@ -140,7 +142,7 @@
                     >
                 </div>
                 <button
-                    class="bg-green-300 p-2 mt-2 rounded-md hover:cursor-pointer hover:bg-green-400"
+                    class="bg-white p-2 mt-2 rounded-md hover:cursor-pointer font-bold text-black hover:opacity-90"
                 >
                     Đăng ký
                 </button>
@@ -148,14 +150,18 @@
             <span class="flex gap-1 text-xs md:text-sm lg:text-base"
                 >Bạn đã có tài khoản?
                 <p
-                    class="text-red-500 italic hover:cursor-pointer hover:text-red-600"
+                    class="text-red-500 italic hover:cursor-pointer hover:text-red-600 font-bold"
                     @click="swithForm('login')"
                 >
                     Đăng nhập
                 </p></span
             >
         </form>
+
+        <!-- loading icon  -->
         <base-spinner v-if="isLoading"></base-spinner>
+
+        <!-- error dialog  -->
         <base-dialog
             :show="!!error.title"
             :title="error.title"
@@ -166,9 +172,12 @@
                 Vui lòng thử lại
             </p>
         </base-dialog>
+
+        <!-- success dialog  -->
         <base-dialog :show="!!success" :title="success" @close="closeDialog">
             <p>Bạn có thể sử dụng tài khoản này để đăng nhập vào MagicPost</p>
         </base-dialog>
+
     </main>
 </template>
 
@@ -258,7 +267,7 @@ export default {
                     await this.$store.dispatch("login", payload);
                     console.log("login success");
                     this.resetValidate();
-                    
+
                     const redirect = this.$route.query.redirect || "/";
                     this.$router.push(redirect);
                 } catch (error) {
@@ -348,7 +357,8 @@ export default {
             return (
                 this.email.isValid &&
                 this.password.isValid &&
-                this.confirmPassword.isValid && this.term.isValid
+                this.confirmPassword.isValid &&
+                this.term.isValid
             );
         },
         loginValidate() {
@@ -382,3 +392,16 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.wrapper {
+    background-image: url("../../assets/images/auth_background.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.form {
+    background-color: #4c4ec2;
+}
+</style>
