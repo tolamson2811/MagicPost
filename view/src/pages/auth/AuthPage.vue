@@ -88,24 +88,6 @@
                     >
                 </div>
                 <div class="flex flex-col gap-1">
-                    <label class="max-w-max" for="username"
-                        >Tên người dùng</label
-                    >
-                    <input
-                        type="text"
-                        id="username"
-                        placeholder="Tên người dùng"
-                        class="border border-gray-400 p-2 w-full"
-                        v-model="username.value"
-                        @input="username.isValid = true"
-                    />
-                    <span
-                        class="text-xs lg:text-sm text-red-500"
-                        v-if="!username.isValid"
-                        >{{ username.messageInvalid }}</span
-                    >
-                </div>
-                <div class="flex flex-col gap-1">
                     <label class="max-w-max" for="password">Mật khẩu</label>
                     <input
                         type="password"
@@ -139,10 +121,22 @@
                         >{{ confirmPassword.messageInvalid }}</span
                     >
                 </div>
-                <div class="flex items-center gap-1">
-                    <input type="checkbox" id="term" />
-                    <label for="term"
-                        >Tôi đồng ý với các điều khoản của MagicPost</label
+                <div class="flex flex-col">
+                    <span class="flex items-center gap-1">
+                        <input
+                            type="checkbox"
+                            id="term"
+                            v-model="term.value"
+                            @change="term.isValid = true"
+                        />
+                        <label for="term"
+                            >Tôi đồng ý với các điều khoản của MagicPost</label
+                        >
+                    </span>
+                    <span
+                        class="text-xs lg:text-sm text-red-500"
+                        v-if="!term.isValid"
+                        >{{ term.messageInvalid }}</span
                     >
                 </div>
                 <button
@@ -163,12 +157,12 @@
         </form>
         <base-spinner v-if="isLoading"></base-spinner>
         <base-dialog
-            :show="!!error"
-            title="Đăng ký thất bại!"
+            :show="!!error.title"
+            :title="error.title"
             @close="closeDialog"
         >
             <p>
-                {{ error }} <br />
+                {{ error.message }} <br />
                 Vui lòng thử lại
             </p>
         </base-dialog>
@@ -199,13 +193,16 @@ export default {
                 isValid: true,
                 messageInvalid: "",
             },
-            username: {
-                value: "",
+            term: {
+                value: false,
                 isValid: true,
                 messageInvalid: "",
             },
             isLoading: false,
-            error: null,
+            error: {
+                title: null,
+                message: null,
+            },
             success: null,
         };
     },
@@ -235,7 +232,6 @@ export default {
                 const payload = {
                     email: this.email.value,
                     password: this.password.value,
-                    name: this.username.value,
                 };
                 try {
                     await this.$store.dispatch("signup", payload);
@@ -243,8 +239,33 @@ export default {
                     this.success = "Đăng ký thành công!";
                     this.resetValidate();
                 } catch (error) {
-                    this.error = error.message;
+                    this.error.message = error.message;
+                    this.error.title = "Đăng ký thất bại!";
                     console.log("resgister fail");
+                }
+                this.isLoading = false;
+            }
+        },
+        async login() {
+            if (this.loginValidate) {
+                this.isLoading = true;
+                console.log("loading login...");
+                const payload = {
+                    email: this.email.value,
+                    password: this.password.value,
+                };
+                try {
+                    await this.$store.dispatch("login", payload);
+                    console.log("login success");
+                    this.resetValidate();
+                    
+                    const redirect = this.$route.query.redirect || "/";
+                    this.$router.push(redirect);
+                } catch (error) {
+                    this.error.message = error.message;
+                    this.error.title = "Đăng nhập thất bại!";
+                    console.log(error.message);
+                    console.log("login fail");
                 }
                 this.isLoading = false;
             }
@@ -259,12 +280,13 @@ export default {
             this.confirmPassword.isValid = true;
             this.confirmPassword.messageInvalid = "";
             this.confirmPassword.value = "";
-            this.username.isValid = true;
-            this.username.messageInvalid = "";
-            this.username.value = "";
+            this.term.isValid = true;
+            this.term.messageInvalid = "";
+            this.term.value = false;
         },
         closeDialog() {
-            this.error = null;
+            this.error.title = null;
+            this.error.message = null;
             this.success = null;
         },
     },
@@ -314,24 +336,19 @@ export default {
                 this.confirmPassword.isValid = true;
             }
 
-            //validate username
-            if (this.username.value.trim() === "") {
-                this.username.isValid = false;
-                this.username.messageInvalid =
-                    "Tên người dùng không được để trống";
-            } else if (this.username.value.trim().length < 6) {
-                this.username.isValid = false;
-                this.username.messageInvalid =
-                    "Tên người dùng phải có ít nhất 6 ký tự";
+            //validate term
+            if (!this.term.value) {
+                this.term.isValid = false;
+                this.term.messageInvalid =
+                    "Bạn phải đồng ý với điều khoản của MagicPost";
             } else {
-                this.username.isValid = true;
+                this.term.isValid = true;
             }
 
             return (
                 this.email.isValid &&
                 this.password.isValid &&
-                this.confirmPassword.isValid &&
-                this.username.isValid
+                this.confirmPassword.isValid && this.term.isValid
             );
         },
         loginValidate() {
@@ -341,7 +358,7 @@ export default {
             if (this.email.value.trim() === "") {
                 this.email.isValid = false;
                 this.email.messageInvalid = "Email không được để trống";
-            } else if (!emailRegex.test(this.email)) {
+            } else if (!emailRegex.test(this.email.value)) {
                 this.email.isValid = false;
                 this.email.messageInvalid = "Email không hợp lệ";
             } else {

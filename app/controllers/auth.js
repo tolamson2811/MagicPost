@@ -2,15 +2,16 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const User = require("../models/user");
+const Accounts = require("../models/users/accounts");
+const Customers = require("../models/users/customers");
 
 exports.signup = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const error = new Error("Validation failed.");
+        const error = new Error("Đăng ký thất bại!");
         error.statusCode = 422;
         res.status(422).json({
-            message: "Validation failed.",
+            message: "Đăng ký thất bại!",
             errors: errors.array(),
         });
         return;
@@ -18,17 +19,26 @@ exports.signup = async (req, res, next) => {
     const email = req.body.email;
     const name = req.body.name;
     const password = req.body.password;
+    const role = req.body.role;
     try {
         const hashedPw = await bcrypt.hash(password, 12);
-        const user = new User({
+        const account = new Accounts({
             email: email,
             name: name,
             password: hashedPw,
         });
-        const result = await user.save();
+        // add user by role
+        const result = await account.save();
+        if (!role) {
+            const customer = new Customers({
+                account_id: result.id,
+            });
+            await customer.save();
+        }
+
         res.status(201).json({
-            message: "User created",
-            userId: result.id,
+            message: "Tạo tài khoản thành công!",
+            id: result.id,
         });
     } catch (err) {
         if (!err.statusCode) {
@@ -42,33 +52,33 @@ exports.login = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     try {
-        const user = await User.findOne({ where: { email: email } });
-        if (!user) {
+        const account = await Accounts.findOne({ where: { email: email } });
+        if (!account) {
             res.status(401).json({
-                message: "A user with this email could not be found.",
+                message: "Email không tồn tại!",
             });
             return;
         }
-        const userLoaded = user;
-        const isEqual = await bcrypt.compare(password, user.password);
-        // const isEqual = password === user.password;
+        const accountLoaded = account;
+        const isEqual = await bcrypt.compare(password, account.password);
         if (!isEqual) {
             res.status(401).json({
-                message: "Wrong password!",
+                message: "Sai mật khẩu!",
             });
             return;
         }
         const token = jwt.sign(
             {
-                email: userLoaded.email,
-                userId: userLoaded.id.toString(),
+                email: accountLoaded.email,
+                account_id: accountLoaded.id.toString(),
             },
             "somesupersecretsecret",
             { expiresIn: "1h" }
         );
         res.status(200).json({
             token: token,
-            userId: userLoaded.id.toString(),
+            id: accountLoaded.id.toString(),
+            expiresIn: 3600,
         });
     } catch (err) {
         if (!err.statusCode) {
@@ -81,25 +91,24 @@ exports.login = async (req, res, next) => {
 exports.updateInfo = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const error = new Error("Validation failed.");
+        const error = new Error("Cập nhật thông tin thất bại!");
         error.statusCode = 422;
         res.status(422).json({
-            message: "Validation failed.",
+            message: "Cập nhật thông tin thất bại!",
             errors: errors.array(),
         });
         return;
     }
 
-    const userId = req.params.userId;
+    const account_id = req.params.account_id;
     const currentPassword = req.body.currentPassword;
     const newPassword = req.body.newPassword;
-    const name = req.body.name;
 
     try {
-        const user = await User.findOne({ where: { id: userId } });
-        if (!user) {
+        const account = await Accounts.findOne({ where: { id: account_id } });
+        if (!account) {
             res.status(401).json({
-                message: "A user with this email could not be found.",
+                message: "Email không tồn tại!",
             });
             return;
         }
@@ -107,22 +116,22 @@ exports.updateInfo = async (req, res, next) => {
         //check entered current pass is correct
         const checkCurrentPass = await bcrypt.compare(
             currentPassword,
-            user.password
+            account.password
         );
         if (!checkCurrentPass) {
             res.status(401).json({
-                message: "Wrong current password!",
+                message: "Sai mật khẩu hiện tại!",
             });
             return;
         }
 
         const hashedPw = await bcrypt.hash(newPassword, 12);
-        await User.update(
-            { password: hashedPw, name: name },
-            { where: { id: userId } }
+        await Accounts.update(
+            { password: hashedPw },
+            { where: { id: account_id } }
         );
         res.status(200).json({
-            message: "User info updated successfully!",
+            message: "Cập nhật thông tin thành công!",
         });
     } catch (err) {
         if (!err.statusCode) {
@@ -135,36 +144,36 @@ exports.updateInfo = async (req, res, next) => {
 exports.deleteAccount = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const error = new Error("Validation failed.");
+        const error = new Error("Xóa tài khoản thất bại!");
         error.statusCode = 422;
         res.status(422).json({
-            message: "Validation failed.",
+            message: "Xóa tài khoản thất bại!",
             errors: errors.array(),
         });
         return;
     }
 
-    const userId = req.params.userId;
+    const account_id = req.params.account_id;
     const password = req.body.password;
 
     try {
-        const user = await User.findOne({ where: { id: userId } });
-        if (!user) {
+        const account = await Accounts.findOne({ where: { id: account_id } });
+        if (!account) {
             res.status(401).json({
-                message: "A user could not be found.",
+                message: "Không thể tìm thấy tài khoản!",
             });
             return;
         }
-        const checkPassword = await bcrypt.compare(password, user.password);
+        const checkPassword = await bcrypt.compare(password, account.password);
         if (!checkPassword) {
             res.status(401).json({
-                message: "Wrong password!",
+                message: "Sai mật khẩu hiện tại!",
             });
             return;
         }
-        await User.destroy({ where: { id: userId } });
+        await Accounts.destroy({ where: { id: account_id } });
         res.status(200).json({
-            message: "User deleted successfully!",
+            message: "Xóa tài khoản thành công!",
         });
     } catch (err) {
         if (!err.statusCode) {
