@@ -31,7 +31,7 @@ Download and install MySQL from the [official MySQL website](https://www.mysql.c
 ## Step 3: Clone the Project
 
 ```bash
-git clone https://github.com/your-username/magic-post.git
+git clone https://github.com/tolamson2811/MagicPost
 cd magic-post
 ```
 
