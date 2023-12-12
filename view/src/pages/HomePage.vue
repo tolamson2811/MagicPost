@@ -35,23 +35,14 @@
         >
             <div class="flex gap-4">
                 <button
-                    class="bg-indigo-400 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white"
-                    :class="{ 'bg-indigo-700': isSearch }"
-                    @click="chooseService('search')"
+                    class="bg-indigo-700 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white"
                 >
                     Tra cứu
-                </button>
-                <button
-                    class="bg-indigo-400 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white"
-                    :class="{ 'bg-indigo-700': isService }"
-                    @click="chooseService('service')"
-                >
-                    Dịch vụ
                 </button>
             </div>
 
             <!-- các chức năng tra cứu  -->
-            <div class="w-3/4" v-if="isSearch">
+            <div class="w-3/4">
                 <div class="flex w-full">
                     <span
                         class="bg-indigo-400 text-white px-4 py-2 text-2xl border hover:cursor-pointer basis-1/3 flex gap-2 items-center"
@@ -78,104 +69,217 @@
                         class="bg-indigo-400 text-white px-4 py-2 text-2xl border hover:cursor-pointer basis-1/3 flex gap-2 items-center"
                         :class="{ 'bg-indigo-700': isSearchTransaction }"
                         @click="chooseSearchService('transaction')"
-                        >
-                        <font-awesome-icon icon="fa-solid fa-map-location-dot" class=" text-green-700"/>
+                    >
+                        <font-awesome-icon
+                            icon="fa-solid fa-map-location-dot"
+                            class="text-green-700"
+                        />
                         Tìm điểm giao dịch</span
                     >
                 </div>
 
                 <!-- tra cứu vận đơn -->
-                <div class="bg-indigo-400 p-4" v-if="isSearchOrder">
-                    <div class="flex gap-2 w-full">
-                        <input
-                            type="text"
-                            placeholder="VD: 123412421"
-                            id="orderId"
-                            class="rounded-2xl p-2 basis-11/12"
-                        />
-                        <label
-                            for="orderId"
-                            class="bg-black text-white px-4 py-2 text-center basis-1/12 rounded-md font-bold text-xl hover:cursor-pointer hover:opacity-80"
-                            >Tra cứu</label
-                        >
-                    </div>
+                <transition name="element">
+                    <div class="bg-indigo-400 p-4" v-if="isSearchOrder">
+                        <div class="flex gap-2 w-full">
+                            <input
+                                type="text"
+                                placeholder="VD: 123412421"
+                                id="orderId"
+                                class="rounded-2xl p-2 basis-11/12"
+                            />
+                            <button
+                                for="orderId"
+                                class="search-btn text-white px-4 py-2 text-center basis-1/12 rounded-md font-bold text-base hover:cursor-pointer hover:opacity-80"
+                            >
+                                Tra cứu
+                            </button>
+                        </div>
 
-                    <div
-                        class="bg-white mt-4 p-4 rounded-lg text-xs sm:text-sm md:text-base lg:text-lg"
-                    >
-                        <span class="flex gap-2">
-                            <h1>Mã vận đơn:</h1>
-                            <p class="font-bold">908xxxeqw</p>
-                        </span>
-                        <span class="flex gap-2">
-                            <h1>Ngày tạo đơn:</h1>
-                            <p class="font-bold">24/11/2003</p>
-                        </span>
-                        <span class="flex gap-2">
-                            <h1>Trạng thái:</h1>
-                            <p class="font-bold">Đang vận chuyển</p>
-                        </span>
+                        <div
+                            class="bg-white mt-4 p-4 rounded-lg text-xs sm:text-sm md:text-base lg:text-lg flex flex-col gap-2"
+                        >
+                            <span class="flex gap-2">
+                                <h1 class="font-bold">Mã vận đơn:</h1>
+                                <p class="">908xxxeqw</p>
+                            </span>
+                            <span class="flex gap-2">
+                                <h1 class="font-bold">Ngày tạo đơn:</h1>
+                                <p class="">24/11/2003</p>
+                            </span>
+                            <span class="flex gap-2">
+                                <h1 class="font-bold">Trạng thái:</h1>
+                                <p class="">Đang vận chuyển</p>
+                            </span>
+                            <span class="flex flex-col">
+                                <h1 class="font-bold">
+                                    Theo dõi quá trình đơn hàng:
+                                </h1>
+                                <div>
+                                    <span class="flex gap-1">
+                                        <h2 class="italic text-red-500">
+                                            12/12/2023:
+                                        </h2>
+                                        <p>
+                                            Đơn hàng đã được gửi tới điểm giao
+                                            dịch.
+                                        </p>
+                                    </span>
+                                    <span class="flex gap-1">
+                                        <h2 class="italic text-red-500">
+                                            12/12/2023:
+                                        </h2>
+                                        <p>
+                                            Đơn hàng đã được gửi tới điểm giao
+                                            dịch.
+                                        </p>
+                                    </span>
+                                    <span class="flex gap-1">
+                                        <h2 class="italic text-red-500">
+                                            12/12/2023:
+                                        </h2>
+                                        <p>
+                                            Đơn hàng đã được gửi tới điểm giao
+                                            dịch.
+                                        </p>
+                                    </span>
+                                </div>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </transition>
 
                 <!-- ước tính cước phí -->
-                <div
-                    class="bg-indigo-400 p-4 flex flex-col gap-8"
-                    v-if="isSearchFee"
-                >
-                    <div class="grid grid-cols-2 gap-4">
-                        <select class="p-2 hover:cursor-pointer" name="" id="">
-                            <option value="">Tỉnh gửi</option>
-                        </select>
-
-                        <select class="p-2 hover:cursor-pointer" name="" id="">
-                            <option value="">Tỉnh nhận</option>
-                        </select>
-
-                        <select class="p-2 hover:cursor-pointer" name="" id="">
-                            <option value="">Huyện gửi</option>
-                        </select>
-
-                        <select class="p-2 hover:cursor-pointer" name="" id="">
-                            <option value="">Huyện nhận</option>
-                        </select>
-
-                        <select class="p-2 hover:cursor-pointer" name="" id="">
-                            <option value="">Loại hàng</option>
-                        </select>
-
-                        <select class="p-2 hover:cursor-pointer" name="" id="">
-                            <option value="">Khối lượng</option>
-                        </select>
-                    </div>
-
-                    <button
-                        class="bg-black text-white px-4 py-2 text-center rounded-md font-bold text-2xl hover:cursor-pointer hover:opacity-80"
-                    >
-                        Tra cứu
-                    </button>
-
+                <transition name="element">
                     <div
-                        class="bg-white mt-4 p-4 rounded-lg text-xs sm:text-sm md:text-base lg:text-lg"
+                        class="bg-indigo-400 p-4 flex flex-col gap-8"
+                        v-if="isSearchFee"
                     >
-                        <h1 class="text-xl font-bold">Ước tính chi phí</h1>
-                        <span class="flex gap-2">
-                            <h2>Điểm giao dịch gửi:</h2>
-                            <p class="font-bold">Cầu Giấy, Hà Nội</p>
-                        </span>
-                        <span class="flex gap-2">
-                            <h2>Điểm giao dịch nhận:</h2>
-                            <p class="font-bold">Võ Nhai, Thái Nguyên</p>
-                        </span>
-                        <span class="flex gap-2">
-                            <h2>Chi phí:</h2>
-                            <p class="font-bold">20.000 VNĐ</p>
-                        </span>
+                        <div class="grid grid-cols-2 gap-4">
+                            <select
+                                class="p-2 hover:cursor-pointer"
+                                v-model="sentProvince"
+                                @change="handleSentProvinceChange"
+                            >
+                                <option value="Tỉnh gửi">Tỉnh gửi</option>
+                                <option
+                                    v-for="province in provinces"
+                                    :value="province.name"
+                                >
+                                    {{ province.name }}
+                                </option>
+                            </select>
+
+                            <select
+                                class="p-2 hover:cursor-pointer"
+                                name=""
+                                id=""
+                            >
+                                <option value="">Tỉnh nhận</option>
+                                <option
+                                    v-for="province in provinces"
+                                    :value="province.name"
+                                >
+                                    {{ province.name }}
+                                </option>
+                            </select>
+
+                            <select
+                                class="p-2 hover:cursor-pointer"
+                                name=""
+                                id=""
+                            >
+                                <option value="Huyện gửi">Huyện gửi</option>
+                                <option
+                                    v-for="district in districts"
+                                    :value="district.name"
+                                >
+                                    {{ district.name }}
+                                </option>
+                            </select>
+
+                            <select
+                                class="p-2 hover:cursor-pointer"
+                                name=""
+                                id=""
+                            >
+                                <option value="">Huyện nhận</option>
+                            </select>
+
+                            <select
+                                class="p-2 hover:cursor-pointer"
+                                name=""
+                                id=""
+                            >
+                                <option value="">Xã gửi</option>
+                            </select>
+
+                            <select
+                                class="p-2 hover:cursor-pointer"
+                                name=""
+                                id=""
+                            >
+                                <option value="">Xã nhận</option>
+                            </select>
+
+                            <select
+                                class="p-2 hover:cursor-pointer"
+                                name=""
+                                id=""
+                            >
+                                <option value="">Loại hàng</option>
+                            </select>
+
+                            <select
+                                class="p-2 hover:cursor-pointer"
+                                name=""
+                                id=""
+                            >
+                                <option value="">Khối lượng</option>
+                            </select>
+                        </div>
+
+                        <button
+                            class="search-btn text-white px-4 py-2 text-center rounded-md font-bold text-2xl hover:cursor-pointer hover:opacity-80"
+                        >
+                            Tra cứu
+                        </button>
+
+                        <div
+                            class="bg-white mt-4 p-4 rounded-lg text-xs sm:text-sm md:text-base lg:text-lg"
+                        >
+                            <h1 class="text-xl font-bold">Ước tính chi phí</h1>
+                            <span class="flex gap-2">
+                                <h2>Điểm giao dịch gửi:</h2>
+                                <p class="font-bold">Cầu Giấy, Hà Nội</p>
+                            </span>
+                            <span class="flex gap-2">
+                                <h2>Điểm giao dịch nhận:</h2>
+                                <p class="font-bold">Võ Nhai, Thái Nguyên</p>
+                            </span>
+                            <span class="flex gap-2">
+                                <h2>Chi phí:</h2>
+                                <p class="font-bold">20.000 VNĐ</p>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </transition>
 
                 <!-- tìm điểm giao dịch -->
             </div>
+        </div>
+
+        <!-- Phần show thông tin dịch vụ của công ty -->
+        <div
+            class="py-10 flex flex-col gap-20 justify-center items-center w-full"
+        >
+            <button
+                class="bg-indigo-700 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white"
+            >
+                Dịch vụ
+            </button>
+
+            <div class="w-3/4"></div>
         </div>
     </main>
 </template>
@@ -184,11 +288,18 @@
 export default {
     data() {
         return {
-            isSearch: true,
-            isService: false,
             isSearchOrder: true,
             isSearchFee: false,
             isSearchTransaction: false,
+            provinces: [],
+            districts: [],
+            wards: [],
+            sentProvince: "Tỉnh gửi",
+            receiveProvince: "Tỉnh nhận",
+            sentDistrict: "Huyện gửi",
+            receiveDistrict: "Huyện nhận",
+            sentWard: "Xã gửi",
+            receiveWard: "Xã nhận",
         };
     },
     methods: {
@@ -223,6 +334,37 @@ export default {
                     break;
             }
         },
+        async setProvinces() {
+            await this.$store.dispatch("address/getProvinces");
+            this.provinces = this.$store.getters["address/getProvinces"];
+        },
+        async setDistricts(provinceId) {
+            await this.$store.dispatch("address/getDistricts", provinceId);
+            this.districts = this.$store.getters["address/getDistricts"];
+        },
+        async handleSentProvinceChange() {
+            this.districts = [];
+            let provinceCode = "";
+            for (let province of this.provinces) {
+                if (province.name === this.sentProvince) {
+                    provinceCode = province.code;
+                    break;
+                }
+            }
+
+            const districts = this.$store.getters["address/getDistricts"];
+
+            for (const district in districts) {
+                if (districts[district].province_code === provinceCode) {
+                    this.districts.push(districts[district]);
+                }
+            }
+        },
+    },
+    mounted() {
+        this.setProvinces();
+        this.$store.dispatch("address/getDistricts");
+        this.$store.dispatch("address/getWards");
     },
 };
 </script>
@@ -230,5 +372,23 @@ export default {
 <style scoped>
 .banner {
     height: 800px;
+}
+
+.element-enter-from {
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
+.element-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.element-enter-active {
+    transition: all 0.5 s ease-out;
+}
+
+.search-btn {
+    background-color: #303030;
 }
 </style>
