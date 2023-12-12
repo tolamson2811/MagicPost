@@ -271,7 +271,7 @@
                         class="bg-indigo-400 p-4 flex flex-col gap-8"
                         v-if="isSearchTransaction"
                     >
-                    <div class="flex gap-2 w-full">
+                        <div class="flex gap-2 w-full">
                             <input
                                 type="text"
                                 placeholder="Nhập địa chỉ (Tỉnh)"
@@ -290,12 +290,13 @@
                         >
                             <span class="flex gap-2">
                                 <h2>Bưu cục Cầu Giấy:</h2>
-                                <p class="font-bold">20 - Ngõ 20 - Hồ Tùng Mậu</p>
+                                <p class="font-bold">
+                                    20 - Ngõ 20 - Hồ Tùng Mậu
+                                </p>
                             </span>
                             <span class="flex gap-2">
                                 <h2>Bưu cục Thanh Xuân</h2>
-                                <p class="font-bold">2 - Ngõ 2 - xxx
-</p>
+                                <p class="font-bold">2 - Ngõ 2 - xxx</p>
                             </span>
                         </div>
                     </div>
@@ -304,125 +305,203 @@
         </div>
 
         <!-- Phần show thông tin dịch vụ của công ty -->
-        <div class="py-10 flex flex-col gap-20 justify-center items-center w-full">
-            <button class="bg-indigo-700 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white">
+        <div
+            class="py-10 flex flex-col gap-20 justify-center items-center w-full"
+        >
+            <button
+                class="bg-indigo-700 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white"
+            >
                 Dịch vụ
             </button>
 
-            <div class="w-3/4 container px-20">
-                <div class="flex flex-col gap-20">
-                    <div class="flex flex-row gap-32">
-                        <div class="mx-4 my-4">
-                            <div class="block w-8/12 p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 content-between">
-                                <div class="flex flex-row gap-8">
-                                    <font-awesome-icon class="content-center" icon="fa-solid fa-truck-fast" />
-                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 w-full ">Chuyển phát nhanh</h5>   
-                                </div>
-                                <p class="font-normal text-gray-700 ">Dịch vụ nhận gửi, vận chuyển và phát các loại thư, tài liệu, thư từ trong nước theo chỉ tiêu thời gian tiêu chuẩn, Không áp dụng với các đơn hàng có thu hộ COD [..]</p>
-                            </div>
-                        </div>
-                        <div class="mx-4 my-4">
-                            <a class="block w-8/12 p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 content-between">
-                                <div class="flex flex-row gap-8">
-                                <font-awesome-icon icon="fa-solid fa-truck-fast" />
-                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Chuyển phát hỏa tốc</h5>   
-                                </div>
-                                <p class="font-normal text-gray-700 ">Dịch vụ nhận gửi, vận chuyển và phát nhanh chứng từ hàng hóa, vật phẩm có độ ưu tiên cao nhất với chỉ tiêu thời gian toàn trình không quá 24 giờ [...]</p>
-                            </a>
-                        </div>
+            <div
+                class="grid grid-cols-2 gap-20 items-center justify-center px-48"
+            >
+                <a
+                    class="select-none w-full h-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 content-between"
+                >
+                    <div class="flex flex-row items-center gap-8">
+                        <font-awesome-icon
+                            class="content-center"
+                            icon="fa-solid fa-truck-fast"
+                        />
+                        <h5
+                            class="mb-2 text-2xl font-bold tracking-tight text-gray-900 w-full"
+                        >
+                            Chuyển phát nhanh
+                        </h5>
                     </div>
-                    <div class="flex flex-row gap-32">
-                        <div class="mx-4 my-4">
-                            <a class="block w-8/12 p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 content-between">
-                                <div class="flex flex-row gap-8">
-                                    <font-awesome-icon icon="fa-solid fa-truck-fast" />
-                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Chuyển phát tiết kiệm</h5>   
-                                </div>
-                                <p class="font-normal text-gray-700 ">Dịch vụ nhận gửi, vận chuyển và phát các loại hàng hóa, bưu kiện không giới hạn mức trọng lượng, theo chỉ tiêu thời gian tiêu chuẩn, giá cước hợp lý [...]</p>
-                            </a>
-                        </div>
-                        <div class="mx-4 my-4">
-                            <a class="block w-8/12 p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 content-between">
-                                <div class="flex flex-row gap-8">
-                                    <font-awesome-icon icon="fa-solid fa-truck-fast" />
-                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Chuyển phát đặc biệt</h5>   
-                                </div>
-                                <p class="font-normal text-gray-700 ">Dịch vụ nhận gửi, vận chuyển và phát các loại hàng hóa đặc biệt, quá trình tiếp nhận, đóng gói, quy định về tem nhãn cảnh báo riêng cho từng loại [...]</p>
-                            </a>
-                        </div>
+                    <p class="font-normal text-gray-700">
+                        Dịch vụ nhận gửi, vận chuyển và phát các loại thư, tài
+                        liệu, thư từ trong nước theo chỉ tiêu thời gian tiêu
+                        chuẩn, Không áp dụng với các đơn hàng có thu hộ COD [..]
+                    </p>
+                </a>
+
+                <a
+                    class="w-full select-none h-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 content-between"
+                >
+                    <div class="flex flex-row items-center gap-8">
+                        <font-awesome-icon icon="fa-solid fa-truck-fast" />
+                        <h5
+                            class="mb-2 text-2xl font-bold tracking-tight text-gray-900"
+                        >
+                            Chuyển phát hỏa tốc
+                        </h5>
                     </div>
+                    <p class="font-normal text-gray-700">
+                        Dịch vụ nhận gửi, vận chuyển và phát nhanh chứng từ hàng
+                        hóa, vật phẩm có độ ưu tiên cao nhất với chỉ tiêu thời
+                        gian toàn trình không quá 24 giờ [...]
+                    </p>
+                </a>
+                <a
+                    class="w-full select-none h-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 content-between"
+                >
+                    <div class="flex flex-row items-center gap-8">
+                        <font-awesome-icon icon="fa-solid fa-truck-fast" />
+                        <h5
+                            class="mb-2 text-2xl font-bold tracking-tight text-gray-900"
+                        >
+                            Chuyển phát tiết kiệm
+                        </h5>
+                    </div>
+                    <p class="font-normal text-gray-700">
+                        Dịch vụ nhận gửi, vận chuyển và phát các loại hàng hóa,
+                        bưu kiện không giới hạn mức trọng lượng, theo chỉ tiêu
+                        thời gian tiêu chuẩn, giá cước hợp lý [...]
+                    </p>
+                </a>
+
+                <a
+                    class="w-full select-none h-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 content-between"
+                >
+                    <div class="flex flex-row items-center gap-8">
+                        <font-awesome-icon icon="fa-solid fa-truck-fast" />
+                        <h5
+                            class="mb-2 text-2xl font-bold tracking-tight text-gray-900"
+                        >
+                            Chuyển phát đặc biệt
+                        </h5>
+                    </div>
+                    <p class="font-normal text-gray-700">
+                        Dịch vụ nhận gửi, vận chuyển và phát các loại hàng hóa
+                        đặc biệt, quá trình tiếp nhận, đóng gói, quy định về tem
+                        nhãn cảnh báo riêng cho từng loại [...]
+                    </p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Thống kê khách hàng và số lượng hàng hóa  -->
+        <div
+            class="py-10 flex flex-col gap-20 justify-center items-center w-full"
+        >
+            <button
+                class="bg-indigo-700 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white"
+            >
+                Khách hàng của chúng tôi
+            </button>
+            <div class="grid grid-cols-3 w-full">
+                <div
+                    class="text-center bg-indigo-400 w-full text-black p-10 text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold"
+                >
+                    Mạng lưới bưu cục 63 tỉnh thành trên cả nước
+                </div>
+
+                <div
+                    class="bg-green-200 p-10 flex items-center gap-4 sm:text-xl md:text-2xl lg:text-2xl"
+                >
+                    <font-awesome-icon
+                        icon="fa-solid fa-users"
+                        class="text-2xl sm:text-3xl md:text-4xl lg:text-4xl"
+                    />
+                    <span class="flex flex-col gap-2">
+                        <h1>990.870+</h1>
+                        <p>KHÁCH HÀNG TIN DÙNG</p>
+                    </span>
+                </div>
+
+                <div
+                    class="bg-green-200 p-10 flex items-center gap-4 sm:text-xl md:text-2xl lg:text-2xl"
+                >
+                    <font-awesome-icon icon="fa-solid fa-box-open" class="text-2xl sm:text-3xl md:text-4xl lg:text-4xl"/>
+                    <span class="flex flex-col gap-2">
+                        <h1>483.870+</h1>
+                        <p>ĐƠN HÀNG ĐANG VẬN CHUYỂN</p>
+                    </span>
                 </div>
             </div>
         </div>
 
-        <!-- Hỗ trợ -->
-        <div class="py-10 flex flex-col gap-20 justify-center items-center w-full">
-            <button class="bg-indigo-700 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white">
-                Hỗ trợ
-            </button>
-                <div>
-            <div class="  py-12 xl:pt-12 xl:pb-0">
-            <div class=" mt-12 container mx-auto h-full " style="color: #0c4a6e;">
-            <div class="flex flex-col xl:flex-row items-center justify-between h-fit">
-                <div class="intro-text xl:w-[48%] text-center xl:text-left">
-                    <div class="h1 mb-6 mt">Email: Magicpost.cn1.uet@gmail.com</div>
-                    <div class="h1 mb-6 mt">Hotline: +12345678</div>
-                    <div class="h1 mb-6 mt">Fanpage: Magic Post</div>
-                </div>
-                
-                
-                <div class="object-contain hidden xl:flex xl:max-w-7xl w-{800} h-{600}">
-                    <img src="../../src/assets/images//logo_magicpost.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-        </div>
-            <button class="bg-indigo-700 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white">
+        <!-- Giới thiệu đội ngũ -->
+        <div
+            class="py-10 flex flex-col gap-20 justify-center items-center w-full"
+        >
+            <button
+                class="bg-indigo-700 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white"
+            >
                 Đội ngũ của chúng tôi
             </button>
-            <div class="flex flex-row gap-16 ">
-                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow ">
-                    <img class="rounded-t-lg w-{16px} h-{16px}" src="../../src/assets/images/logo_magicpost.jpg" alt="" />
+            <div class="flex flex-row gap-16">
+                <div
+                    class="max-w-sm bg-white border border-gray-200 rounded-lg shadow"
+                >
+                    <img
+                        class="rounded-t-lg w-{16px} h-{16px}"
+                        src="../../src/assets/images/logo_magicpost.jpg"
+                        alt=""
+                    />
                     <div class="p-5">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Nguyen Duc Thien</h5>
-                    <p class="mb-3 font-normal text-gray-700 ">Chairman of directors</p>
+                        <h5
+                            class="mb-2 text-2xl font-bold tracking-tight text-gray-900"
+                        >
+                            Nguyen Duc Thien
+                        </h5>
+                        <p class="mb-3 font-normal text-gray-700">
+                            Chairman of directors
+                        </p>
+                    </div>
                 </div>
-                </div>
-                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow ">
-                    <img class="rounded-t-lg" src="../../src/assets/images/logo_magicpost.jpg" alt="" />
+                <div
+                    class="max-w-sm bg-white border border-gray-200 rounded-lg shadow"
+                >
+                    <img
+                        class="rounded-t-lg"
+                        src="../../src/assets/images/logo_magicpost.jpg"
+                        alt=""
+                    />
                     <div class="p-5">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">To Lam Son</h5>
-                    <p class="mb-3 font-normal text-gray-700 ">Chief Executive Officer</p>
+                        <h5
+                            class="mb-2 text-2xl font-bold tracking-tight text-gray-900"
+                        >
+                            To Lam Son
+                        </h5>
+                        <p class="mb-3 font-normal text-gray-700">
+                            Chief Executive Officer
+                        </p>
+                    </div>
                 </div>
-                </div>
-                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow ">
-                    <img class="rounded-t-lg" src="../../src/assets/images/logo_magicpost.jpg" alt="" />
+                <div
+                    class="max-w-sm bg-white border border-gray-200 rounded-lg shadow"
+                >
+                    <img
+                        class="rounded-t-lg"
+                        src="../../src/assets/images/logo_magicpost.jpg"
+                        alt=""
+                    />
                     <div class="p-5">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Ta Khanh Phuong</h5>
-                    <p class="mb-3 font-normal text-gray-700 ">Director of Development</p>
-                </div>
+                        <h5
+                            class="mb-2 text-2xl font-bold tracking-tight text-gray-900"
+                        >
+                            Ta Khanh Phuong
+                        </h5>
+                        <p class="mb-3 font-normal text-gray-700">
+                            Director of Development
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!--  -->
-        <div>
-            <div class="  py-12 xl:pt-12 xl:pb-0">
-            <div class=" mt-12 container mx-auto h-full " style="color: #0c4a6e;">
-            <div class="flex flex-col xl:flex-row items-center justify-between h-fit">
-                <div class="intro-text xl:w-[48%] text-center xl:text-left">
-                    <div class="h1 mb-6 mt">Email: Magicpost.cn1.uet@gmail.com</div>
-                    <div class="h1 mb-6 mt">Hotline: +12345678</div>
-                    <div class="h1 mb-6 mt">Fanpage: Magic Post</div>
-                </div>
-                
-                
-                <div class="object-contain hidden xl:flex xl:max-w-7xl w-{800} h-{600}">
-                    <img src="../../src/assets/images//logo_magicpost.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
         </div>
     </main>
 </template>
