@@ -13,10 +13,13 @@ export default {
         const responseData = await response.json();
 
         if (!response.ok) {
-            const error = new Error(
-                responseData.errors[0].msg || responseData.message || "Không thể đăng ký, kiểm tra dữ liệu của bạn"
-            );
-            console.log(error);
+            let errorMessage = "Không thể đăng ký, kiểm tra dữ liệu của bạn";
+            if (responseData.errors && responseData.errors.length > 0) {
+                errorMessage = responseData.errors[0].msg;
+            } else if (responseData.message) {
+                errorMessage = responseData.message;
+            }
+            const error = new Error(errorMessage);
             throw error;
         }
     },
@@ -35,10 +38,13 @@ export default {
         const responseData = await response.json();
 
         if (!response.ok) {
-            const error = new Error(
-                responseData.errors[0].msg || responseData.message || "Không thể đăng nhập, kiểm tra dữ liệu của bạn"
-            );
-            console.log(error);
+            let errorMessage = "Không thể đăng nhập, kiểm tra dữ liệu của bạn";
+            if (responseData.errors && responseData.errors.length > 0) {
+                errorMessage = responseData.errors[0].msg;
+            } else if (responseData.message) {
+                errorMessage = responseData.message;
+            }
+            const error = new Error(errorMessage);
             throw error;
         }
 
@@ -53,7 +59,6 @@ export default {
         localStorage.setItem("token", responseData.token);
         localStorage.setItem("userId", responseData.id);
         localStorage.setItem("tokenExpiration", expiresIn);
-
     },
 
     async autoLogin(context) {
@@ -89,5 +94,5 @@ export default {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
         localStorage.removeItem("tokenExpiration");
-    }
+    },
 };
