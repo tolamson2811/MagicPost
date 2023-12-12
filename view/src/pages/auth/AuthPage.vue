@@ -21,7 +21,7 @@
                         @input="email.isValid = true"
                     />
                     <span
-                        class="text-xs lg:text-sm text-red-500"
+                        class="text-xs lg:text-sm text-rose-400"
                         v-if="!email.isValid"
                         >{{ email.messageInvalid }}</span
                     >
@@ -37,7 +37,7 @@
                         @input="password.isValid = true"
                     />
                     <span
-                        class="text-xs lg:text-sm text-red-500"
+                        class="text-xs lg:text-sm text-rose-400"
                         v-if="!password.isValid"
                         >{{ password.messageInvalid }}</span
                     >
@@ -55,7 +55,7 @@
             <span class="flex gap-1 text-xs md:text-sm lg:text-base"
                 >Bạn chưa có tài khoản?
                 <p
-                    class="text-red-500 italic hover:cursor-pointer hover:text-red-600 font-bold"
+                    class="text-green-500 italic underline hover:cursor-pointer hover:text-green-600 font-bold"
                     @click="swithForm('register')"
                 >
                     Đăng ký
@@ -84,7 +84,7 @@
                         @input="email.isValid = true"
                     />
                     <span
-                        class="text-xs lg:text-sm text-red-500"
+                        class="text-xs lg:text-sm text-rose-400"
                         v-if="!email.isValid"
                         >{{ email.messageInvalid }}</span
                     >
@@ -100,7 +100,7 @@
                         @input="password.isValid = true"
                     />
                     <span
-                        class="text-xs lg:text-sm text-red-500"
+                        class="text-xs lg:text-sm text-rose-400"
                         v-if="!password.isValid"
                         >{{ password.messageInvalid }}</span
                     >
@@ -118,7 +118,7 @@
                         @input="confirmPassword.isValid = true"
                     />
                     <span
-                        class="text-xs lg:text-sm text-red-500"
+                        class="text-xs lg:text-sm text-rose-400"
                         v-if="!confirmPassword.isValid"
                         >{{ confirmPassword.messageInvalid }}</span
                     >
@@ -132,11 +132,11 @@
                             @change="term.isValid = true"
                         />
                         <label for="term"
-                            >Tôi đồng ý với các điều khoản của <a href="#" class="italic underline text-red-500">Magic Post</a></label
+                            >Tôi đồng ý với các điều khoản của <a href="#" class="text-green-500 italic underline hover:cursor-pointer hover:text-green-600">Magic Post</a></label
                         >
                     </span>
                     <span
-                        class="text-xs lg:text-sm text-red-500"
+                        class="text-xs lg:text-sm text-yellow-300"
                         v-if="!term.isValid"
                         >{{ term.messageInvalid }}</span
                     >
@@ -150,7 +150,7 @@
             <span class="flex gap-1 text-xs md:text-sm lg:text-base"
                 >Bạn đã có tài khoản?
                 <p
-                    class="text-red-500 italic hover:cursor-pointer hover:text-red-600 font-bold"
+                    class="text-green-500 italic underline hover:cursor-pointer hover:text-green-600 font-bold"
                     @click="swithForm('login')"
                 >
                     Đăng nhập
@@ -349,7 +349,7 @@ export default {
             if (!this.term.value) {
                 this.term.isValid = false;
                 this.term.messageInvalid =
-                    "Bạn phải đồng ý với điều khoản của MagicPost";
+                    "Bạn phải đồng ý với điều khoản của Magic Post";
             } else {
                 this.term.isValid = true;
             }
