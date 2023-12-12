@@ -266,6 +266,40 @@
                 </transition>
 
                 <!-- tìm điểm giao dịch -->
+                <transition name="element">
+                    <div
+                        class="bg-indigo-400 p-4 flex flex-col gap-8"
+                        v-if="isSearchTransaction"
+                    >
+                    <div class="flex gap-2 w-full">
+                            <input
+                                type="text"
+                                placeholder="Nhập địa chỉ (Tỉnh)"
+                                id="transactionId"
+                                class="rounded-2xl p-2 basis-11/12"
+                            />
+                            <button
+                                for="transactionId"
+                                class="search-btn text-white px-4 py-2 text-center basis-1/12 rounded-md font-bold text-base hover:cursor-pointer hover:opacity-80"
+                            >
+                                Tra cứu
+                            </button>
+                        </div>
+                        <div
+                            class="bg-white mt-4 p-4 rounded-lg text-xs sm:text-sm md:text-base lg:text-lg"
+                        >
+                            <span class="flex gap-2">
+                                <h2>Bưu cục Cầu Giấy:</h2>
+                                <p class="font-bold">20 - Ngõ 20 - Hồ Tùng Mậu</p>
+                            </span>
+                            <span class="flex gap-2">
+                                <h2>Bưu cục Thanh Xuân</h2>
+                                <p class="font-bold">2 - Ngõ 2 - xxx
+</p>
+                            </span>
+                        </div>
+                    </div>
+                </transition>
             </div>
         </div>
 
