@@ -3,7 +3,7 @@ import { defineAsyncComponent } from "vue";
 
 const HomePage = defineAsyncComponent(() => import('./pages/HomePage.vue'));
 const AuthPage = defineAsyncComponent(() => import('./pages/auth/AuthPage.vue'));
-
+const CustomerPage = defineAsyncComponent(() => import('./pages/customer/CustomerPage.vue'))
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -19,6 +19,10 @@ const router = createRouter({
             path: '/auth',
             component: AuthPage
         },
+        {
+            path:'/customer',
+            component: CustomerPage
+        }
     ],
     scrollBehavior() {
 		return { top: 0, behavior: "smooth" };
