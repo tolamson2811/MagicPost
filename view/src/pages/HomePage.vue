@@ -29,9 +29,10 @@
             />
         </div>
 
-        <!-- Phần dịch vụ cho khách hàng  -->
+        <!-- Phần dịch vụ tra cứu cho khách hàng  -->
         <div
             class="py-10 flex flex-col gap-20 justify-center items-center w-full"
+            id="search-service"
         >
             <div class="flex gap-4">
                 <button
@@ -84,7 +85,7 @@
                         <div class="flex gap-2 w-full">
                             <input
                                 type="text"
-                                placeholder="VD: 123412421"
+                                placeholder="Mã vận đơn"
                                 id="orderId"
                                 class="rounded-2xl p-2 basis-11/12"
                             />
@@ -554,6 +555,7 @@
         <!-- Phần show thông tin dịch vụ của công ty -->
         <div
             class="py-10 flex flex-col gap-20 justify-center items-center w-full"
+            id="service-list"
         >
             <button
                 class="bg-indigo-700 py-4 px-10 text-3xl rounded-full font-semibold border-4 text-white"
@@ -672,7 +674,10 @@
                 <div
                     class="bg-green-200 p-10 flex items-center gap-4 sm:text-xl md:text-2xl lg:text-2xl"
                 >
-                    <font-awesome-icon icon="fa-solid fa-box-open" class="text-2xl sm:text-3xl md:text-4xl lg:text-4xl"/>
+                    <font-awesome-icon
+                        icon="fa-solid fa-box-open"
+                        class="text-2xl sm:text-3xl md:text-4xl lg:text-4xl"
+                    />
                     <span class="flex flex-col gap-2">
                         <h1>483.870+</h1>
                         <p>ĐƠN HÀNG ĐANG VẬN CHUYỂN</p>

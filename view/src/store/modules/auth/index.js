@@ -7,13 +7,10 @@ export default {
         return {
             token: null,
             userId: null,
+            tokenExpiration: null,
             didAutoLogout: false,
-            userInfo: {
-                fullname: null,
-                phone: null,
-                date_of_birth: null,
-                email: null,
-            }
+            userEmail: null,
+            role: null
         }
     },
     actions,
