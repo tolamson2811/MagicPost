@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { defineAsyncComponent } from "vue";
 
+
+const CustomerPage = defineAsyncComponent(() => import('./pages/customer/CustomerPage.vue'))
 const HomePage = defineAsyncComponent(() => import("./pages/HomePage.vue"));
 const AuthPage = defineAsyncComponent(() =>
     import("./pages/auth/AuthPage.vue")
@@ -72,6 +74,10 @@ const router = createRouter({
                 },
             ],
         },
+        {
+            path:'/customer',
+            component: CustomerPage
+        }
     ],
     scrollBehavior() {
         return { top: 0, behavior: "smooth" };
