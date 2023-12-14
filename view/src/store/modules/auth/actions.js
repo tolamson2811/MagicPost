@@ -37,6 +37,8 @@ export default {
 
         const responseData = await response.json();
 
+        console.log(responseData);
+
         if (!response.ok) {
             let errorMessage = "Không thể đăng nhập, kiểm tra dữ liệu của bạn";
             if (responseData.errors && responseData.errors.length > 0) {
@@ -52,6 +54,8 @@ export default {
             token: responseData.token,
             userId: responseData.id,
             expiresIn: responseData.expiresIn,
+            userEmail: responseData.email,
+            role: responseData.role,
         });
 
         const expiresIn = new Date().getTime() + responseData.expiresIn * 1000;
@@ -59,6 +63,8 @@ export default {
         localStorage.setItem("token", responseData.token);
         localStorage.setItem("userId", responseData.id);
         localStorage.setItem("tokenExpiration", expiresIn);
+        localStorage.setItem("userEmail", responseData.email)
+        localStorage.setItem("role", responseData.role)
     },
 
     async autoLogin(context) {
@@ -67,6 +73,8 @@ export default {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
         const tokenExpiration = localStorage.getItem("tokenExpiration");
+        const userEmail = localStorage.getItem("userEmail");
+        const role = localStorage.getItem("role");
 
         const expiresIn = +tokenExpiration - new Date().getTime();
 
@@ -81,6 +89,8 @@ export default {
             token: token,
             userId: userId,
             tokenExpiration: tokenExpiration,
+            userEmail: userEmail,
+            role: role
         });
     },
 
@@ -89,10 +99,14 @@ export default {
             token: null,
             userId: null,
             tokenExpiration: null,
+            userEmail: null,
+            role: null
         });
 
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
         localStorage.removeItem("tokenExpiration");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("role");
     },
 };
