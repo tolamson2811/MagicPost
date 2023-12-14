@@ -28,6 +28,8 @@ const StatisticAggregation = defineAsyncComponent(() =>
 const StatisticTransaction = defineAsyncComponent(() =>
     import("./pages/manager/StatisticTransaction.vue")
 );
+const TransactionList = defineAsyncComponent(() => import("./pages/customer/TransactionList.vue"));
+const CustomerTransaction = defineAsyncComponent(() => import("./pages/customer/CustomerTransaction.vue"));
 
 const router = createRouter({
     history: createWebHistory(),
@@ -76,7 +78,18 @@ const router = createRouter({
         },
         {
             path:'/customer',
-            component: CustomerPage
+            redirect:'customer/transaction',
+            component: CustomerPage,
+            children: [
+                {
+                    path:"transaction/list",
+                    component: TransactionList
+                },
+                {
+                    path:"transaction",
+                    component:CustomerTransaction,
+                }
+            ]
         }
     ],
     scrollBehavior() {
