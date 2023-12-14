@@ -8,7 +8,6 @@ import store from "./store";
 import BaseDialog from "./components/ui/BaseDialog.vue";
 import BaseSpinner from "./components/ui/BaseSpinner.vue";
 import BaseList from "./components/ui/BaseList.vue";
-
 /* import the fontawesome core */
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -30,6 +29,8 @@ app.component("BaseDialog", BaseDialog);
 app.component("BaseSpinner", BaseSpinner);
 app.component("BaseList", BaseList);
 
+
+//use fontawesome
 app.component("font-awesome-icon", FontAwesomeIcon);
 
 app.mount("#app");
