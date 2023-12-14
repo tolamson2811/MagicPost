@@ -34,7 +34,7 @@
 							icon="fa-solid fa-bars"
 							class="text-sm sm:text-base md:text-xl lg:text-2xl select-none"
 						/>
-						<h1 class="select-none">Lịch sử đơn hàng</h1>
+						<h1>Lich su don hang</h1>
 						<font-awesome-icon icon="fa-solid fa-chevron-right" />
 					</div>
 				</div>

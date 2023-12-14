@@ -26,147 +26,137 @@
 		>
 			<table class="w-full">
 				<tr class="">
-					<th class="bg-indigo-500 border border-gray-200 px-4 py-1 text-white">
+					<th
+						class="bg-indigo-500 border border-e-2 border-blue-300 px-4 py-1 text-white"
+					>
 						STT
-						<font-awesome-icon
-							icon="fa-solid fa-arrows-up-down"
-							class="hover:cursor-pointer"
-							v-if="idFilter === 'default'"
-							@click="toggleIdFilter()"
-						/>
-						<font-awesome-icon
-							icon="fa-solid fa-arrow-up"
-							class="hover:cursor-pointer"
-							v-if="idFilter === 'increase'"
-							@click="toggleIdFilter()"
-						/>
-						<font-awesome-icon
-							icon="fa-solid fa-arrow-down"
-							class="hover:cursor-pointer"
-							v-if="idFilter === 'decrease'"
-							@click="toggleIdFilter()"
-						/>
 					</th>
-					<th class="bg-indigo-500 border px-4 py-1 text-white">Mã vận đơn</th>
-					<th class="bg-indigo-500 border px-4 py-1 text-white">
+					<th
+						class="bg-indigo-500 border border-e-2 border-blue-300 px-4 py-1 text-white"
+					>
+						Mã vận đơn
+					</th>
+					<th
+						class="bg-indigo-500 border border-e-2 border-blue-300 px-4 py-1 text-white"
+					>
 						Hoạt động
-						<font-awesome-icon
-							icon="fa-solid fa-arrows-up-down"
-							class="hover:cursor-pointer"
-							v-if="totalPackageFilter === 'default'"
-							@click="toggleTotalPackageFilter()"
-						/>
-						<font-awesome-icon
-							icon="fa-solid fa-arrow-up"
-							class="hover:cursor-pointer"
-							v-if="totalPackageFilter === 'increase'"
-							@click="toggleTotalPackageFilter()"
-						/>
-						<font-awesome-icon
-							icon="fa-solid fa-arrow-down"
-							class="hover:cursor-pointer"
-							v-if="totalPackageFilter === 'decrease'"
-							@click="toggleTotalPackageFilter()"
-						/>
 					</th>
 				</tr>
 
 				<tr class="bg-gray-200">
-					<td class="text-center">1</td>
-					<td class="text-center">DP12345678</td>
-					<td class="text-center hover:underline hover:cursor-pointer">
-						Xem chi tiết
+					<td class="border-e-2 border-blue-300 text-center">1</td>
+					<td class="border-e-2 border-blue-300 text-center">DP12345678</td>
+					<td
+						class="border-e-2 border-blue-300 text-center hover:underline hover:cursor-pointer hover:text-sky-800"
+					>
+						<router-link to="/customer/transaction/list"
+							>Xem chi tiết</router-link
+						>
 					</td>
 				</tr>
 				<tr class="bg-gray-200">
-					<td class="text-center">2</td>
-					<td class="text-center">DP12345678</td>
-					<td class="text-center hover:underline hover:cursor-pointer">
-						Xem chi tiết
+					<td class="border-e-2 border-blue-300 text-center">2</td>
+					<td class="border-e-2 border-blue-300 text-center">DP12345678</td>
+					<td
+						class="border-e-2 border-blue-300 text-center hover:underline hover:cursor-pointer hover:text-sky-800"
+					>
+						<router-link to="/customer/transaction/list"
+							>Xem chi tiết</router-link
+						>
 					</td>
 				</tr>
 				<tr class="bg-gray-200">
-					<td class="text-center">3</td>
-					<td class="text-center">DP12345678</td>
-					<td class="text-center hover:underline hover:cursor-pointer">
-						Xem chi tiết
+					<td class="border-e-2 border-blue-300 text-center">3</td>
+					<td class="border-e-2 border-blue-300 text-center">DP12345678</td>
+					<td
+						class="border-e-2 border-blue-300 text-center hover:underline hover:cursor-pointer hover:text-sky-800"
+					>
+						<router-link to="/customer/transaction/list"
+							>Xem chi tiết</router-link
+						>
 					</td>
 				</tr>
 				<tr class="bg-gray-200">
-					<td class="text-center">4</td>
-					<td class="text-center">DP12345678</td>
-					<td class="text-center hover:underline hover:cursor-pointer">
-						Xem chi tiết
+					<td class="border-e-2 border-blue-300 text-center">4</td>
+					<td class="border-e-2 border-blue-300 text-center">DP12345678</td>
+					<td
+						class="border-e-2 border-blue-300 text-center hover:underline hover:cursor-pointer hover:text-sky-800"
+					>
+						<router-link to="/customer/transaction/list"
+							>Xem chi tiết</router-link
+						>
 					</td>
 				</tr>
 				<tr class="bg-gray-200">
-					<td class="text-center">5</td>
-					<td class="text-center">DP12345678</td>
-					<td class="text-center hover:underline hover:cursor-pointer">
-						Xem chi tiết
+					<td class="border-e-2 border-blue-300 text-center">5</td>
+					<td class="border-e-2 border-blue-300 text-center">DP12345678</td>
+					<td
+						class="border-e-2 border-blue-300 text-center hover:underline hover:cursor-pointer hover:text-sky-800"
+					>
+						<router-link to="/customer/transaction/list"
+							>Xem chi tiết</router-link
+						>
 					</td>
 				</tr>
 				<tr class="bg-gray-200">
-					<td class="text-center">6</td>
-					<td class="text-center">DP12345678</td>
-					<td class="text-center hover:underline hover:cursor-pointer">
-						Xem chi tiết
+					<td class="border-e-2 border-blue-300 text-center">6</td>
+					<td class="border-e-2 border-blue-300 text-center">DP12345678</td>
+					<td
+						class="border-e-2 border-blue-300 text-center hover:underline hover:cursor-pointer hover:text-sky-800"
+					>
+						<router-link to="/customer/transaction/list"
+							>Xem chi tiết</router-link
+						>
 					</td>
 				</tr>
 				<tr class="bg-gray-200">
-					<td class="text-center">7</td>
-					<td class="text-center">DP12345678</td>
-					<td class="text-center hover:underline hover:cursor-pointer">
-						Xem chi tiết
+					<td class="border-e-2 border-blue-300 text-center">7</td>
+					<td class="border-e-2 border-blue-300 text-center">DP12345678</td>
+					<td
+						class="border-e-2 border-blue-300 text-center hover:underline hover:cursor-pointer hover:text-sky-800"
+					>
+						<router-link to="/customer/transaction/list"
+							>Xem chi tiết</router-link
+						>
 					</td>
 				</tr>
 			</table>
+			<div class="grid grid-cols-5 gap-2 w-full px-1 items-center">
+				<button
+					class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+				>
+					<font-awesome-icon icon="fa-solid fa-chevron-left" />
+				</button>
+				<button
+					class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+				>
+					1
+				</button>
+				<button
+					class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+				>
+					2
+				</button>
+				<button
+					class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+				>
+					3
+				</button>
+				<button
+					class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+				>
+					<font-awesome-icon icon="fa-solid fa-chevron-right" />
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 export default {
-	data() {
-		return {
-			idFilter: "default",
-			totalPackageFilter: "default",
-			totalInventoryFilter: "default",
-		};
-	},
 	methods: {
-		toggleIdFilter() {
-			this.totalInventoryFilter = "default";
-			this.totalPackageFilter = "default";
-			if (this.idFilter === "default") {
-				this.idFilter = "increase";
-			} else if (this.idFilter === "increase") {
-				this.idFilter = "decrease";
-			} else {
-				this.idFilter = "default";
-			}
-		},
-		toggleTotalPackageFilter() {
-			this.idFilter = "default";
-			this.totalInventoryFilter = "default";
-			if (this.totalPackageFilter === "default") {
-				this.totalPackageFilter = "increase";
-			} else if (this.totalPackageFilter === "increase") {
-				this.totalPackageFilter = "decrease";
-			} else {
-				this.totalPackageFilter = "default";
-			}
-		},
-		toggleTotalInventoryFilter() {
-			this.idFilter = "default";
-			this.totalPackageFilter = "default";
-			if (this.totalInventoryFilter === "default") {
-				this.totalInventoryFilter = "increase";
-			} else if (this.totalInventoryFilter === "increase") {
-				this.totalInventoryFilter = "decrease";
-			} else {
-				this.totalInventoryFilter = "default";
-			}
+		transactionList() {
+			return "/customer/transaction/list";
 		},
 	},
 };

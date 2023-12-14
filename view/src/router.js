@@ -78,7 +78,7 @@ const router = createRouter({
         },
         {
             path:'/customer',
-            redirect:"/customer/transaction",
+            redirect:'customer/transaction',
             component: CustomerPage,
             children: [
                 {
