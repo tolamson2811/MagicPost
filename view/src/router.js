@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { defineAsyncComponent } from "vue";
 
-<<<<<<< HEAD
 const HomePage = defineAsyncComponent(() => import('./pages/HomePage.vue'));
 const AuthPage = defineAsyncComponent(() => import('./pages/auth/AuthPage.vue'));
 const CustomerPage = defineAsyncComponent(() => import('./pages/customer/CustomerPage.vue'))
-=======
+
+
+const CustomerPage = defineAsyncComponent(() => import('./pages/customer/CustomerPage.vue'))
 const HomePage = defineAsyncComponent(() => import("./pages/HomePage.vue"));
 const AuthPage = defineAsyncComponent(() =>
     import("./pages/auth/AuthPage.vue")
@@ -32,7 +33,6 @@ const StatisticTransaction = defineAsyncComponent(() =>
     import("./pages/manager/StatisticTransaction.vue")
 );
 
->>>>>>> main
 const router = createRouter({
     history: createWebHistory(),
     routes: [
