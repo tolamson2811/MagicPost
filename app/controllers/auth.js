@@ -76,9 +76,11 @@ exports.login = async (req, res, next) => {
             { expiresIn: "1h" }
         );
         res.status(200).json({
+            email: email,
             token: token,
             id: accountLoaded.id.toString(),
             expiresIn: 3600,
+            role: accountLoaded.role,
         });
     } catch (err) {
         if (!err.statusCode) {

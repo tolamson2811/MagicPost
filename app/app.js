@@ -69,7 +69,7 @@ PackageStatus.belongsTo(Packages, {
 sequelize
     .sync()
     .then((result) => {
-        console.log(result);
+        console.log("Connected to database");
         app.listen(8080);
     })
     .catch((err) => {
