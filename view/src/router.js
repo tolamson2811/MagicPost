@@ -1,10 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { defineAsyncComponent } from "vue";
 
-const HomePage = defineAsyncComponent(() => import('./pages/HomePage.vue'));
-const AuthPage = defineAsyncComponent(() => import('./pages/auth/AuthPage.vue'));
-const CustomerPage = defineAsyncComponent(() => import('./pages/customer/CustomerPage.vue'))
-
 
 const CustomerPage = defineAsyncComponent(() => import('./pages/customer/CustomerPage.vue'))
 const HomePage = defineAsyncComponent(() => import("./pages/HomePage.vue"));
@@ -32,6 +28,8 @@ const StatisticAggregation = defineAsyncComponent(() =>
 const StatisticTransaction = defineAsyncComponent(() =>
     import("./pages/manager/StatisticTransaction.vue")
 );
+const TransactionList = defineAsyncComponent(() => import("./pages/customer/TransactionList.vue"));
+const CustomerTransaction = defineAsyncComponent(() => import("./pages/customer/CustomerTransaction.vue"));
 
 const router = createRouter({
     history: createWebHistory(),
@@ -80,7 +78,18 @@ const router = createRouter({
         },
         {
             path:'/customer',
-            component: CustomerPage
+            redirect:"/customer/transaction",
+            component: CustomerPage,
+            children: [
+                {
+                    path:"transaction/list",
+                    component: TransactionList
+                },
+                {
+                    path:"transaction",
+                    component:CustomerTransaction,
+                }
+            ]
         }
     ],
     scrollBehavior() {
