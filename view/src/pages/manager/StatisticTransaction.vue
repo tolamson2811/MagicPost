@@ -1,44 +1,9 @@
 <template>
     <div class="basis-3/4 w-full mt-16 lg:mt-20 bg-gray-100 flex items-center">
-        <!-- tìm kiếm  -->
-        <div class="basis-1/4 w-full h-full p-4 flex flex-col gap-4">
-            <div>
-                <label for="id">Tìm kiếm theo ID</label>
-                <input
-                    type="number"
-                    id="id"
-                    placeholder="ID điểm giao dịch"
-                    class="rounded px-2 py-1 outline-green-300 border border-black w-full"
-                />
-            </div>
-
-            <div class="flex flex-col gap-2">
-                <label>Tìm kiếm theo điểm giao dịch</label>
-                <select
-                    name=""
-                    id=""
-                    class="rounded px-2 py-1 outline-green-300 border border-black w-full"
-                >
-                    <option value="Tỉnh/Thành phố">Tỉnh/Thành phố</option>
-                </select>
-                <select
-                    name=""
-                    id=""
-                    class="rounded px-2 py-1 outline-green-300 border border-black w-full"
-                >
-                    <option value="Quận/Huyện">Quận/Huyện</option>
-                </select>
-            </div>
-
-            <button
-                class="bg-green-300 py-2 rounded-lg font-bold lg:text-base md:text-sm text-xs hover:cursor-pointer hover:bg-green-400"
-            >
-                Tìm kiếm
-            </button>
-        </div>
-
         <!-- list danh sách điểm giao dịch  -->
-        <div class="basis-3/4 flex flex-col gap-4 justify-start items-start h-full w-full">
+        <div
+            class="flex flex-col gap-4 justify-start items-start h-full w-full"
+        >
             <table class="w-full">
                 <tr class="">
                     <th
@@ -115,6 +80,38 @@
                             @click="toggleTotalInventoryFilter()"
                         />
                     </th>
+                </tr>
+
+                <!-- phần tìm kiếm theo từng danh mục  -->
+                <tr class="bg-indigo-300">
+                    <td class="p-1 mt-1 border-e-2 border-white">
+                        <input
+                            type="text"
+                            placeholder="ID điểm giao dịch"
+                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                        />
+                    </td>
+                    <td class="p-1 mt-1 border-e-2 border-white">
+                        <input
+                            type="text"
+                            placeholder="Tên điểm giao dịch "
+                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                        />
+                    </td>
+                    <td class="p-1 mt-1 border-e-2 border-white">
+                        <input
+                            type="text"
+                            placeholder="Số lượng đơn hàng"
+                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                        />
+                    </td>
+                    <td class="p-1 mt-1 border-e-2 border-white">
+                        <input
+                            type="text"
+                            placeholder="Số lượng đơn hàng"
+                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                        />
+                    </td>
                 </tr>
 
                 <tr class="bg-gray-200">

@@ -22,6 +22,8 @@ export default {
             const error = new Error(errorMessage);
             throw error;
         }
+
+        
     },
 
     async login(context, payload) {
@@ -63,8 +65,8 @@ export default {
         localStorage.setItem("token", responseData.token);
         localStorage.setItem("userId", responseData.id);
         localStorage.setItem("tokenExpiration", expiresIn);
-        localStorage.setItem("userEmail", responseData.email)
-        localStorage.setItem("role", responseData.role)
+        localStorage.setItem("userEmail", responseData.email);
+        localStorage.setItem("role", responseData.role);
     },
 
     async autoLogin(context) {
@@ -90,7 +92,7 @@ export default {
             userId: userId,
             tokenExpiration: tokenExpiration,
             userEmail: userEmail,
-            role: role
+            role: role,
         });
     },
 
@@ -100,7 +102,7 @@ export default {
             userId: null,
             tokenExpiration: null,
             userEmail: null,
-            role: null
+            role: null,
         });
 
         localStorage.removeItem("token");

@@ -37,7 +37,9 @@
                     >
                 </li>
                 <li v-if="isManager">
-                    <router-link to="/manager" class="hover:cursor-pointer">Quản lý</router-link>
+                    <router-link to="/manager" class="hover:cursor-pointer"
+                        >Quản lý</router-link
+                    >
                 </li>
             </ul>
         </nav>
@@ -90,8 +92,9 @@ export default {
         };
     },
     methods: {
-        logout() {
-            this.$store.dispatch("logout");
+        async logout() {
+            await this.$store.dispatch("logout");
+            this.$router.push("/auth");
         },
         scrollToElement(elementId) {
             const element = document.getElementById(elementId);

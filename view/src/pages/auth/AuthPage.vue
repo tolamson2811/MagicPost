@@ -174,7 +174,7 @@
         </base-dialog>
 
         <!-- success dialog  -->
-        <base-dialog :show="!!success" :title="success" @close="closeDialog">
+        <base-dialog :show="!!success" :title="success" @close="confirmSuccess">
             <p>Bạn có thể sử dụng tài khoản này để đăng nhập vào MagicPost</p>
         </base-dialog>
 
@@ -298,6 +298,10 @@ export default {
             this.error.message = null;
             this.success = null;
         },
+        confirmSuccess() {
+            this.success = null;
+            this.swithForm("login");
+        }
     },
     computed: {
         registerValidate() {
