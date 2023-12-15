@@ -1218,7 +1218,7 @@ export default {
 }
 
 .element-enter-active {
-    transition: all 0.5 s ease-out;
+    transition: all 0.3s ease-out;
 }
 
 .search-btn {

@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { defineAsyncComponent } from "vue";
 
-
-const CustomerPage = defineAsyncComponent(() => import('./pages/customer/CustomerPage.vue'))
+const PackageHistory = defineAsyncComponent(() =>
+    import("./pages/customer/PackageHistory.vue")
+);
 const HomePage = defineAsyncComponent(() => import("./pages/HomePage.vue"));
 const AuthPage = defineAsyncComponent(() =>
     import("./pages/auth/AuthPage.vue")
@@ -28,8 +29,12 @@ const StatisticAggregation = defineAsyncComponent(() =>
 const StatisticTransaction = defineAsyncComponent(() =>
     import("./pages/manager/StatisticTransaction.vue")
 );
-const TransactionList = defineAsyncComponent(() => import("./pages/customer/TransactionList.vue"));
-const CustomerTransaction = defineAsyncComponent(() => import("./pages/customer/CustomerTransaction.vue"));
+const PackageDetail = defineAsyncComponent(() =>
+    import("./pages/customer/PackageDetail.vue")
+);
+const PackageList = defineAsyncComponent(() =>
+    import("./pages/customer/PackageList.vue")
+);
 
 const router = createRouter({
     history: createWebHistory(),
@@ -48,6 +53,7 @@ const router = createRouter({
         },
         {
             path: "/manager",
+            redirect: "/manager/system/transaction",
             component: ManagerPage,
             children: [
                 {
@@ -77,20 +83,26 @@ const router = createRouter({
             ],
         },
         {
-            path:'/customer',
-            redirect:'customer/transaction',
-            component: CustomerPage,
+            path: "/customer/:customer_id",
+            redirect: (to) => {
+                const { params } = to;
+                return `/customer/${params.customer_id}/history`;
+            },
+            props: true,
+            component: PackageHistory,
             children: [
                 {
-                    path:"transaction/list",
-                    component: TransactionList
+                    path: "history",
+                    component: PackageList,
+                    props: true,
                 },
                 {
-                    path:"transaction",
-                    component:CustomerTransaction,
-                }
-            ]
-        }
+                    path: "history/:package_id",
+                    component: PackageDetail,
+                    props: true,
+                },
+            ],
+        },
     ],
     scrollBehavior() {
         return { top: 0, behavior: "smooth" };

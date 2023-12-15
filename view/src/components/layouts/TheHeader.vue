@@ -23,11 +23,15 @@
                     <a
                         class="hover:cursor-pointer"
                         @click.prevent="scrollToElement('search-service')"
-                        >Tra cứu</a
-                    >
+                        >Tra cứu
+                    </a>
                 </li>
                 <li v-if="!isManager">
-                    <a class="hover:cursor-pointer">Lịch sử đơn hàng</a>
+                    <router-link
+                        :to="packageHistoryLink"
+                        class="hover:cursor-pointer"
+                        >Lịch sử đơn hàng</router-link
+                    >
                 </li>
                 <li v-if="!isManager">
                     <a
@@ -112,6 +116,10 @@ export default {
         },
         isManager() {
             return this.$store.getters.isManager;
+        },
+        packageHistoryLink() {
+            const userId = this.$store.getters.getUserId;
+            return `/customer/${userId}`;
         },
     },
 };
