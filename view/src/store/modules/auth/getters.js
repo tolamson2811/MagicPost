@@ -7,5 +7,8 @@ export default {
     },
     isManager(state) {
         return state.role === "Manager";
+    },
+    getUserId(state) {
+        return state.userId;
     }
 }

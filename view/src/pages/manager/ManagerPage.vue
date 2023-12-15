@@ -174,7 +174,6 @@
                 <component :is="slotProps.Component"></component>
             </transition>
         </router-view>
-        
     </main>
 </template>
 
