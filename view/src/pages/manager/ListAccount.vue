@@ -1,64 +1,9 @@
 <template>
     <div class="basis-3/4 w-full mt-16 lg:mt-20 bg-gray-100 flex items-center">
-        <!-- tìm kiếm  -->
-        <div class="basis-1/4 w-full h-full p-4 flex flex-col gap-4">
-            <div>
-                <label for="id">Tìm kiếm theo ID</label>
-                <input
-                    type="number"
-                    id="id"
-                    placeholder="ID tài khoản"
-                    class="rounded px-2 py-1 outline-green-300 border border-black w-full"
-                />
-            </div>
-
-            <div>
-                <label for="email">Tìm kiếm theo Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Email tài khoản"
-                    class="rounded px-2 py-1 outline-green-300 border border-black w-full"
-                />
-            </div>
-
-            <div>
-                <label for="role">Tìm kiếm theo vai trò</label>
-                <input
-                    type="text"
-                    id="role"
-                    placeholder="Vai trò"
-                    class="rounded px-2 py-1 outline-green-300 border border-black w-full"
-                />
-            </div>
-
-            <div class="flex flex-col gap-2">
-                <label>Tìm kiếm theo địa điểm làm việc</label>
-                <select
-                    name=""
-                    id=""
-                    class="rounded px-2 py-1 outline-green-300 border border-black w-full"
-                >
-                    <option value="Tỉnh/Thành phố">Tỉnh/Thành phố</option>
-                </select>
-                <select
-                    name=""
-                    id=""
-                    class="rounded px-2 py-1 outline-green-300 border border-black w-full"
-                >
-                    <option value="Quận/Huyện">Quận/Huyện</option>
-                </select>
-            </div>
-
-            <button
-                class="bg-green-300 py-2 rounded-lg font-bold lg:text-base md:text-sm text-xs hover:cursor-pointer hover:bg-green-400"
-            >
-                Tìm kiếm
-            </button>
-        </div>
-
         <!-- list danh sách tài khoản  -->
-        <div class="basis-3/4 flex flex-col justify-start items-start h-full w-full gap-4">
+        <div
+            class="flex flex-col justify-start items-start h-full w-full gap-4"
+        >
             <table class="w-full">
                 <tr class="">
                     <th
@@ -109,6 +54,53 @@
                     >
                         Xóa
                     </th>
+                </tr>
+
+                <!-- Phần tìm kiếm theo từng danh mục  -->
+                <tr class="bg-indigo-300">
+                    <td class="p-1 mt-1 border-e-2 border-white">
+                        <input
+                            type="text"
+                            placeholder="ID điểm giao dịch"
+                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                        />
+                    </td>
+                    <td class="p-1 mt-1 border-e-2 border-white">
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                        />
+                    </td>
+                    <td class="p-1 mt-1 border-e-2 border-white">
+                        <input
+                            type="text"
+                            placeholder="Password"
+                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                        />
+                    </td>
+                    <td class="p-1 mt-1 border-e-2 border-white">
+                        <select
+                            name=""
+                            id=""
+                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                        >
+                            <option value="Trưởng điểm giao dịch">
+                                Trưởng điểm giao dịch
+                            </option>
+                            <option value="Trưởng điểm tập kết">
+                                Trưởng điểm tập kết
+                            </option>
+                        </select>
+                    </td>
+                    <td class="p-1 mt-1 border-e-2 border-white">
+                        <input
+                            type="text"
+                            placeholder="Địa điểm làm việc"
+                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                        />
+                    </td>
+                    <td class="p-1 mt-1 border-e-2 border-white"></td>
                 </tr>
 
                 <tr class="bg-gray-200">
@@ -323,21 +315,68 @@
                 </tr>
             </table>
 
-            <div class=" grid grid-cols-12 gap-2 w-full px-1">
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"><font-awesome-icon icon="fa-solid fa-chevron-left" /></button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400">1</button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400">2</button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400">3</button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400">4</button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400">5</button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400">6</button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400">7</button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400">8</button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400">9</button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400">10</button>
-                <button class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"><font-awesome-icon icon="fa-solid fa-chevron-right" /></button>
+            <div class="grid grid-cols-12 gap-2 w-full px-1">
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    <font-awesome-icon icon="fa-solid fa-chevron-left" />
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    1
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    2
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    3
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    4
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    5
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    6
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    7
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    8
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    9
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    10
+                </button>
+                <button
+                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
+                >
+                    <font-awesome-icon icon="fa-solid fa-chevron-right" />
+                </button>
             </div>
-            
         </div>
     </div>
 </template>
@@ -358,8 +397,8 @@ export default {
             } else {
                 this.idFilter = "default";
             }
-        }
-    }
+        },
+    },
 };
 </script>
 
