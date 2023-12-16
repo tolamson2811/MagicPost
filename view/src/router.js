@@ -50,6 +50,13 @@ const StatisticTransactionSent = defineAsyncComponent(() =>
 const StatisticTransactionReceived = defineAsyncComponent(() =>
     import("./pages/transaction/leader/StatisticReceived.vue")
 );
+const EmployeeTransaction = defineAsyncComponent(() =>
+    import("./pages/transaction/employee/EmployeeTransaction.vue")
+);
+const CreateTransportPackage = defineAsyncComponent(() =>
+    import("./pages/transaction/employee/transport/CreatePackage.vue")
+);
+const TransportPackageStatus = defineAsyncComponent(() => import("./pages/transaction/employee/transport/PackageStatus.vue"));
 
 const router = createRouter({
     history: createWebHistory(),
@@ -142,6 +149,21 @@ const router = createRouter({
                 {
                     path: "statistic/received",
                     component: StatisticTransactionReceived,
+                },
+            ],
+        },
+        {
+            path: "/transaction/employee/:employee_id",
+            component: EmployeeTransaction,
+            props: true,
+            children: [
+                {
+                    path: "transport/create",
+                    component: CreateTransportPackage,
+                },
+                {
+                    path: "transport/status",
+                    component: TransportPackageStatus,
                 },
             ],
         },

@@ -15,10 +15,10 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 /* import specific icons */
-import { faUserSecret, faArrowRight, faChevronDown, faCircleInfo, faArrowRightFromBracket, faMagnifyingGlass, faHandHoldingDollar, faMapLocationDot, faTruckFast, faUsers, faBoxOpen, faBars, faChevronUp, faCertificate, faFilter, faUserPlus, faRectangleList, faWarehouse, faTentArrowLeftRight, faTrash, faAnglesLeft, faAnglesRight, faArrowsUpDown, faArrowUp, faArrowDown, faChevronLeft, faChevronRight, faPaperPlane, faSatelliteDish } from "@fortawesome/free-solid-svg-icons";
+import { faUserSecret, faArrowRight, faChevronDown, faCircleInfo, faArrowRightFromBracket, faMagnifyingGlass, faHandHoldingDollar, faMapLocationDot, faTruckFast, faUsers, faBoxOpen, faBars, faChevronUp, faCertificate, faFilter, faUserPlus, faRectangleList, faWarehouse, faTentArrowLeftRight, faTrash, faAnglesLeft, faAnglesRight, faArrowsUpDown, faArrowUp, faArrowDown, faChevronLeft, faChevronRight, faPaperPlane, faSatelliteDish, faCubes, faMotorcycle, faCartPlus, faRotateLeft, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
-library.add(faUserSecret, faArrowRight, faChevronDown, faCircleInfo, faArrowRightFromBracket, faMagnifyingGlass, faHandHoldingDollar, faMapLocationDot, faTruckFast, faUsers, faBoxOpen, faBars, faChevronUp, faCertificate, faFilter, faUserPlus, faRectangleList, faWarehouse, faTentArrowLeftRight, faTrash, faAnglesLeft, faAnglesRight, faArrowsUpDown, faArrowUp, faArrowDown, faChevronLeft, faChevronRight, faPaperPlane, faSatelliteDish );
+library.add(faUserSecret, faArrowRight, faChevronDown, faCircleInfo, faArrowRightFromBracket, faMagnifyingGlass, faHandHoldingDollar, faMapLocationDot, faTruckFast, faUsers, faBoxOpen, faBars, faChevronUp, faCertificate, faFilter, faUserPlus, faRectangleList, faWarehouse, faTentArrowLeftRight, faTrash, faAnglesLeft, faAnglesRight, faArrowsUpDown, faArrowUp, faArrowDown, faChevronLeft, faChevronRight, faPaperPlane, faSatelliteDish, faCubes, faMotorcycle, faCartPlus, faRotateLeft, faPenToSquare );
 
 const app = createApp(App);
 app.use(router);
