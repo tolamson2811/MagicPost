@@ -35,6 +35,21 @@ const PackageDetail = defineAsyncComponent(() =>
 const PackageList = defineAsyncComponent(() =>
     import("./pages/customer/PackageList.vue")
 );
+const LeaderTransaction = defineAsyncComponent(() =>
+    import("./pages/transaction/leader/LeaderTransaction.vue")
+);
+const CreateTransactionAccount = defineAsyncComponent(() =>
+    import("./pages/transaction/leader/CreateAccount.vue")
+);
+const ListTransactionAccount = defineAsyncComponent(() =>
+    import("./pages/transaction/leader/ListAccount.vue")
+);
+const StatisticTransactionSent = defineAsyncComponent(() =>
+    import("./pages/transaction/leader/StatisticSent.vue")
+);
+const StatisticTransactionReceived = defineAsyncComponent(() =>
+    import("./pages/transaction/leader/StatisticReceived.vue")
+);
 
 const router = createRouter({
     history: createWebHistory(),
@@ -100,6 +115,33 @@ const router = createRouter({
                     path: "history/:package_id",
                     component: PackageDetail,
                     props: true,
+                },
+            ],
+        },
+        {
+            path: "/transaction/leader/:leader_id",
+            component: LeaderTransaction,
+            redirect: (to) => {
+                const { params } = to;
+                return `/transaction/leader/${params.leader_id}/account/list`;
+            },
+            props: true,
+            children: [
+                {
+                    path: "account/create",
+                    component: CreateTransactionAccount,
+                },
+                {
+                    path: "account/list",
+                    component: ListTransactionAccount,
+                },
+                {
+                    path: "statistic/sent",
+                    component: StatisticTransactionSent,
+                },
+                {
+                    path: "statistic/received",
+                    component: StatisticTransactionReceived,
                 },
             ],
         },
