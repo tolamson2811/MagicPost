@@ -54,9 +54,29 @@ const EmployeeTransaction = defineAsyncComponent(() =>
     import("./pages/transaction/employee/EmployeeTransaction.vue")
 );
 const CreateTransportPackage = defineAsyncComponent(() =>
-    import("./pages/transaction/employee/transport/CreatePackage.vue")
+    import("./pages/transaction/employee/transport/CreateTransport.vue")
 );
-const TransportPackageStatus = defineAsyncComponent(() => import("./pages/transaction/employee/transport/PackageStatus.vue"));
+const TransportPackageStatus = defineAsyncComponent(() =>
+    import("./pages/transaction/employee/transport/PackageStatus.vue")
+);
+const ListPackageWarehouse = defineAsyncComponent(() =>
+    import("./pages/transaction/employee/warehouse/ListPackage.vue")
+);
+const ReceivedPackageFromAggregation = defineAsyncComponent(() =>
+    import("./pages/transaction/employee/warehouse/ReceivedAggregation.vue")
+);
+const SendPackageToAggregation = defineAsyncComponent(() =>
+    import("./pages/transaction/employee/warehouse/SendAggregation.vue")
+);
+const SuccessDelivery = defineAsyncComponent(() =>
+    import("./pages/transaction/employee/statistic/SuccessDelivery.vue")
+);
+const FailedDelivery = defineAsyncComponent(() =>
+    import("./pages/transaction/employee/statistic/FailedDelivery.vue")
+);
+const CreateOrder = defineAsyncComponent(() =>
+    import("./pages/transaction/employee/warehouse/CreateOrder.vue")
+);
 
 const router = createRouter({
     history: createWebHistory(),
@@ -155,6 +175,10 @@ const router = createRouter({
         {
             path: "/transaction/employee/:employee_id",
             component: EmployeeTransaction,
+            redirect: (to) => {
+                const { params } = to;
+                return `/transaction/employee/${params.employee_id}/transport/create`;
+            },
             props: true,
             children: [
                 {
@@ -165,6 +189,31 @@ const router = createRouter({
                     path: "transport/status",
                     component: TransportPackageStatus,
                 },
+                {
+                    path: "warehouse/list",
+                    component: ListPackageWarehouse,
+                },
+                {
+                    path: "warehouse/received",
+                    component: ReceivedPackageFromAggregation,
+                },
+                {
+                    path: "warehouse/send",
+                    component: SendPackageToAggregation,
+                },
+                {
+                    path: "warehouse/create",
+                    component: CreateOrder,
+                },
+                {
+                    path: "statistic/success",
+                    component: SuccessDelivery,
+                },
+                {
+                    path: "statistic/failed",
+                    component: FailedDelivery,
+                },
+
             ],
         },
     ],

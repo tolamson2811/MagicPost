@@ -57,7 +57,7 @@
                             v-if="isOpenManagePackage"
                         >
                             <router-link
-                                to="createAccountLink"
+                                :to="createTransportLink"
                                 class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
@@ -66,7 +66,7 @@
                                 Tạo đơn giao hàng
                             </router-link>
                             <router-link
-                                to="listAccountLink"
+                                :to="transportStatusLink"
                                 class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
@@ -105,16 +105,14 @@
                             v-if="isOpenManageWarehouse"
                         >
                             <router-link
-                                to="createWarehouseLink"
+                                :to="listWarehouseLink"
                                 class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
                             >
-                                <font-awesome-icon
-                                    icon="fa-solid fa-cubes"
-                                />
+                                <font-awesome-icon icon="fa-solid fa-cubes" />
                                 Danh sách đơn hàng
                             </router-link>
                             <router-link
-                                to="createWarehouseLink"
+                                :to="receivedWarehouseLink"
                                 class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
@@ -123,7 +121,7 @@
                                 Đơn về từ điểm tập kết
                             </router-link>
                             <router-link
-                                to="listWarehouseLink"
+                                :to="sendWarehouseLink"
                                 class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
@@ -132,7 +130,7 @@
                                 Đơn đi điểm tập kết
                             </router-link>
                             <router-link
-                                to="listWarehouseLink"
+                                :to="createOrderWarehouseLink"
                                 class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
@@ -154,7 +152,7 @@
                             icon="fa-solid fa-filter"
                             class="text-sm sm:text-base md:text-xl lg:text-2xl select-none"
                         />
-                        <h1 class="select-none">Thống kê hàng hóa</h1>
+                        <h1 class="select-none">Thống kê giao hàng</h1>
                         <font-awesome-icon
                             icon="fa-solid fa-chevron-down"
                             v-if="!isOpenManageStatistic"
@@ -171,7 +169,7 @@
                             v-if="isOpenManageStatistic"
                         >
                             <router-link
-                                to="statisticSentLink"
+                                :to="successStatisticLink"
                                 class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
@@ -180,7 +178,7 @@
                                 Giao thành công
                             </router-link>
                             <router-link
-                                to="statisticReceivedLink"
+                                :to="failStatisticLink"
                                 class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
@@ -233,6 +231,30 @@ export default {
         },
         userId() {
             return this.$store.getters.getUserId;
+        },
+        createTransportLink() {
+            return `/transaction/employee/${this.userId}/transport/create`;
+        },
+        transportStatusLink() {
+            return `/transaction/employee/${this.userId}/transport/status`;
+        },
+        listWarehouseLink() {
+            return `/transaction/employee/${this.userId}/warehouse/list`;
+        },
+        receivedWarehouseLink() {
+            return `/transaction/employee/${this.userId}/warehouse/received`;
+        },
+        sendWarehouseLink() {
+            return `/transaction/employee/${this.userId}/warehouse/send`;
+        },
+        createOrderWarehouseLink() {
+            return `/transaction/employee/${this.userId}/warehouse/create`;
+        },
+        successStatisticLink() {
+            return `/transaction/employee/${this.userId}/statistic/success`;
+        },
+        failStatisticLink() {
+            return `/transaction/employee/${this.userId}/statistic/failed`;
         },
     },
 };
