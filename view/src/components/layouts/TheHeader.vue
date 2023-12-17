@@ -19,21 +19,21 @@
                         >Trang chủ</router-link
                     >
                 </li>
-                <li v-if="!isManager">
+                <li v-if="!isManager && !isTransactionLead">
                     <a
                         class="hover:cursor-pointer"
                         @click.prevent="scrollToElement('search-service')"
                         >Tra cứu
                     </a>
                 </li>
-                <li v-if="!isManager">
+                <li v-if="!isManager && !isTransactionLead">
                     <router-link
                         :to="packageHistoryLink"
                         class="hover:cursor-pointer"
                         >Lịch sử đơn hàng</router-link
                     >
                 </li>
-                <li v-if="!isManager">
+                <li v-if="!isManager && !isTransactionLead">
                     <a
                         class="hover:cursor-pointer"
                         @click.prevent="scrollToElement('service-list')"
@@ -42,6 +42,11 @@
                 </li>
                 <li v-if="isManager">
                     <router-link to="/manager" class="hover:cursor-pointer"
+                        >Quản lý</router-link
+                    >
+                </li>
+                <li v-if="isTransactionLead">
+                    <router-link :to="leaderTransactionLink" class="hover:cursor-pointer"
                         >Quản lý</router-link
                     >
                 </li>
@@ -117,9 +122,16 @@ export default {
         isManager() {
             return this.$store.getters.isManager;
         },
+        isTransactionLead() {
+            return this.$store.getters.isTransactionLead;
+        },
         packageHistoryLink() {
             const userId = this.$store.getters.getUserId;
             return `/customer/${userId}`;
+        },
+        leaderTransactionLink() {
+            const userId = this.$store.getters.getUserId;
+            return `/transaction/leader/${userId}`;
         },
     },
 };
