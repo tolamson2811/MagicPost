@@ -11,6 +11,12 @@ export default {
     isTransactionLead(state) {
         return state.role === "Transaction Lead";
     },
+    isTransactionEmployee(state) {
+        return state.role === "Transaction Employee";
+    },
+    isCustomer(state) {
+        return state.role === "Customer";
+    },
     getUserId(state) {
         return state.userId;
     }

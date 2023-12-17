@@ -19,21 +19,21 @@
                         >Trang chủ</router-link
                     >
                 </li>
-                <li v-if="!isManager && !isTransactionLead">
+                <li v-if="!isManager && !isTransactionLead && !isTransactionEmployee">
                     <a
                         class="hover:cursor-pointer"
                         @click.prevent="scrollToElement('search-service')"
                         >Tra cứu
                     </a>
                 </li>
-                <li v-if="!isManager && !isTransactionLead">
+                <li v-if="!isManager && !isTransactionLead && !isTransactionEmployee">
                     <router-link
                         :to="packageHistoryLink"
                         class="hover:cursor-pointer"
                         >Lịch sử đơn hàng</router-link
                     >
                 </li>
-                <li v-if="!isManager && !isTransactionLead">
+                <li v-if="!isManager && !isTransactionLead && !isTransactionEmployee">
                     <a
                         class="hover:cursor-pointer"
                         @click.prevent="scrollToElement('service-list')"
@@ -47,6 +47,11 @@
                 </li>
                 <li v-if="isTransactionLead">
                     <router-link :to="leaderTransactionLink" class="hover:cursor-pointer"
+                        >Quản lý</router-link
+                    >
+                </li>
+                <li v-if="isTransactionEmployee">
+                    <router-link :to="employeeTransactionLink" class="hover:cursor-pointer"
                         >Quản lý</router-link
                     >
                 </li>
@@ -125,6 +130,9 @@ export default {
         isTransactionLead() {
             return this.$store.getters.isTransactionLead;
         },
+        isTransactionEmployee() {
+            return this.$store.getters.isTransactionEmployee;
+        },
         packageHistoryLink() {
             const userId = this.$store.getters.getUserId;
             return `/customer/${userId}`;
@@ -132,6 +140,10 @@ export default {
         leaderTransactionLink() {
             const userId = this.$store.getters.getUserId;
             return `/transaction/leader/${userId}`;
+        },
+        employeeTransactionLink() {
+            const userId = this.$store.getters.getUserId;
+            return `/transaction/employee/${userId}`;
         },
     },
 };
