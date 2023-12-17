@@ -35,6 +35,14 @@ const PackageDetail = defineAsyncComponent(() =>
 const PackageList = defineAsyncComponent(() =>
     import("./pages/customer/PackageList.vue")
 );
+const LeaderPage = defineAsyncComponent(() =>
+    import("./pages/leader/LeaderPage.vue")
+);
+const LeaderAggregation = defineAsyncComponent(() => import("./pages/leader/LeaderAggregation.vue"));
+const LeaderCreateAccount = defineAsyncComponent(() => import("./pages/leader/CreateAccount.vue"));
+const LeaderListAccount = defineAsyncComponent(() => import("./pages/leader/ListAccount.vue"));
+const LeaderStatisticAggregation = defineAsyncComponent(() => import("./pages/leader/StatisticAggregation.vue"));
+const LeaderStatisticTransaction = defineAsyncComponent(() => import("./pages/leader/StatisticTransaction.vue"));
 const LeaderTransaction = defineAsyncComponent(() =>
     import("./pages/transaction/leader/LeaderTransaction.vue")
 );
@@ -117,6 +125,43 @@ const router = createRouter({
                     props: true,
                 },
             ],
+        },
+        // {
+        //     path: "/leader",
+        //     redirect: "/leader/system/aggregation",
+        //     component: LeaderPage,
+        //     children: [
+        //         {
+        //             path: "system/transaction",
+        //             component: LeaderTransaction,
+        //         },
+        //         {
+        //             path: "account/create",
+        //             component: LeaderCreateAccount,
+        //         },
+        //         {
+        //             path: "account/list",
+        //             component: LeaderListAccount,
+        //         },
+        //         {
+        //             path: "statistic/aggregation",
+        //             component: LeaderStatisticAggregation,
+        //         },
+        //         {
+        //             path: "statistic/transaction",
+        //             component: LeaderStatisticTransaction,
+        //         },
+        //     ],
+        // },
+        {
+            path: "/leader/aggregation",
+            component: LeaderAggregation,
+            children: [
+                {
+                    path: "/createaccount",
+                    component: LeaderCreateAccount
+                }
+            ]
         },
         {
             path: "/transaction/leader/:leader_id",
