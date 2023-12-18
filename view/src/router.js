@@ -35,14 +35,10 @@ const PackageDetail = defineAsyncComponent(() =>
 const PackageList = defineAsyncComponent(() =>
     import("./pages/customer/PackageList.vue")
 );
-const LeaderPage = defineAsyncComponent(() =>
-    import("./pages/leader/LeaderPage.vue")
-);
 const LeaderAggregation = defineAsyncComponent(() => import("./pages/leader/LeaderAggregation.vue"));
 const LeaderCreateAccount = defineAsyncComponent(() => import("./pages/leader/CreateAccount.vue"));
 const LeaderListAccount = defineAsyncComponent(() => import("./pages/leader/ListAccount.vue"));
 const LeaderStatisticAggregation = defineAsyncComponent(() => import("./pages/leader/StatisticAggregation.vue"));
-const LeaderStatisticTransaction = defineAsyncComponent(() => import("./pages/leader/StatisticTransaction.vue"));
 const LeaderTransaction = defineAsyncComponent(() =>
     import("./pages/transaction/leader/LeaderTransaction.vue")
 );

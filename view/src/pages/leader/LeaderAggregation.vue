@@ -2,7 +2,7 @@
 	<main class="flex">
 		<!-- Side bar  -->
 		<div
-			class="basis-1/4 w-full min-h-screen pt-20 p-10 bg-orange-100 flex flex-col gap-16"
+			class="basis-1/4 w-full min-h-screen pt-20 p-10 bg-blue-100 flex flex-col gap-16"
 		>
 			<!-- Giới thiệu thông tin  -->
 			<div class="flex items-center gap-4 p-4 rounded">
@@ -43,14 +43,14 @@
 						<ul class="flex flex-col gap-2" v-if="isOpenManageAccount">
 							<router-link
 								to="/leader/aggregation/createaccount"
-								class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+								class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-blue-300"
 							>
 								<font-awesome-icon icon="fa-solid fa-user-plus" />
 								Tạo tài khoản
 							</router-link>
 							<router-link
 								to="/leader/aggregation/listaccount"
-								class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+								class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-blue-300"
 							>
 								<font-awesome-icon icon="fa-solid fa-rectangle-list" />
 								Danh sách tài khoản
@@ -81,7 +81,7 @@
 						<ul class="flex flex-col gap-2" v-if="isOpenManageStatistic">
 							<router-link
 								to="/leader/aggregation/statistic"
-								class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+								class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-blue-300"
 							>
 								<font-awesome-icon icon="fa-solid fa-warehouse" />
 								Điểm tập kết
