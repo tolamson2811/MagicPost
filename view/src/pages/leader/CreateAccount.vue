@@ -22,7 +22,6 @@
 						v-model="role.value"
 					>
 						<option value="Trưởng điểm tập kết">Trưởng điểm tập kết</option>
-						<option value="Trưởng điểm giao dịch">Trưởng điểm giao dịch</option>
 					</select>
 				</div>
 

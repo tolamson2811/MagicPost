@@ -49,7 +49,7 @@
 								Tạo tài khoản
 							</router-link>
 							<router-link
-								to="/manager/account/list"
+								to="/leader/aggregation/listaccount"
 								class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
 							>
 								<font-awesome-icon icon="fa-solid fa-rectangle-list" />
@@ -80,14 +80,7 @@
 					<transition name="route">
 						<ul class="flex flex-col gap-2" v-if="isOpenManageStatistic">
 							<router-link
-								to="/manager/statistic/transaction"
-								class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
-							>
-								<font-awesome-icon icon="fa-solid fa-tent-arrow-left-right" />
-								Điểm giao dịch
-							</router-link>
-							<router-link
-								to="/manager/statistic/aggregation"
+								to="/leader/aggregation/statistic"
 								class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
 							>
 								<font-awesome-icon icon="fa-solid fa-warehouse" />

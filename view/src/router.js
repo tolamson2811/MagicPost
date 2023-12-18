@@ -144,9 +144,17 @@ const router = createRouter({
             component: LeaderAggregation,
             children: [
                 {
-                    path: "/createaccount",
+                    path: "createaccount",
                     component: LeaderCreateAccount
-                }
+                },
+                {
+                    path: "listaccount",
+                    component: LeaderListAccount
+                },
+                {
+                    path: "statistic",
+                    component: LeaderStatisticAggregation
+                },
             ]
         }
     ],
