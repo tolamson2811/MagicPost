@@ -39,11 +39,25 @@ const LeaderPage = defineAsyncComponent(() =>
     import("./pages/leader/LeaderPage.vue")
 );
 const LeaderAggregation = defineAsyncComponent(() => import("./pages/leader/LeaderAggregation.vue"));
-const LeaderTransaction = defineAsyncComponent(() => import("./pages/leader/LeaderTransaction.vue"));
 const LeaderCreateAccount = defineAsyncComponent(() => import("./pages/leader/CreateAccount.vue"));
 const LeaderListAccount = defineAsyncComponent(() => import("./pages/leader/ListAccount.vue"));
 const LeaderStatisticAggregation = defineAsyncComponent(() => import("./pages/leader/StatisticAggregation.vue"));
 const LeaderStatisticTransaction = defineAsyncComponent(() => import("./pages/leader/StatisticTransaction.vue"));
+const LeaderTransaction = defineAsyncComponent(() =>
+    import("./pages/transaction/leader/LeaderTransaction.vue")
+);
+const CreateTransactionAccount = defineAsyncComponent(() =>
+    import("./pages/transaction/leader/CreateAccount.vue")
+);
+const ListTransactionAccount = defineAsyncComponent(() =>
+    import("./pages/transaction/leader/ListAccount.vue")
+);
+const StatisticTransactionSent = defineAsyncComponent(() =>
+    import("./pages/transaction/leader/StatisticSent.vue")
+);
+const StatisticTransactionReceived = defineAsyncComponent(() =>
+    import("./pages/transaction/leader/StatisticReceived.vue")
+);
 
 const router = createRouter({
     history: createWebHistory(),
@@ -156,7 +170,34 @@ const router = createRouter({
                     component: LeaderStatisticAggregation
                 },
             ]
-        }
+        },
+        {
+            path: "/transaction/leader/:leader_id",
+            component: LeaderTransaction,
+            redirect: (to) => {
+                const { params } = to;
+                return `/transaction/leader/${params.leader_id}/account/list`;
+            },
+            props: true,
+            children: [
+                {
+                    path: "account/create",
+                    component: CreateTransactionAccount,
+                },
+                {
+                    path: "account/list",
+                    component: ListTransactionAccount,
+                },
+                {
+                    path: "statistic/sent",
+                    component: StatisticTransactionSent,
+                },
+                {
+                    path: "statistic/received",
+                    component: StatisticTransactionReceived,
+                },
+            ],
+        },
     ],
     scrollBehavior() {
         return { top: 0, behavior: "smooth" };
