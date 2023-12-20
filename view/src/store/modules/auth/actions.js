@@ -22,8 +22,6 @@ export default {
             const error = new Error(errorMessage);
             throw error;
         }
-
-        
     },
 
     async login(context, payload) {
