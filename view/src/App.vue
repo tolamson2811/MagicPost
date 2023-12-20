@@ -5,10 +5,11 @@
             <component :is="slotProps.Component"></component>
         </transition>
     </router-view>
+    <notifications class="mt-32 text-xl"/>
 </template>
 
 <script>
-import TheHeader from './components/layouts/TheHeader.vue'
+import TheHeader from "./components/layouts/TheHeader.vue";
 export default {
     components: {
         TheHeader,
@@ -43,5 +44,9 @@ export default {
 
 .route-leave-active {
     transition: all 0.3s ease-in;
+}
+
+.vue-notification-group .vue-notification {
+    font-size: 20px; /* Adjust this value to your preference */
 }
 </style>

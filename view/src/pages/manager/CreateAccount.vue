@@ -6,7 +6,7 @@
             class="w-1/2 px-10 py-4 bg-indigo-400 rounded-xl flex flex-col items-center gap-4"
         >
             <h1
-                class="text-base sm:text-lg md:text-xl lg:text-2xl font-bold select-none"
+                class="text-base sm:text-lg md:text-xl lg:text-2xl font-bold select-none text-white"
             >
                 Tạo tài khoản
             </h1>
@@ -163,6 +163,14 @@
                 </span>
             </form>
         </section>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <base-dialog
+            :show="!!notification.error"
+            title="Tạo tài khoản trưởng điểm thất bại"
+            @close="notification.error = ''"
+        >
+            <p>{{ notification.error }}</p>
+        </base-dialog>
     </div>
 </template>
 
@@ -202,6 +210,11 @@ export default {
                 isValid: true,
                 errorMessage: "",
             },
+            isLoading: false,
+            notification: {
+                error: "",
+                success: "",
+            },
         };
     },
     methods: {
@@ -231,22 +244,61 @@ export default {
                 }
             }
         },
-        handleSubmit() {
-            console.log("submit");
-
+        async handleSubmit() {
             if (this.validateForm) {
-                console.log("valid");
-                const formData = {
-                    role: this.role.value,
-                    province: this.selectedProvince.value,
-                    district: this.selectedDistrict.value,
-                    email: this.email.value,
-                    password: this.password.value,
-                };
+                // Tạo tài khoản trưởng điểm tập kết
+                if (this.role.value === "Trưởng điểm tập kết") {
+                    const formData = {
+                        email: this.email.value,
+                        name: "",
+                        password: this.password.value,
+                        province: this.selectedProvince.value,
+                    };
 
-                console.log(formData);
+                    try {
+                        this.isLoading = true;
+                        await this.$store.dispatch(
+                            "manager/createAggregationLeader",
+                            formData
+                        );
+                        console.log("create aggregation leader success");
+                        this.$notify({
+                            title: "Đăng ký thành công!",
+                        });
+                        this.resetForm();
+                    } catch (err) {
+                        this.notification.error = err;
+                    }
+                }
+                // Tạo tài khoản trưởng điểm giao dịch
+                else if (this.role.value === "Trưởng điểm giao dịch") {
+                    const formData = {
+                        email: this.email.value,
+                        name: "",
+                        password: this.password.value,
+                        province: this.selectedProvince.value,
+                        district: this.selectedDistrict.value,
+                    };
 
-                this.resetForm();
+                    try {
+                        this.isLoading = true;
+                        await this.$store.dispatch(
+                            "manager/createTransactionLeader",
+                            formData
+                        );
+                        console.log("create transaction leader success");
+                        this.$notify({
+                            title: "Đăng ký thành công!",
+                        });
+                        this.resetForm();
+                    } catch (err) {
+                        this.notification.error = err;
+                    }
+                } else {
+                    console.log("invalid");
+                    return;
+                }
+                this.isLoading = false;
             } else {
                 console.log("invalid");
                 return;
@@ -278,8 +330,6 @@ export default {
     computed: {
         validateForm() {
             let isValid = true;
-            console.log("validate");
-
             if (this.role.value.trim() === "Trưởng điểm giao dịch") {
                 if (this.selectedProvince.value.trim() === "Tỉnh/Thành phố") {
                     this.selectedProvince.isValid = false;
