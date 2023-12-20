@@ -4,10 +4,12 @@ const sequelize = require("./utils/database");
 
 //routes
 const authRoutes = require("./routes/auth");
-
+const managerRoutes = require("./routes/manager/createAccount");
 //models
 const Accounts = require("./models/users/accounts");
 const Customers = require("./models/users/customers");
+const Employees = require("./models/users/employees");
+const Locations = require("./models/locations/locations");
 const Aggregations = require("./models/locations/aggregations");
 const Transactions = require("./models/locations/transactions");
 const Packages = require("./models/packages/packages");
@@ -32,6 +34,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/manager", managerRoutes);
 
 app.use((error, req, res, next) => {
     console.log(error);
@@ -43,16 +46,25 @@ app.use((error, req, res, next) => {
 });
 
 Accounts.hasMany(Customers, { foreignKey: "account_id", sourceKey: "id" });
+Accounts.hasMany(Employees, { foreignKey: "account_id", sourceKey: "id" });
+Accounts.hasMany(Aggregations, { foreignKey: "leader_id", sourceKey: "id" });
+Accounts.hasMany(Transactions, { foreignKey: "leader_id", sourceKey: "id" });
 Customers.belongsTo(Accounts, { foreignKey: "account_id", targetKey: "id" });
+Employees.belongsTo(Accounts, { foreignKey: "account_id", targetKey: "id" });
 
-Aggregations.hasMany(Transactions, {
-    foreignKey: "aggregation_id",
-    sourceKey: "id",
-});
-Transactions.belongsTo(Aggregations, {
-    foreignKey: "aggregation_id",
+Locations.hasMany(Aggregations, { foreignKey: "location_id", sourceKey: "id" });
+Locations.hasMany(Transactions, { foreignKey: "location_id", sourceKey: "id" });
+
+Aggregations.belongsTo(Locations, {
+    foreignKey: "location_id",
     targetKey: "id",
 });
+Aggregations.belongsTo(Accounts, { foreignKey: "leader_id", targetKey: "id" });
+Transactions.belongsTo(Locations, {
+    foreignKey: "location_id",
+    targetKey: "id",
+});
+Transactions.belongsTo(Accounts, { foreignKey: "leader_id", targetKey: "id" });
 
 Packages.hasMany(PackagesDetail, { foreignKey: "package_id", sourceKey: "id" });
 Packages.belongsTo(Customers, { foreignKey: "sender_id", targetKey: "id" });

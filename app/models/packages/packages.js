@@ -10,11 +10,7 @@ const Packages = sequelize.define("Packages", {
     },
     sender_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-    },
-    receiver_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
     }
 })
 

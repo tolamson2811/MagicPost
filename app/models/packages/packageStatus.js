@@ -15,18 +15,30 @@ const PackageStatus = sequelize.define("PackageStatus", {
     status: {
         type: Sequelize.ENUM,
         values: [
-            "Sent",
-            "In Transit",
-            "Delivering",
-            "Received",
-            "Returning",
-            "Returned",
+            "Đã gửi",
+            "Đang trung chuyển",
+            "Chờ xác nhận điểm giao dịch",
+            "Đang ở điêm giao dịch",
+            "Chờ xác nhận điểm tập kết",
+            "Đang ở điểm tập kết",
+            "Đang giao",
+            "Đã giao",
+            "Giao thành công",
+            "Giao thất bại",
         ],
         allowNull: false,
     },
-    current_location: {
+    fail_reason: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
+    },
+    time_delivery: {
+        type: Sequelize.DATE,
+        allowNull: true,
+    },
+    location_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
     },
 });
 

@@ -1,32 +1,28 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../../utils/database");
 
-const Aggregations = sequelize.define("Aggregations", {
-    id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
+const Aggregations = sequelize.define(
+    "Aggregations",
+    {
+        id: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        location_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
+        leader_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
+        province: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
     },
-    name: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    incoming_quantity: {
-        type: Sequelize.BIGINT,
-        allowNull: false,
-        defaultValue: 0,
-    },
-    onstock_quantity: {
-        type: Sequelize.BIGINT,
-        allowNull: false,
-        defaultValue: 0,
-    },
-    outgoing_quantity: {
-        type: Sequelize.BIGINT,
-        allowNull: false,
-        defaultValue: 0,
-    },
-});
+);
 
 module.exports = Aggregations;

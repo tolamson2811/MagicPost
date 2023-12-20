@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const Accounts = require("../models/users/accounts");
-const Customers = require("../models/users/customers");
 
 exports.signup = async (req, res, next) => {
     const errors = validationResult(req);
@@ -22,19 +21,14 @@ exports.signup = async (req, res, next) => {
     const role = req.body.role;
     try {
         const hashedPw = await bcrypt.hash(password, 12);
+
         const account = new Accounts({
             email: email,
             name: name,
             password: hashedPw,
+            role: role || "Customer",
         });
-        // add user by role
         const result = await account.save();
-        if (!role) {
-            const customer = new Customers({
-                account_id: result.id,
-            });
-            await customer.save();
-        }
 
         res.status(201).json({
             message: "Tạo tài khoản thành công!",

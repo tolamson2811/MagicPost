@@ -1,29 +1,26 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../../utils/database");
 
-const Transactions = sequelize.define("Transactions", {
+const Locations = sequelize.define("Locations", {
     id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
     },
-    location_id: {
-        type: Sequelize.INTEGER,
+    type: {
+        type: Sequelize.ENUM,
+        values: ["Aggregation", "Transaction"],
         allowNull: false,
     },
-    leader_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
-    province: {
-        type: Sequelize.STRING,
+    total_packages: {
+        type: Sequelize.BIGINT,
         allowNull: true,
     },
-    district: {
-        type: Sequelize.STRING,
+    onstock_packages: {
+        type: Sequelize.BIGINT,
         allowNull: true,
     },
 });
 
-module.exports = Transactions;
+module.exports = Locations;
