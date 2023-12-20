@@ -9,8 +9,10 @@ const Employees = require("../../models/users/employees");
 async function createNewAggregation(province, leader_id) {
     try {
         // Nếu đã có điểm tập kết thì trả về điểm tập kết đó
-        const aggregationDoc = await Aggregations.findOne({ where: { province: province } });
-        if (aggregationDoc) { 
+        const aggregationDoc = await Aggregations.findOne({
+            where: { province: province },
+        });
+        if (aggregationDoc) {
             return aggregationDoc;
         }
 
@@ -37,12 +39,10 @@ async function createNewAggregation(province, leader_id) {
 exports.createLeaderAccount = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const error = new Error("Tạo tài khoản trưởng điểm tập kết thất bại!");
+        const errorMessage = errors.array()[0].msg;
+        const error = new Error(errorMessage);
         error.statusCode = 422;
-        res.status(422).json({
-            message: "Tạo tài khoản trưởng điểm tập kết thất bại!",
-            errors: errors.array(),
-        });
+        next(error);
     }
 
     const email = req.body.email;
@@ -107,4 +107,3 @@ exports.createLeaderAccount = async (req, res, next) => {
         next(err);
     }
 };
-

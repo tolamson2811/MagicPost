@@ -9,8 +9,10 @@ const Employees = require("../../models/users/employees");
 async function createNewTransaction(province, district, leader_id) {
     try {
         // Nếu đã có điểm giao dịch thì trả về điểm giao dịch đó
-        const transactionDoc = await Transactions.findOne({ where: { province: province, district: district } });
-        if (transactionDoc) { 
+        const transactionDoc = await Transactions.findOne({
+            where: { province: province, district: district },
+        });
+        if (transactionDoc) {
             return transactionDoc;
         }
 
@@ -38,12 +40,10 @@ async function createNewTransaction(province, district, leader_id) {
 exports.createLeaderAccount = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const error = new Error("Tạo tài khoản trưởng điểm giao dịch thất bại!");
+        const errorMessage = errors.array()[0].msg;
+        const error = new Error(errorMessage);
         error.statusCode = 422;
-        res.status(422).json({
-            message: "Tạo tài khoản trưởng điểm giao dịch thất bại!",
-            errors: errors.array(),
-        });
+        next(error);
     }
 
     const email = req.body.email;
@@ -77,7 +77,11 @@ exports.createLeaderAccount = async (req, res, next) => {
         const newAccount = await account.save();
 
         // Tạo điểm giao dịch mới trong bảng transaction
-        const result = await createNewTransaction(province, district, newAccount.id);
+        const result = await createNewTransaction(
+            province,
+            district,
+            newAccount.id
+        );
 
         // Tạo tài khoản nhân viên mới trong bảng employee
         const employee = new Employees({
@@ -110,4 +114,3 @@ exports.createLeaderAccount = async (req, res, next) => {
         next(err);
     }
 };
-

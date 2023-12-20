@@ -4,7 +4,7 @@ const sequelize = require("./utils/database");
 
 //routes
 const authRoutes = require("./routes/auth");
-const managerRoutes = require("./routes/manager/createAccount");
+const managerRoutes = require("./routes/manager");
 //models
 const Accounts = require("./models/users/accounts");
 const Customers = require("./models/users/customers");
@@ -40,33 +40,37 @@ app.use((error, req, res, next) => {
     console.log(error);
     const status = error.statusCode || 500;
     const message = error.message;
-    // const data = error.data;
-    // res.status(status).json({ message: message, data: data });
     res.status(status).json({ message: message });
 });
 
-Accounts.hasMany(Customers, { foreignKey: "account_id", sourceKey: "id" });
-Accounts.hasMany(Employees, { foreignKey: "account_id", sourceKey: "id" });
-Accounts.hasMany(Aggregations, { foreignKey: "leader_id", sourceKey: "id" });
-Accounts.hasMany(Transactions, { foreignKey: "leader_id", sourceKey: "id" });
-Customers.belongsTo(Accounts, { foreignKey: "account_id", targetKey: "id" });
-Employees.belongsTo(Accounts, { foreignKey: "account_id", targetKey: "id" });
+Accounts.hasOne(Customers, { foreignKey: "account_id", sourceKey: "id" });
+Accounts.hasOne(Employees, { foreignKey: "account_id", sourceKey: "id" });
+Accounts.hasOne(Aggregations, { foreignKey: "leader_id", sourceKey: "id" });
+Accounts.hasOne(Transactions, { foreignKey: "leader_id", sourceKey: "id" });
 
-Locations.hasMany(Aggregations, { foreignKey: "location_id", sourceKey: "id" });
-Locations.hasMany(Transactions, { foreignKey: "location_id", sourceKey: "id" });
+Customers.belongsTo(Accounts, { foreignKey: "account_id", targetKey: "id" });
+Customers.hasMany(Packages, { foreignKey: "sender_id", sourceKey: "id" });
+
+Employees.belongsTo(Accounts, { foreignKey: "account_id", targetKey: "id" });
+Employees.belongsTo(Locations, { foreignKey: "location_id", targetKey: "id" });
+
+Locations.hasMany(Employees, { foreignKey: "location_id", sourceKey: "id" });
+Locations.hasOne(Aggregations, { foreignKey: "location_id", sourceKey: "id" });
+Locations.hasOne(Transactions, { foreignKey: "location_id", sourceKey: "id" });
 
 Aggregations.belongsTo(Locations, {
     foreignKey: "location_id",
     targetKey: "id",
 });
 Aggregations.belongsTo(Accounts, { foreignKey: "leader_id", targetKey: "id" });
+
 Transactions.belongsTo(Locations, {
     foreignKey: "location_id",
     targetKey: "id",
 });
 Transactions.belongsTo(Accounts, { foreignKey: "leader_id", targetKey: "id" });
 
-Packages.hasMany(PackagesDetail, { foreignKey: "package_id", sourceKey: "id" });
+Packages.hasOne(PackagesDetail, { foreignKey: "package_id", sourceKey: "id" });
 Packages.belongsTo(Customers, { foreignKey: "sender_id", targetKey: "id" });
 PackagesDetail.belongsTo(Packages, {
     foreignKey: "package_id",
