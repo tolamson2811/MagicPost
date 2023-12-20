@@ -17,6 +17,9 @@ const Customers = sequelize.define("Customers", {
     address: {
         type: Sequelize.STRING,
     },
+    avatar: {
+        type: Sequelize.STRING,
+    },
 });
 
 module.exports = Customers;

@@ -17,7 +17,7 @@ router.put(
             .custom(async (value, { req }) => {
                 const accountDoc = await Accounts.findOne({ where: { email: value } });
                 if (accountDoc) {
-                    throw new Error("Email address already exists");
+                    throw new Error("Email đã tồn tại!");
                 }
             })
             .normalizeEmail(),

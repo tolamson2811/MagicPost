@@ -1,40 +1,33 @@
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const jwtSecret = process.env.JWT_SECRET;
 
 const Accounts = require("../models/users/accounts");
-const Customers = require("../models/users/customers");
 
 exports.signup = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const error = new Error("Đăng ký thất bại!");
+        const errorMessage = errors.array()[0].msg;
+        const error = new Error(errorMessage);
         error.statusCode = 422;
-        res.status(422).json({
-            message: "Đăng ký thất bại!",
-            errors: errors.array(),
-        });
-        return;
+        next(error);
     }
+    
     const email = req.body.email;
     const name = req.body.name;
     const password = req.body.password;
     const role = req.body.role;
     try {
         const hashedPw = await bcrypt.hash(password, 12);
+
         const account = new Accounts({
             email: email,
             name: name,
             password: hashedPw,
+            role: role || "Customer",
         });
-        // add user by role
         const result = await account.save();
-        if (!role) {
-            const customer = new Customers({
-                account_id: result.id,
-            });
-            await customer.save();
-        }
 
         res.status(201).json({
             message: "Tạo tài khoản thành công!",
@@ -71,8 +64,9 @@ exports.login = async (req, res, next) => {
             {
                 email: accountLoaded.email,
                 account_id: accountLoaded.id.toString(),
+                role: accountLoaded.role,
             },
-            "somesupersecretsecret",
+            jwtSecret,
             { expiresIn: "1h" }
         );
         res.status(200).json({
@@ -93,13 +87,10 @@ exports.login = async (req, res, next) => {
 exports.updateInfo = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const error = new Error("Cập nhật thông tin thất bại!");
+        const errorMessage = errors.array()[0].msg;
+        const error = new Error(errorMessage);
         error.statusCode = 422;
-        res.status(422).json({
-            message: "Cập nhật thông tin thất bại!",
-            errors: errors.array(),
-        });
-        return;
+        next(error);
     }
 
     const account_id = req.params.account_id;
@@ -146,13 +137,10 @@ exports.updateInfo = async (req, res, next) => {
 exports.deleteAccount = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const error = new Error("Xóa tài khoản thất bại!");
+        const errorMessage = errors.array()[0].msg;
+        const error = new Error(errorMessage);
         error.statusCode = 422;
-        res.status(422).json({
-            message: "Xóa tài khoản thất bại!",
-            errors: errors.array(),
-        });
-        return;
+        next(error);
     }
 
     const account_id = req.params.account_id;

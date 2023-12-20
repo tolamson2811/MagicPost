@@ -6,20 +6,20 @@ module.exports = (req, res, next) => {
     if( !authHeader) {
         const error = new Error('Không có quyền thực hiện hành động này!');
         error.statusCode = 401;
-        throw error;
+        next(error)
     }
     const token = authHeader.split(' ')[1];
     let decodedToken;
     try {
-        decodedToken = jwt.verify(token, 'somesupersecretsecret')
+        decodedToken = jwt.verify(token, process.env.JWT_SECRET)
     } catch(error) {
         error.statusCode = 500;
-        throw error
+        next(error)
     }
     if( !decodedToken) {
         const error = new Error('Không có quyền thực hiện hành động này!');
         error.statusCode = 401;
-        throw error;
+        next(error)
     }
     req.userId = decodedToken.account_id;
     next();
