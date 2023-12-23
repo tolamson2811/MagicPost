@@ -65,4 +65,11 @@ router.get(
     managerController.getAllEmployees
 );
 
+// DELETE /manager/account/:account_id
+router.delete(
+    "/account/:account_id",
+    isManager,
+    managerController.deleteEmployee
+);
+
 module.exports = router;

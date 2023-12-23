@@ -65,6 +65,7 @@
                             type="email"
                             placeholder="Email"
                             class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                            @keyup="searchByEmail($event.target.value)"
                         />
                     </td>
                     <td class="p-1 mt-1 border-e-2 border-white">
@@ -120,6 +121,7 @@
                         <font-awesome-icon
                             icon="fa-solid fa-trash"
                             class="text-red-500 hover:cursor-pointer hover:text-red-600"
+                            @click="clickDeleteEmployee(employee.id)"
                         />
                     </td>
                 </tr>
@@ -156,6 +158,21 @@
                 />
             </div>
         </div>
+        <base-dialog
+            :show="!!clickDelete.value"
+            title="Xác nhận xóa tài khoản"
+            @close="confirmDelete(clickDelete.id)"
+        >
+            <p>Sau khi xóa, tài khoản không thể khôi phục!</p>
+        </base-dialog>
+        <base-dialog
+            :show="!!error"
+            title="Có lỗi xảy ra!"
+            @close="confirmError"
+        >
+            <p>{{ error }}</p>
+        </base-dialog>
+        <base-spinner v-if="isLoading"></base-spinner>
     </div>
 </template>
 
@@ -163,12 +180,18 @@
 export default {
     data() {
         return {
+            isLoading: false,
+            error: null,
             idFilter: "default",
             currentPage: 1,
             totalPage: 0,
             totalResult: 0,
             employees: [],
             roleFilter: "Vai trò",
+            clickDelete: {
+                value: false,
+                id: null,
+            },
         };
     },
     methods: {
@@ -219,6 +242,18 @@ export default {
                 );
             }
         },
+        async searchByEmail(string) {
+            if (string === "") {
+                this.getEmployees(this.currentPage);
+            } else {
+                await this.getEmployees(this.currentPage);
+                this.employees = this.employees.filter((employee) =>
+                    this.removeAccents(employee.email.toLowerCase()).includes(
+                        this.removeAccents(string.toLowerCase())
+                    )
+                );
+            }
+        },
         async getEmployees(page = 1) {
             try {
                 const result = await this.$store.dispatch(
@@ -235,12 +270,44 @@ export default {
                     query: { page: page },
                 });
             } catch (error) {
-                console.log(error);
+                this.error = error.message;
             }
         },
         switchPage(page) {
             this.currentPage = page;
             this.getEmployees(page);
+        },
+        clickDeleteEmployee(id) {
+            this.clickDelete = {
+                value: true,
+                id: id,
+            };
+            console.log(this.clickDelete);
+        },
+        async confirmDelete(id) {
+            try {
+                this.isLoading = true;
+                await this.$store.dispatch("manager/deleteLeader", id);
+                this.clickDelete = {
+                    value: false,
+                    id: null,
+                };
+                this.isLoading = false;
+                this.$notify({
+                    title: "Xóa tài khoản thành công!",
+                });
+                this.getEmployees(this.currentPage);
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false;
+        },
+        confirmError() {
+            this.error = null;
+            this.clickDelete = {
+                value: false,
+                id: null,
+            };
         },
     },
     mounted() {

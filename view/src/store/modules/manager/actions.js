@@ -88,4 +88,31 @@ export default {
 
         return responseData;
     },
+
+    // Xóa tài khoản trưởng điểm
+    async deleteLeader(context, account_id) {
+        let apiUrl =
+            (await context.rootGetters.getApiUrl) +
+            `manager/account/${account_id}`;
+        const response = await fetch(apiUrl, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + context.rootGetters.getToken,
+            },
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            let errorMessage = "Không thể xóa tài khoản, vui lòng thử lại sau";
+            if (responseData.errors && responseData.errors.length > 0) {
+                errorMessage = responseData.errors[0].msg;
+            } else if (responseData.message) {
+                errorMessage = responseData.message;
+            }
+            const error = new Error(errorMessage);
+            throw error;
+        }
+    }
 };

@@ -5,7 +5,7 @@
             <component :is="slotProps.Component"></component>
         </transition>
     </router-view>
-    <notifications class="mt-32 text-xl"/>
+    <notifications class="mt-32 text-base"/>
 </template>
 
 <script>
@@ -47,6 +47,6 @@ export default {
 }
 
 .vue-notification-group .vue-notification {
-    font-size: 20px; /* Adjust this value to your preference */
+    font-size: 16px; /* Adjust this value to your preference */
 }
 </style>
