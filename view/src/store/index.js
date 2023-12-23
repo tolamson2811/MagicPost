@@ -3,12 +3,14 @@ import {createStore} from 'vuex'
 import authModule from './modules/auth/index.js'
 import addressModule from './modules/address/index.js'
 import managerModule from './modules/manager/index.js'
+import transactionModule from './modules/transaction/index.js'
 
 const store = createStore({
     modules: {
         auth: authModule,
         address: addressModule,
-        manager: managerModule
+        manager: managerModule,
+        transaction: transactionModule
     },
     state() {
         return {

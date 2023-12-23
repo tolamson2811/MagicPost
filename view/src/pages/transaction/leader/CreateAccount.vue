@@ -87,11 +87,20 @@
                 </span>
             </form>
         </section>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <base-dialog
+            :show="!!error"
+            title="Tạo tài khoản thất bại!"
+            @close="confirmError"
+        >
+            <p>{{ error }}</p>
+        </base-dialog>
     </div>
 </template>
 
 <script>
 export default {
+    props: ["leader_id"],
     data() {
         return {
             email: {
@@ -109,22 +118,39 @@ export default {
                 isValid: true,
                 errorMessage: "",
             },
+            location_id: null,
+            error: null,
+            isLoading: false,
         };
     },
     methods: {
-        handleSubmit() {
+        async handleSubmit() {
             if (this.validateForm) {
-                console.log("valid");
                 const formData = {
                     email: this.email.value,
                     password: this.password.value,
+                    location_id: this.location_id,
                 };
 
-                console.log(formData);
+                try {
+                    this.isLoading = true;
+                    await this.$store.dispatch(
+                        "transaction/createNewTransactionEmployee",
+                        formData
+                    );
+                    this.isLoading = false;
+                    this.$notify({
+                        title: "Tạo tài khoản thành công",
+                        type: "success",
+                    });
+                    this.resetForm();
+                } catch (error) {
+                    console.log(error);
+                    this.error = error.message;
+                }
 
-                this.resetForm();
+                this.isLoading = false;
             } else {
-                console.log("invalid");
                 return;
             }
         },
@@ -140,6 +166,16 @@ export default {
             this.email.errorMessage = "";
             this.password.errorMessage = "";
             this.confirmPassword.errorMessage = "";
+        },
+        async getLocationId() {
+            const res = await this.$store.dispatch(
+                "manager/getEmployeeById",
+                this.leader_id
+            );
+            this.location_id = res.location_id;
+        },
+        confirmError() {
+            this.error = null;
         },
     },
     computed: {
@@ -197,6 +233,9 @@ export default {
 
             return isValid;
         },
+    },
+    mounted() {
+        this.getLocationId();
     },
 };
 </script>

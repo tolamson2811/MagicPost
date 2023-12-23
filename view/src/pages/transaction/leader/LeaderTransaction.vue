@@ -22,7 +22,7 @@
                 <p class="text-xs md:text-sm lg:text-base">ID: {{ userId }}</p>
 
                 <p class="text-xs md:text-sm lg:text-base">
-                    Địa điểm làm việc: Cầu Giấy, Hà Nội
+                    {{ leaderInfo.location  }}
                 </p>
             </div>
 
@@ -139,9 +139,17 @@ export default {
     props: ["leader_id"],
     data() {
         return {
+            error: null,
             isOpenManageSystem: false,
             isOpenManageAccount: false,
             isOpenManageStatistic: false,
+            leaderInfo: {
+                id: null,
+                email: "",
+                role: "",
+                location: "",
+                location_id: null,
+            },
         };
     },
     methods: {
@@ -153,6 +161,17 @@ export default {
         },
         toggleManageStatistic() {
             this.isOpenManageStatistic = !this.isOpenManageStatistic;
+        },
+        async getLeaderInfo(account_id) {
+            try {
+                this.leaderInfo = await this.$store.dispatch(
+                    "manager/getEmployeeById",
+                    account_id
+                );
+            } catch (error) {
+                console.log(error);
+                this.error = error.message;
+            }
         },
     },
     computed: {
@@ -178,7 +197,7 @@ export default {
         },
     },
     mounted() {
-        console.log(this.leader_id);
+        this.getLeaderInfo(this.leader_id);
     },
 };
 </script>

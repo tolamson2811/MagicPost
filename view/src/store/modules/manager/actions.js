@@ -114,5 +114,33 @@ export default {
             const error = new Error(errorMessage);
             throw error;
         }
+    },
+
+    // Lấy thông tin nhân viên theo id
+    async getEmployeeById(context, account_id) {
+        let apiUrl =
+            (await context.rootGetters.getApiUrl) +
+            `manager/account/${account_id}`;
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            let errorMessage = "Không thể lấy dữ liệu, vui lòng thử lại sau";
+            if (responseData.errors && responseData.errors.length > 0) {
+                errorMessage = responseData.errors[0].msg;
+            } else if (responseData.message) {
+                errorMessage = responseData.message;
+            }
+            const error = new Error(errorMessage);
+            throw error;
+        }
+
+        return responseData;
     }
 };
