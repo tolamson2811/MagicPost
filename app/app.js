@@ -45,8 +45,16 @@ app.use((error, req, res, next) => {
 
 Accounts.hasOne(Customers, { foreignKey: "account_id", sourceKey: "id" });
 Accounts.hasOne(Employees, { foreignKey: "account_id", sourceKey: "id" });
-Accounts.hasOne(Aggregations, { foreignKey: "leader_id", sourceKey: "id" });
-Accounts.hasOne(Transactions, { foreignKey: "leader_id", sourceKey: "id" });
+Accounts.hasOne(Aggregations, {
+    foreignKey: "leader_id",
+    sourceKey: "id",
+    onDelete: "SET NULL",
+});
+Accounts.hasOne(Transactions, {
+    foreignKey: "leader_id",
+    sourceKey: "id",
+    onDelete: "SET NULL",
+});
 
 Customers.belongsTo(Accounts, { foreignKey: "account_id", targetKey: "id" });
 Customers.hasMany(Packages, { foreignKey: "sender_id", sourceKey: "id" });

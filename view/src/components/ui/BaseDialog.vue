@@ -32,7 +32,7 @@
                                 @click="tryClose"
                                 class="bg-green-300 p-2 rounded-lg text-green-900 text-xs md:text-sm lg:text-base"
                             >
-                                Đóng
+                                Xác nhận
                             </button>
                         </slot>
                     </menu>

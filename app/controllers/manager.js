@@ -69,11 +69,32 @@ exports.getAllEmployees = async (req, res, next) => {
             totalPages: totalPages,
             totalResult: totalResult,
         });
-        
     } catch (err) {
         if (!err.statusCode) {
             err.statusCode = 500;
         }
-        next(err);  
+        next(err);
+    }
+};
+
+exports.deleteEmployee = async (req, res, next) => {
+    try {
+        const account_id = req.params.account_id;
+        const employee = await Accounts.findOne({
+            where: { id: account_id },
+        });
+        if (!employee) {
+            const error = new Error("Không tìm thấy tài khoản!");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        await employee.destroy();
+        res.status(200).json({ message: "Xóa tài khoản thành công!" });
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
     }
 };
