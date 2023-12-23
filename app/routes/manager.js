@@ -65,6 +65,12 @@ router.get(
     managerController.getAllEmployees
 );
 
+//GET /manager/account/:account_id
+router.get(
+    "/account/:account_id",
+    managerController.getEmployeeById
+);
+
 // DELETE /manager/account/:account_id
 router.delete(
     "/account/:account_id",

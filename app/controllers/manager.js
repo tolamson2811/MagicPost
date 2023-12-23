@@ -77,6 +77,67 @@ exports.getAllEmployees = async (req, res, next) => {
     }
 };
 
+exports.getEmployeeById = async (req, res, next) => {
+    try {
+        const account_id = req.params.account_id;
+        const employee = await Employees.findOne({
+            where: { account_id: account_id },
+            include: [
+                {
+                    model: Accounts,
+                    required: true,
+                },
+                {
+                    model: Locations,
+                    include: [
+                        {
+                            model: Aggregations,
+                            required: false,
+                        },
+                        {
+                            model: Transactions,
+                            required: false,
+                        },
+                    ],
+                },
+            ],
+        });
+        if (!employee) {
+            const error = new Error("Không tìm thấy tài khoản nhân viên!");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        let location = "";
+        let role = "";
+        if (employee.Account.role === "Transaction Lead") {
+            role = "Trưởng điểm giao dịch";
+            location =
+                employee.Location.Transaction.district +
+                ", " +
+                employee.Location.Transaction.province;
+        } else if (employee.Account.role === "Aggregation Lead") {
+            role = "Trưởng điểm tập kết";
+            location = employee.Location.Aggregation.province;
+        }
+
+        let employeeInfo = {
+            id: employee.account_id,
+            email: employee.Account.email,
+            role: role,
+            location: location,
+            location_id: employee.Location.id,
+        };
+
+        res.status(200).json({ ...employeeInfo });
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+    }
+ };
+
 exports.deleteEmployee = async (req, res, next) => {
     try {
         const account_id = req.params.account_id;
@@ -98,3 +159,4 @@ exports.deleteEmployee = async (req, res, next) => {
         next(err);
     }
 };
+

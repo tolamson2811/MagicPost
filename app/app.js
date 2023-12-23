@@ -5,6 +5,7 @@ const sequelize = require("./utils/database");
 //routes
 const authRoutes = require("./routes/auth");
 const managerRoutes = require("./routes/manager");
+const transactionRoutes = require("./routes/transaction");
 //models
 const Accounts = require("./models/users/accounts");
 const Customers = require("./models/users/customers");
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRoutes);
 app.use("/manager", managerRoutes);
+app.use("/transaction", transactionRoutes);
 
 app.use((error, req, res, next) => {
     console.log(error);

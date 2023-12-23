@@ -35,10 +35,18 @@ const PackageDetail = defineAsyncComponent(() =>
 const PackageList = defineAsyncComponent(() =>
     import("./pages/customer/PackageList.vue")
 );
-const LeaderAggregation = defineAsyncComponent(() => import("./pages/leader/LeaderAggregation.vue"));
-const LeaderCreateAccount = defineAsyncComponent(() => import("./pages/leader/CreateAccount.vue"));
-const LeaderListAccount = defineAsyncComponent(() => import("./pages/leader/ListAccount.vue"));
-const LeaderStatisticAggregation = defineAsyncComponent(() => import("./pages/leader/StatisticAggregation.vue"));
+const LeaderAggregation = defineAsyncComponent(() =>
+    import("./pages/leader/LeaderAggregation.vue")
+);
+const LeaderCreateAccount = defineAsyncComponent(() =>
+    import("./pages/leader/CreateAccount.vue")
+);
+const LeaderListAccount = defineAsyncComponent(() =>
+    import("./pages/leader/ListAccount.vue")
+);
+const LeaderStatisticAggregation = defineAsyncComponent(() =>
+    import("./pages/leader/StatisticAggregation.vue")
+);
 const LeaderTransaction = defineAsyncComponent(() =>
     import("./pages/transaction/leader/LeaderTransaction.vue")
 );
@@ -182,17 +190,17 @@ const router = createRouter({
             children: [
                 {
                     path: "createaccount",
-                    component: LeaderCreateAccount
+                    component: LeaderCreateAccount,
                 },
                 {
                     path: "listaccount",
-                    component: LeaderListAccount
+                    component: LeaderListAccount,
                 },
                 {
                     path: "statistic",
-                    component: LeaderStatisticAggregation
+                    component: LeaderStatisticAggregation,
                 },
-            ]
+            ],
         },
         {
             path: "/transaction/leader/:leader_id",
@@ -206,18 +214,22 @@ const router = createRouter({
                 {
                     path: "account/create",
                     component: CreateTransactionAccount,
+                    props: true,
                 },
                 {
                     path: "account/list",
                     component: ListTransactionAccount,
+                    props: true,
                 },
                 {
                     path: "statistic/sent",
                     component: StatisticTransactionSent,
+                    props: true,
                 },
                 {
                     path: "statistic/received",
                     component: StatisticTransactionReceived,
+                    props: true,
                 },
             ],
         },
