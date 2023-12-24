@@ -14,6 +14,12 @@ export default {
     isTransactionEmployee(state) {
         return state.role === "Transaction Employee";
     },
+    isAggregationLead(state) {
+        return state.role === "Aggregation Lead";
+    },
+    isAggregationEmployee(state) {
+        return state.role === "Aggregation Employee";
+    },
     isCustomer(state) {
         return state.role === "Customer";
     },

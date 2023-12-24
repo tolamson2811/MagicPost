@@ -4,6 +4,7 @@ const Aggregations = require("../models/locations/aggregations");
 const Locations = require("../models/locations/locations");
 const Employees = require("../models/users/employees");
 
+// Lất tất cả trưởng điểm
 exports.getAllEmployees = async (req, res, next) => {
     try {
         let employees = [];
@@ -53,6 +54,8 @@ exports.getAllEmployees = async (req, res, next) => {
                 role = "Trưởng điểm tập kết";
                 location =
                     employeesLoaded[employee].Location.Aggregation.province;
+            } else {
+                continue;
             }
 
             let employeeInfo = {
@@ -77,6 +80,7 @@ exports.getAllEmployees = async (req, res, next) => {
     }
 };
 
+// Lấy thông tin nhân viên công ty theo ID
 exports.getEmployeeById = async (req, res, next) => {
     try {
         const account_id = req.params.account_id;
@@ -136,8 +140,9 @@ exports.getEmployeeById = async (req, res, next) => {
         }
         next(err);
     }
- };
+};
 
+// Xóa nhân viên công ty
 exports.deleteEmployee = async (req, res, next) => {
     try {
         const account_id = req.params.account_id;
@@ -159,4 +164,3 @@ exports.deleteEmployee = async (req, res, next) => {
         next(err);
     }
 };
-

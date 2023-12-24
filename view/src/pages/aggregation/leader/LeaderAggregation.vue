@@ -1,0 +1,205 @@
+<template>
+    <main class="flex">
+        <!-- Side bar  -->
+        <div
+            class="basis-1/4 w-full min-h-screen pt-20 p-10 bg-orange-100 flex flex-col gap-10"
+        >
+            <!-- Giới thiệu thông tin  -->
+            <div class="flex flex-col items-center gap-2 p-4 rounded">
+                <h1
+                    class="text-sm sm:text-base md:text-lg lg:text-xl font-bold"
+                >
+                    Trưởng điểm tập kết
+                </h1>
+                <img
+                    src="https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"
+                    alt="user logo"
+                    class="h-14 w-14 rounded-full"
+                />
+
+                <p class="text-xs md:text-sm lg:text-base">{{ userEmail }}</p>
+
+                <p class="text-xs md:text-sm lg:text-base">ID: {{ userId }}</p>
+
+                <p class="text-xs md:text-sm lg:text-base">
+                    {{ leaderInfo.location }}
+                </p>
+            </div>
+
+            <!-- List các danh mục  -->
+            <div class="flex flex-col gap-10">
+                <!-- Quản lý tài khoản  -->
+                <div class="flex flex-col gap-2">
+                    <div
+                        class="flex justify-between items-center text-xs sm:text-sm md:text-base lg:text-lg px-4 py-2 text-white font-semibold bg-indigo-400 hover:cursor-pointer hover:bg-indigo-500"
+                        @click="toggleManageAccount"
+                    >
+                        <font-awesome-icon
+                            icon="fa-solid fa-certificate"
+                            class="text-sm sm:text-base md:text-xl lg:text-2xl select-none"
+                        />
+                        <h1 class="select-none">Quản lý tài khoản</h1>
+                        <font-awesome-icon
+                            icon="fa-solid fa-chevron-down"
+                            v-if="!isOpenManageAccount"
+                        />
+                        <font-awesome-icon
+                            icon="fa-solid fa-chevron-up"
+                            v-else
+                        />
+                    </div>
+
+                    <transition name="route">
+                        <ul
+                            class="flex flex-col gap-2"
+                            v-if="isOpenManageAccount"
+                        >
+                            <router-link
+                                :to="createAccountLink"
+                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                            >
+                                <font-awesome-icon
+                                    icon="fa-solid fa-user-plus"
+                                />
+                                Tạo tài khoản
+                            </router-link>
+                            <router-link
+                                :to="listAccountLink"
+                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                            >
+                                <font-awesome-icon
+                                    icon="fa-solid fa-rectangle-list"
+                                />
+                                Danh sách tài khoản
+                            </router-link>
+                        </ul>
+                    </transition>
+                </div>
+
+                <!-- Thống kê số đơn hàng đến, đi của từng điểm giao dịch, tập kết  -->
+                <div class="flex flex-col gap-2">
+                    <div
+                        class="flex justify-between items-center text-xs sm:text-sm md:text-base lg:text-lg px-4 py-2 text-white font-semibold bg-indigo-400 hover:cursor-pointer hover:bg-indigo-500"
+                        @click="toggleManageStatistic"
+                    >
+                        <font-awesome-icon
+                            icon="fa-solid fa-filter"
+                            class="text-sm sm:text-base md:text-xl lg:text-2xl select-none"
+                        />
+                        <h1 class="select-none">Thống kê hàng hóa</h1>
+                        <font-awesome-icon
+                            icon="fa-solid fa-chevron-down"
+                            v-if="!isOpenManageStatistic"
+                        />
+                        <font-awesome-icon
+                            icon="fa-solid fa-chevron-up"
+                            v-else
+                        />
+                    </div>
+
+                    <transition name="route">
+                        <ul
+                            class="flex flex-col gap-2"
+                            v-if="isOpenManageStatistic"
+                        >
+                            <router-link
+                                :to="statisticSentLink"
+                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                            >
+                                <font-awesome-icon
+                                    icon="fa-solid fa-paper-plane"
+                                />
+                                Hàng gửi
+                            </router-link>
+                            <router-link
+                                :to="statisticReceivedLink"
+                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                            >
+                                <font-awesome-icon
+                                    icon="fa-solid fa-satellite-dish"
+                                />
+                                Hàng nhận
+                            </router-link>
+                        </ul>
+                    </transition>
+                </div>
+            </div>
+        </div>
+
+        <router-view v-slot="slotProps">
+            <transition name="route" mode="out-in">
+                <component :is="slotProps.Component"></component>
+            </transition>
+        </router-view>
+    </main>
+</template>
+
+<script>
+export default {
+    props: ["leader_id"],
+    data() {
+        return {
+            error: null,
+            isOpenManageSystem: false,
+            isOpenManageAccount: false,
+            isOpenManageStatistic: false,
+            leaderInfo: {
+                id: null,
+                email: "",
+                role: "",
+                location: "",
+                location_id: null,
+            },
+        };
+    },
+    methods: {
+        toggleManageSystem() {
+            this.isOpenManageSystem = !this.isOpenManageSystem;
+        },
+        toggleManageAccount() {
+            this.isOpenManageAccount = !this.isOpenManageAccount;
+        },
+        toggleManageStatistic() {
+            this.isOpenManageStatistic = !this.isOpenManageStatistic;
+        },
+        async getLeaderInfo(account_id) {
+            try {
+                this.leaderInfo = await this.$store.dispatch(
+                    "manager/getEmployeeById",
+                    account_id
+                );
+            } catch (error) {
+                console.log(error);
+                this.error = error.message;
+            }
+        },
+    },
+    computed: {
+        userEmail() {
+            return this.$store.getters.getUserEmail;
+        },
+        userId() {
+            return this.$store.getters.getUserId;
+        },
+        createAccountLink() {
+            return "/aggregation/leader/" + this.leader_id + "/account/create";
+        },
+        listAccountLink() {
+            return "/aggregation/leader/" + this.leader_id + "/account/list";
+        },
+        statisticSentLink() {
+            return "/aggregation/leader/" + this.leader_id + "/statistic/sent";
+        },
+        statisticReceivedLink() {
+            return (
+                "/aggregation/leader/" + this.leader_id + "/statistic/received"
+            );
+        },
+    },
+    mounted() {
+        this.getLeaderInfo(this.leader_id);
+    },
+};
+</script>
+
+<style scoped></style>

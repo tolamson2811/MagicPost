@@ -45,6 +45,7 @@ exports.createLeaderAccount = async (req, res, next) => {
         const error = new Error(errorMessage);
         error.statusCode = 422;
         next(error);
+        return
     }
 
     const email = req.body.email;

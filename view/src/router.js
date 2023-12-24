@@ -35,18 +35,20 @@ const PackageDetail = defineAsyncComponent(() =>
 const PackageList = defineAsyncComponent(() =>
     import("./pages/customer/PackageList.vue")
 );
+// Route của điểm tập kết
 const LeaderAggregation = defineAsyncComponent(() =>
-    import("./pages/leader/LeaderAggregation.vue")
+    import("./pages/aggregation/leader/LeaderAggregation.vue")
 );
 const LeaderCreateAccount = defineAsyncComponent(() =>
-    import("./pages/leader/CreateAccount.vue")
+    import("./pages/aggregation/leader/CreateAccount.vue")
 );
 const LeaderListAccount = defineAsyncComponent(() =>
-    import("./pages/leader/ListAccount.vue")
+    import("./pages/aggregation/leader/ListAccount.vue")
 );
 const LeaderStatisticAggregation = defineAsyncComponent(() =>
-    import("./pages/leader/StatisticAggregation.vue")
+    import("./pages/aggregation/leader/StatisticAggregation.vue")
 );
+// Route của điểm giao dịch
 const LeaderTransaction = defineAsyncComponent(() =>
     import("./pages/transaction/leader/LeaderTransaction.vue")
 );
@@ -185,20 +187,28 @@ const router = createRouter({
         //     ],
         // },
         {
-            path: "/leader/aggregation",
+            path: "/aggregation/leader/:leader_id",
             component: LeaderAggregation,
+            redirect: (to) => {
+                const { params } = to;
+                return `/aggregation/leader/${params.leader_id}/account/list`;
+            },
+            props: true,
             children: [
                 {
-                    path: "createaccount",
+                    path: "account/create",
                     component: LeaderCreateAccount,
+                    props: true,
                 },
                 {
-                    path: "listaccount",
+                    path: "account/list",
                     component: LeaderListAccount,
+                    props: true,
                 },
                 {
                     path: "statistic",
                     component: LeaderStatisticAggregation,
+                    props: true,
                 },
             ],
         },

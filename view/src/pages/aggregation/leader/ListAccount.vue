@@ -215,11 +215,11 @@ export default {
         async getEmployees(payload) {
             try {
                 const result = await this.$store.dispatch(
-                    "transaction/getAllTransactionEmployees",
+                    "aggregation/getAllAggregationEmployees",
                     payload
                 );
 
-                this.employees = result.transaction_employee;
+                this.employees = result.aggregation_employee;
                 this.totalPage = result.totalPage;
                 this.totalResult = result.totalResult;
 

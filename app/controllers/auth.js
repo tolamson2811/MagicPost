@@ -12,8 +12,9 @@ exports.signup = async (req, res, next) => {
         const error = new Error(errorMessage);
         error.statusCode = 422;
         next(error);
+        return;
     }
-    
+
     const email = req.body.email;
     const name = req.body.name;
     const password = req.body.password;
@@ -91,6 +92,7 @@ exports.updateInfo = async (req, res, next) => {
         const error = new Error(errorMessage);
         error.statusCode = 422;
         next(error);
+        return;
     }
 
     const account_id = req.params.account_id;
@@ -141,6 +143,7 @@ exports.deleteAccount = async (req, res, next) => {
         const error = new Error(errorMessage);
         error.statusCode = 422;
         next(error);
+        return;
     }
 
     const account_id = req.params.account_id;
