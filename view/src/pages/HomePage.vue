@@ -40,7 +40,7 @@
 			<div class="w-3/4">
 				<div class="flex w-full">
 					<span
-						class="bg-indigo-400 text-white px-4 py-2 text-2xl border hover:cursor-pointer basis-1/3 flex gap-2 items-center"
+						class="bg-indigo-400 text-white px-4 py-2 text-2xl border hover:cursor-pointer w-full flex gap-2 items-center justify-center"
 						:class="{ 'bg-indigo-700': isSearchOrder }"
 						@click="chooseSearchService('order')"
 					>
@@ -50,7 +50,7 @@
 						/>
 						Tra cứu vận đơn</span
 					>
-					<span
+					<!-- <span
 						class="bg-indigo-400 text-white px-4 py-2 text-2xl border hover:cursor-pointer basis-1/3 flex gap-2 items-center"
 						:class="{ 'bg-indigo-700': isSearchFee }"
 						@click="chooseSearchService('fee')"
@@ -70,7 +70,7 @@
 							class="text-green-700"
 						/>
 						Tìm điểm giao dịch</span
-					>
+					> -->
 				</div>
 
 				<!-- tra cứu vận đơn -->
@@ -128,7 +128,7 @@
 				</transition>
 
 				<!-- ước tính cước phí -->
-				<transition name="element">
+				<!-- <transition name="element">
 					<div class="bg-indigo-400 p-4 flex flex-col gap-8" v-if="isSearchFee">
 						<div class="grid grid-cols-2 gap-4">
 							<span class="flex flex-col gap-1">
@@ -365,10 +365,10 @@
 							</span>
 						</div>
 					</div>
-				</transition>
+				</transition> -->
 
 				<!-- tìm điểm giao dịch -->
-				<transition name="element">
+				<!-- <transition name="element">
 					<div
 						class="bg-indigo-400 p-4 flex flex-col gap-8"
 						v-if="isSearchTransaction"
@@ -477,7 +477,8 @@
 							</span>
 						</div>
 					</div>
-				</transition>
+				</transition> -->
+
 			</div>
 		</div>
 

@@ -5,6 +5,7 @@ import addressModule from './modules/address/index.js'
 import managerModule from './modules/manager/index.js'
 import transactionModule from './modules/transaction/index.js'
 import aggregationModule from './modules/aggregation/index.js'
+import packageModule from './modules/package/index.js'
 
 const store = createStore({
     modules: {
@@ -12,7 +13,8 @@ const store = createStore({
         address: addressModule,
         manager: managerModule,
         transaction: transactionModule,
-        aggregation: aggregationModule
+        aggregation: aggregationModule,
+        package: packageModule
     },
     state() {
         return {

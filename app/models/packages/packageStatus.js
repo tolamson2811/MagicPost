@@ -13,19 +13,7 @@ const PackageStatus = sequelize.define("PackageStatus", {
         allowNull: false,
     },
     status: {
-        type: Sequelize.ENUM,
-        values: [
-            "Đã gửi",
-            "Đang trung chuyển",
-            "Chờ xác nhận điểm giao dịch",
-            "Đang ở điêm giao dịch",
-            "Chờ xác nhận điểm tập kết",
-            "Đang ở điểm tập kết",
-            "Đang giao",
-            "Đã giao",
-            "Giao thành công",
-            "Giao thất bại",
-        ],
+        type: Sequelize.STRING,
         allowNull: false,
     },
     fail_reason: {
@@ -37,6 +25,10 @@ const PackageStatus = sequelize.define("PackageStatus", {
         allowNull: true,
     },
     location_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+    },
+    shipper_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
     },

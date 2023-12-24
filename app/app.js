@@ -7,6 +7,7 @@ const authRoutes = require("./routes/auth");
 const managerRoutes = require("./routes/manager");
 const transactionRoutes = require("./routes/transaction");
 const aggregationRoutes = require("./routes/aggregation");
+const packageRoutes = require("./routes/package");
 //models
 const Accounts = require("./models/users/accounts");
 const Customers = require("./models/users/customers");
@@ -39,6 +40,7 @@ app.use("/auth", authRoutes);
 app.use("/manager", managerRoutes);
 app.use("/transaction", transactionRoutes);
 app.use("/aggregation", aggregationRoutes);
+app.use("/package", packageRoutes);
 
 app.use((error, req, res, next) => {
     console.log(error);
@@ -82,13 +84,21 @@ Transactions.belongsTo(Locations, {
 });
 Transactions.belongsTo(Accounts, { foreignKey: "leader_id", targetKey: "id" });
 
-Packages.hasOne(PackagesDetail, { foreignKey: "package_id", sourceKey: "id" });
+Packages.hasOne(PackagesDetail, {
+    foreignKey: "package_id",
+    sourceKey: "id",
+    onDelete: "CASCADE",
+});
 Packages.belongsTo(Customers, { foreignKey: "sender_id", targetKey: "id" });
 PackagesDetail.belongsTo(Packages, {
     foreignKey: "package_id",
     targetKey: "id",
 });
-Packages.hasMany(PackageStatus, { foreignKey: "package_id", sourceKey: "id" });
+Packages.hasMany(PackageStatus, {
+    foreignKey: "package_id",
+    sourceKey: "id",
+    onDelete: "CASCADE",
+});
 PackageStatus.belongsTo(Packages, {
     foreignKey: "package_id",
     targetKey: "id",

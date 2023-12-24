@@ -56,8 +56,9 @@
                     <td class="p-1 mt-1 border-e-2 border-white">
                         <input
                             type="text"
-                            placeholder="ID điểm giao dịch"
+                            placeholder="ID tài khoản"
                             class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                            @keyup="searchById($event.target.value)"
                         />
                     </td>
                     <td class="p-1 mt-1 border-e-2 border-white">
@@ -250,6 +251,18 @@ export default {
                 this.employees = this.employees.filter((employee) =>
                     this.removeAccents(employee.email.toLowerCase()).includes(
                         this.removeAccents(string.toLowerCase())
+                    )
+                );
+            }
+        },
+        async searchById(string) {
+            if (string === "") {
+                this.getEmployees(this.currentPage);
+            } else {
+                await this.getEmployees(this.currentPage);
+                this.employees = this.employees.filter((employee) =>
+                    this.removeAccents(employee.id.toString()).includes(
+                        this.removeAccents(string)
                     )
                 );
             }
