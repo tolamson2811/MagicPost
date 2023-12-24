@@ -255,34 +255,42 @@ const router = createRouter({
                 {
                     path: "transport/create",
                     component: CreateTransportPackage,
+                    props: true,
                 },
                 {
                     path: "transport/status",
                     component: TransportPackageStatus,
+                    props: true,
                 },
                 {
                     path: "warehouse/list",
                     component: ListPackageWarehouse,
+                    props: true,
                 },
                 {
                     path: "warehouse/received",
                     component: ReceivedPackageFromAggregation,
+                    props: true,
                 },
                 {
                     path: "warehouse/send",
                     component: SendPackageToAggregation,
+                    props: true,
                 },
                 {
                     path: "warehouse/create",
                     component: CreateOrder,
+                    props: true,
                 },
                 {
                     path: "statistic/success",
                     component: SuccessDelivery,
+                    props: true,
                 },
                 {
                     path: "statistic/failed",
                     component: FailedDelivery,
+                    props: true,
                 },
             ],
         },

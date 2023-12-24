@@ -24,11 +24,11 @@ const PackagesDetail = sequelize.define("PackagesDetail", {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    sender_address: {
+    sender_detail_address: {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    sender_phone_number: {
+    sender_phone: {
         type: Sequelize.STRING,
         allowNull: false,
     },
@@ -48,17 +48,17 @@ const PackagesDetail = sequelize.define("PackagesDetail", {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    receiver_address: {
+    receiver_detail_address: {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    receiver_phone_number: {
+    receiver_phone: {
         type: Sequelize.STRING,
         allowNull: false,
     },
     type: {
         type: Sequelize.ENUM,
-        values: ["Document", "Parcel"],
+        values: ["Tài liệu", "Hàng hóa"],
         allowNull: false,
     },
     weight: {
@@ -66,7 +66,7 @@ const PackagesDetail = sequelize.define("PackagesDetail", {
         allowNull: false,
     },
     price: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.STRING,
         allowNull: false,
     },
 });

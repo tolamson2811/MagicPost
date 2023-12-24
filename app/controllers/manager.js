@@ -123,6 +123,15 @@ exports.getEmployeeById = async (req, res, next) => {
         } else if (employee.Account.role === "Aggregation Lead") {
             role = "Trưởng điểm tập kết";
             location = employee.Location.Aggregation.province;
+        } else if (employee.Account.role === "Transaction Employee") {
+            role = "Nhân viên giao dịch";
+            location =
+                employee.Location.Transaction.district +
+                ", " +
+                employee.Location.Transaction.province;
+        } else if (employee.Account.role === "Aggregation Employee") {
+            role = "Nhân viên tập kết";
+            location = employee.Location.Aggregation.province;
         }
 
         let employeeInfo = {

@@ -2,12 +2,12 @@
     <main class="flex">
         <!-- Side bar  -->
         <div
-            class="basis-1/4 w-full min-h-screen pt-20 p-10 bg-orange-100 flex flex-col gap-10"
+            class="flex min-h-screen w-full basis-1/4 flex-col gap-10 bg-orange-100 p-10 pt-20"
         >
             <!-- Giới thiệu thông tin  -->
-            <div class="flex flex-col items-center gap-2 p-4 rounded">
+            <div class="flex flex-col items-center gap-2 rounded p-4">
                 <h1
-                    class="text-sm sm:text-base md:text-lg lg:text-xl font-bold"
+                    class="text-sm font-bold sm:text-base md:text-lg lg:text-xl"
                 >
                     Nhân viên giao dịch
                 </h1>
@@ -20,11 +20,11 @@
                 <p class="text-xs md:text-sm lg:text-base">{{ userEmail }}</p>
 
                 <p class="text-xs md:text-sm lg:text-base">
-                    ID nhân viên: {{ userId }}
+                    ID: {{ employee_info.id }}
                 </p>
 
                 <p class="text-xs md:text-sm lg:text-base">
-                    Địa điểm làm việc: Cầu Giấy, Hà Nội
+                    {{ employee_info.location }}
                 </p>
             </div>
 
@@ -33,12 +33,12 @@
                 <!-- Quản lý đơn hàng  -->
                 <div class="flex flex-col gap-2">
                     <div
-                        class="flex justify-between items-center text-xs sm:text-sm md:text-base lg:text-lg px-4 py-2 text-white font-semibold bg-indigo-400 hover:cursor-pointer hover:bg-indigo-500"
+                        class="flex items-center justify-between bg-indigo-400 px-4 py-2 text-xs font-semibold text-white hover:cursor-pointer hover:bg-indigo-500 sm:text-sm md:text-base lg:text-lg"
                         @click="toggleManagePackage"
                     >
                         <font-awesome-icon
                             icon="fa-solid fa-motorcycle"
-                            class="text-sm sm:text-base md:text-xl lg:text-2xl select-none"
+                            class="select-none text-sm sm:text-base md:text-xl lg:text-2xl"
                         />
                         <h1 class="select-none">Quản lý vận chuyển</h1>
                         <font-awesome-icon
@@ -58,7 +58,7 @@
                         >
                             <router-link
                                 :to="createTransportLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-user-plus"
@@ -67,7 +67,7 @@
                             </router-link>
                             <router-link
                                 :to="transportStatusLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-motorcycle"
@@ -81,12 +81,12 @@
                 <!-- Quản lý kho  -->
                 <div class="flex flex-col gap-2">
                     <div
-                        class="flex justify-between items-center text-xs sm:text-sm md:text-base lg:text-lg px-4 py-2 text-white font-semibold bg-indigo-400 hover:cursor-pointer hover:bg-indigo-500"
+                        class="flex items-center justify-between bg-indigo-400 px-4 py-2 text-xs font-semibold text-white hover:cursor-pointer hover:bg-indigo-500 sm:text-sm md:text-base lg:text-lg"
                         @click="toggleManageWarehouse"
                     >
                         <font-awesome-icon
                             icon="fa-solid fa-warehouse"
-                            class="text-sm sm:text-base md:text-xl lg:text-2xl select-none"
+                            class="select-none text-sm sm:text-base md:text-xl lg:text-2xl"
                         />
                         <h1 class="select-none">Quản lý kho</h1>
                         <font-awesome-icon
@@ -106,14 +106,14 @@
                         >
                             <router-link
                                 :to="listWarehouseLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon icon="fa-solid fa-cubes" />
                                 Danh sách đơn hàng
                             </router-link>
                             <router-link
                                 :to="receivedWarehouseLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-truck-fast"
@@ -122,7 +122,7 @@
                             </router-link>
                             <router-link
                                 :to="sendWarehouseLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-paper-plane"
@@ -131,7 +131,7 @@
                             </router-link>
                             <router-link
                                 :to="createOrderWarehouseLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-cart-plus"
@@ -145,12 +145,12 @@
                 <!-- Thống kê số đơn hàng đến, đi của từng điểm giao dịch, tập kết  -->
                 <div class="flex flex-col gap-2">
                     <div
-                        class="flex justify-between items-center text-xs sm:text-sm md:text-base lg:text-lg px-4 py-2 text-white font-semibold bg-indigo-400 hover:cursor-pointer hover:bg-indigo-500"
+                        class="flex items-center justify-between bg-indigo-400 px-4 py-2 text-xs font-semibold text-white hover:cursor-pointer hover:bg-indigo-500 sm:text-sm md:text-base lg:text-lg"
                         @click="toggleManageStatistic"
                     >
                         <font-awesome-icon
                             icon="fa-solid fa-filter"
-                            class="text-sm sm:text-base md:text-xl lg:text-2xl select-none"
+                            class="select-none text-sm sm:text-base md:text-xl lg:text-2xl"
                         />
                         <h1 class="select-none">Thống kê giao hàng</h1>
                         <font-awesome-icon
@@ -170,7 +170,7 @@
                         >
                             <router-link
                                 :to="successStatisticLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-paper-plane"
@@ -179,7 +179,7 @@
                             </router-link>
                             <router-link
                                 :to="failStatisticLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-rotate-left"
@@ -202,13 +202,20 @@
 
 <script>
 export default {
-    props: ["leader_id"],
+    props: ["employee_id"],
     data() {
         return {
             isOpenManageSystem: false,
             isOpenManageWarehouse: false,
             isOpenManageStatistic: false,
             isOpenManagePackage: false,
+            employee_info: {
+                id: null,
+                email: "",
+                role: "",
+                location: "",
+                location_id: null,
+            },
         };
     },
     methods: {
@@ -223,6 +230,12 @@ export default {
         },
         toggleManagePackage() {
             this.isOpenManagePackage = !this.isOpenManagePackage;
+        },
+        async getEmployeeInfo() {
+            this.employee_info = await this.$store.dispatch(
+                "manager/getEmployeeById",
+                this.employee_id,
+            );
         },
     },
     computed: {
@@ -256,6 +269,9 @@ export default {
         failStatisticLink() {
             return `/transaction/employee/${this.userId}/statistic/failed`;
         },
+    },
+    async mounted() {
+        await this.getEmployeeInfo();
     },
 };
 </script>
