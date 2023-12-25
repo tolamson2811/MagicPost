@@ -4,10 +4,10 @@
         <div
             class="flex flex-col justify-start items-start h-full w-full gap-4"
         >
-            <table class="w-full">
+            <table class="w-full text-sm">
                 <tr class="">
                     <th
-                        class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white"
+                        class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white w-2/12"
                     >
                         ID
                         <font-awesome-icon
@@ -158,6 +158,7 @@
                 </tr>
             </table>
 
+            <!-- Phân trang  -->
             <div class="grid grid-cols-12 gap-2 w-full px-1">
                 <button
                     class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"

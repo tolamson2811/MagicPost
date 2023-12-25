@@ -3,7 +3,7 @@ const router = express.Router();
 
 const isAuth = require("../middleware/is-auth");
 
-const transactinPackageController = require("../controllers/transaction/package");
+const packageController = require("../controllers/package");
 const { body } = require("express-validator");
 
 // POST /package/create
@@ -26,7 +26,13 @@ router.post(
     body("weight").trim().not().isEmpty(),
     body("price").trim().not().isEmpty(),
     body("location_id").trim().not().isEmpty(),
-    transactinPackageController.createNewOrder
+    packageController.createNewOrder
 );
+
+// Lấy danh sách đơn hàng theo từng location_id
+router.get("/list", packageController.getListPackage);
+
+// lấy chi tiết đơn hàng
+router.get("/detail/:package_id", packageController.getPackageDetail);
 
 module.exports = router;
