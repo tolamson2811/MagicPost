@@ -30,7 +30,7 @@ const StatisticTransaction = defineAsyncComponent(() =>
     import("./pages/manager/StatisticTransaction.vue")
 );
 const PackageDetail = defineAsyncComponent(() =>
-    import("./pages/customer/PackageDetail.vue")
+    import("./pages/PackageDetail.vue")
 );
 const PackageList = defineAsyncComponent(() =>
     import("./pages/customer/PackageList.vue")
@@ -152,12 +152,12 @@ const router = createRouter({
                     component: PackageList,
                     props: true,
                 },
-                {
-                    path: "history/:package_id",
-                    component: PackageDetail,
-                    props: true,
-                },
             ],
+        },
+        {
+            path: "/package/detail/:package_id",
+            component: PackageDetail,
+            props: true,
         },
         // {
         //     path: "/leader",

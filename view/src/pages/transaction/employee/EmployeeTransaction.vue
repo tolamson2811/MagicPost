@@ -31,7 +31,7 @@
             <!-- List các danh mục  -->
             <div class="flex flex-col gap-10">
                 <!-- Quản lý đơn hàng  -->
-                <div class="flex flex-col gap-2">
+                <!-- <div class="flex flex-col gap-2">
                     <div
                         class="flex items-center justify-between bg-indigo-400 px-4 py-2 text-xs font-semibold text-white hover:cursor-pointer hover:bg-indigo-500 sm:text-sm md:text-base lg:text-lg"
                         @click="toggleManagePackage"
@@ -76,9 +76,9 @@
                             </router-link>
                         </ul>
                     </transition>
-                </div>
+                </div> -->
 
-                <!-- Quản lý kho  -->
+                <!-- Quản lý đơn hàng  -->
                 <div class="flex flex-col gap-2">
                     <div
                         class="flex items-center justify-between bg-indigo-400 px-4 py-2 text-xs font-semibold text-white hover:cursor-pointer hover:bg-indigo-500 sm:text-sm md:text-base lg:text-lg"
@@ -88,7 +88,7 @@
                             icon="fa-solid fa-warehouse"
                             class="select-none text-sm sm:text-base md:text-xl lg:text-2xl"
                         />
-                        <h1 class="select-none">Quản lý kho</h1>
+                        <h1 class="select-none">Quản lý đơn hàng</h1>
                         <font-awesome-icon
                             icon="fa-solid fa-chevron-down"
                             v-if="!isOpenManageWarehouse"
@@ -120,7 +120,7 @@
                                 />
                                 Đơn về từ điểm tập kết
                             </router-link>
-                            <router-link
+                            <!-- <router-link
                                 :to="sendWarehouseLink"
                                 class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
@@ -128,7 +128,7 @@
                                     icon="fa-solid fa-paper-plane"
                                 />
                                 Đơn đi điểm tập kết
-                            </router-link>
+                            </router-link> -->
                             <router-link
                                 :to="createOrderWarehouseLink"
                                 class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
@@ -136,7 +136,17 @@
                                 <font-awesome-icon
                                     icon="fa-solid fa-cart-plus"
                                 />
-                                Tạo đơn hàng
+                                Tiếp nhận đơn hàng
+                            </router-link>
+
+                            <router-link
+                                :to="transportStatusLink"
+                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
+                            >
+                                <font-awesome-icon
+                                    icon="fa-solid fa-motorcycle"
+                                />
+                                Giao hàng
                             </router-link>
                         </ul>
                     </transition>
@@ -202,6 +212,7 @@
 
 <script>
 export default {
+
     props: ["employee_id"],
     data() {
         return {
