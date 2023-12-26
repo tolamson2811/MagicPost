@@ -1,8 +1,8 @@
 <template>
-    <main class="flex">
+    <main class="flex flex-col lg:flex-row">
         <!-- Side bar  -->
         <div
-            class="flex min-h-screen w-full basis-1/4 flex-col gap-10 bg-orange-100 p-10 pt-20"
+            class="flex lg:min-h-screen w-full basis-1/4 flex-col gap-10 bg-orange-100 p-10 pt-20"
         >
             <!-- Giới thiệu thông tin  -->
             <div class="flex flex-col items-center gap-2 rounded p-4">

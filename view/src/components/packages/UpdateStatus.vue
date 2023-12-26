@@ -2,48 +2,44 @@
     <teleport to="body">
         <div
             v-if="show"
-            @click="tryClose"
+            @click="tryExit"
             class="backdrop fixed left-0 top-0 z-50 h-screen w-full"
         ></div>
         <transition name="dialog">
-            <div
-                class="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center"
+            <dialog
+                open
                 v-if="show"
+                class="fixed z-50 flex h-48 w-96 flex-col items-center justify-between rounded-lg px-2 py-4"
             >
-                <dialog
-                    open
-                    class="flex flex-col items-center justify-between gap-4 rounded-lg p-2"
+                <header
+                    class="flex w-full items-center justify-between gap-4 text-sm font-bold text-sky-900 md:text-base lg:text-lg"
                 >
-                    <header
-                        class="flex w-full items-center justify-between gap-4 text-sm font-bold text-sky-900 md:text-base lg:text-lg"
-                    >
-                        <div></div>
-                        <slot name="header">
-                            <h2>{{ title }}</h2>
-                        </slot>
-                        <font-awesome-icon
-                            icon="fa-solid fa-xmark"
-                            class="hover:cursor-pointer hover:text-sky-950"
-                            @click="tryExit"
-                        />
-                    </header>
-                    <section
-                        class="text-center text-xs text-sky-900 md:text-sm lg:text-base"
-                    >
-                        <slot></slot>
-                    </section>
-                    <menu>
-                        <slot name="actions">
-                            <button
-                                @click="tryClose"
-                                class="rounded-lg bg-green-300 p-2 text-xs text-green-900 hover:bg-green-400 md:text-sm lg:text-base"
-                            >
-                                Xác nhận
-                            </button>
-                        </slot>
-                    </menu>
-                </dialog>
-            </div>
+                    <div></div>
+                    <slot name="header">
+                        <h2>{{ title }}</h2>
+                    </slot>
+                    <font-awesome-icon
+                        icon="fa-solid fa-xmark"
+                        class="hover:cursor-pointer hover:text-sky-950"
+                        @click="tryExit"
+                    />
+                </header>
+                <section
+                    class="text-center text-xs text-sky-900 md:text-sm lg:text-base"
+                >
+                    <slot></slot>
+                </section>
+                <menu>
+                    <slot name="actions">
+                        <button
+                            @click="tryClose"
+                            class="rounded-lg bg-green-300 p-2 text-xs text-green-900 hover:bg-green-400 md:text-sm lg:text-base"
+                        >
+                            Xác nhận
+                        </button>
+                    </slot>
+                </menu>
+            </dialog>
         </transition>
     </teleport>
 </template>
@@ -75,6 +71,11 @@ export default {
 <style scoped>
 .backdrop {
     background-color: rgba(0, 0, 0, 0.75);
+}
+
+dialog {
+    top: 30vh;
+    transform: translateX(-50% + 192px);
 }
 
 .dialog-enter-from,

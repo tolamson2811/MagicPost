@@ -1,25 +1,25 @@
 <template>
     <header
-        class="bg-indigo-500 h-16 lg:h-20 fixed top-0 right-0 left-0 flex items-center justify-between px-10 shadow z-10"
+        class="fixed left-0 right-0 top-0 z-10 flex h-16 items-center justify-between bg-indigo-500 px-10 shadow lg:h-20"
     >
         <nav class="flex items-center gap-8">
             <router-link to="/homepage">
                 <img
                     src="../../assets/images/logo_magicpost.jpg"
                     alt="logo magicpost"
-                    class="h-16 w-16 rounded-full hover:cursor-pointer"
+                    class="h-12 w-12 rounded-full hover:cursor-pointer lg:h-16 lg:w-16"
                 />
             </router-link>
 
             <ul
-                class="flex items-center gap-6 text-xs md:text-sm lg:text-base font-semibold text-white"
+                class="flex items-center gap-6 text-xs font-semibold text-white md:text-sm lg:text-base"
             >
                 <li>
                     <router-link class="hover:cursor-pointer" to="/homepage"
                         >Trang chủ</router-link
                     >
                 </li>
-                <li
+                <!-- <li
                     v-if="
                         !isManager &&
                         !isTransactionLead &&
@@ -33,7 +33,7 @@
                         @click.prevent="scrollToElement('search-service')"
                         >Tra cứu
                     </a>
-                </li>
+                </li> -->
                 <li
                     v-if="
                         !isManager &&
@@ -49,7 +49,7 @@
                         >Lịch sử đơn hàng
                     </router-link>
                 </li>
-                <li
+                <!-- <li
                     v-if="
                         !isManager &&
                         !isTransactionLead &&
@@ -63,7 +63,7 @@
                         @click.prevent="scrollToElement('service-list')"
                         >Dịch vụ</a
                     >
-                </li>
+                </li> -->
                 <li v-if="isManager">
                     <router-link to="/manager" class="hover:cursor-pointer"
                         >Quản lý</router-link
@@ -94,14 +94,14 @@
         </nav>
 
         <router-link
-            class="hover:cursor-pointer lg:text-base md:text-sm text-xs font-semibold text-white"
+            class="text-xs font-semibold text-white hover:cursor-pointer md:text-sm lg:text-base"
             to="/auth"
             v-if="!isLoggedIn"
             >Đăng nhập / Đăng ký</router-link
         >
 
         <div
-            class="flex items-center gap-4 py-2 px-4 bg-cyan-700 rounded-xl hover:cursor-pointer after:content-[''] after:absolute after:w-full after:h-20"
+            class="hidden items-center gap-4 rounded-xl bg-cyan-700 px-4 py-2 after:absolute after:h-20 after:w-full after:content-[''] hover:cursor-pointer lg:flex"
             @mouseover="isShowUserInfo = true"
             @mouseleave="isShowUserInfo = false"
             v-else
@@ -111,16 +111,16 @@
                 alt="user avt"
                 class="h-10 w-10 rounded-full"
             />
-            <p class="text-xs md:text-sm lg:text-base font-semibold text-white">
+            <p class="text-xs font-semibold text-white md:text-sm lg:text-base">
                 {{ userEmail }}
             </p>
             <font-awesome-icon
                 icon="fa-solid fa-chevron-down"
-                class="text-xs md:text-sm lg:text-base font-semibold text-white"
+                class="text-xs font-semibold text-white md:text-sm lg:text-base"
             />
 
             <ul
-                class="absolute top-full right-0 w-56 md:w-64 lg:w-80 rounded-lg shadow-md z-10 bg-white flex flex-col items-center justify-center px-4"
+                class="absolute right-0 top-full z-10 flex w-56 flex-col items-center justify-center rounded-lg bg-white px-4 shadow-md md:w-64 lg:w-80"
                 v-if="isShowUserInfo"
             >
                 <base-list
@@ -130,6 +130,14 @@
                 />
             </ul>
         </div>
+
+        <span
+            class="block lg:hidden text-xs font-semibold text-green-400 hover:cursor-pointer md:text-sm lg:text-base"
+            @click="logout"
+            v-if="isLoggedIn"
+        >
+            Đăng xuất
+        </span>
     </header>
 </template>
 
