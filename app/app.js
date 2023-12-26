@@ -62,37 +62,72 @@ Accounts.hasOne(Transactions, {
     onDelete: "SET NULL",
 });
 
-Customers.belongsTo(Accounts, { foreignKey: "account_id", targetKey: "id" });
+Customers.belongsTo(Accounts, {
+    foreignKey: "account_id",
+    targetKey: "id",
+    onDelete: "CASCADE",
+});
 Customers.hasMany(Packages, { foreignKey: "sender_id", sourceKey: "id" });
 
-Employees.belongsTo(Accounts, { foreignKey: "account_id", targetKey: "id" });
-Employees.belongsTo(Locations, { foreignKey: "location_id", targetKey: "id" });
+Employees.belongsTo(Accounts, {
+    foreignKey: "account_id",
+    targetKey: "id",
+    onDelete: "CASCADE",
+});
+Employees.belongsTo(Locations, {
+    foreignKey: "location_id",
+    targetKey: "id",
+    onDelete: "CASCADE",
+});
 
 Locations.hasMany(Employees, { foreignKey: "location_id", sourceKey: "id" });
-Locations.hasOne(Aggregations, { foreignKey: "location_id", sourceKey: "id" });
-Locations.hasOne(Transactions, { foreignKey: "location_id", sourceKey: "id" });
+Locations.hasOne(Aggregations, {
+    foreignKey: "location_id",
+    sourceKey: "id",
+    onDelete: "CASCADE",
+});
+Locations.hasOne(Transactions, {
+    foreignKey: "location_id",
+    sourceKey: "id",
+    onDelete: "CASCADE",
+});
 
 Aggregations.belongsTo(Locations, {
     foreignKey: "location_id",
     targetKey: "id",
+    onDelete: "CASCADE",
 });
-Aggregations.belongsTo(Accounts, { foreignKey: "leader_id", targetKey: "id" });
+Aggregations.belongsTo(Accounts, {
+    foreignKey: "leader_id",
+    targetKey: "id",
+    onDelete: "CASCADE",
+});
 
 Transactions.belongsTo(Locations, {
     foreignKey: "location_id",
     targetKey: "id",
+    onDelete: "CASCADE",
 });
-Transactions.belongsTo(Accounts, { foreignKey: "leader_id", targetKey: "id" });
+Transactions.belongsTo(Accounts, {
+    foreignKey: "leader_id",
+    targetKey: "id",
+    onDelete: "CASCADE",
+});
 
 Packages.hasOne(PackagesDetail, {
     foreignKey: "package_id",
     sourceKey: "id",
     onDelete: "CASCADE",
 });
-Packages.belongsTo(Customers, { foreignKey: "sender_id", targetKey: "id" });
+Packages.belongsTo(Customers, {
+    foreignKey: "sender_id",
+    targetKey: "id",
+    onDelete: "CASCADE",
+});
 PackagesDetail.belongsTo(Packages, {
     foreignKey: "package_id",
     targetKey: "id",
+    onDelete: "CASCADE",
 });
 Packages.hasMany(PackageStatus, {
     foreignKey: "package_id",

@@ -35,4 +35,7 @@ router.get("/list", packageController.getListPackage);
 // lấy chi tiết đơn hàng
 router.get("/detail/:package_id", packageController.getPackageDetail);
 
+// Thêm trạng thái đơn hàng
+router.post("/status/add", isAuth, packageController.addPackageStatus);
+
 module.exports = router;

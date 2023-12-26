@@ -73,30 +73,31 @@
                     <td class="mt-1 border-e-2 border-white p-1"></td>
                 </tr>
 
+                <!-- Hiển thị data  -->
                 <tr
                     class="bg-gray-200"
                     v-for="status in packageStatuses"
                     :key="status.id"
                 >
-                    <td class="border-e-2 border-white text-center">
+                    <td class="border-e-2 border-white py-1 text-center">
                         {{ status.package_id }}
                     </td>
-                    <td class="border-e-2 border-white text-center">
+                    <td class="border-e-2 border-white py-1 text-center">
                         {{ status.createdAt }}
                     </td>
-                    <td class="border-e-2 border-white text-center">
+                    <td class="border-e-2 border-white py-1 text-center">
                         {{ status.destination }}
                     </td>
-                    <td class="border-e-2 border-white text-center">
+                    <td class="border-e-2 border-white py-1 text-center">
                         <button
                             class="rounded-lg bg-rose-500 px-2 py-1 font-bold text-white hover:cursor-pointer hover:bg-rose-600"
-                            @click="clickUpdateStatus"
+                            @click="clickUpdateStatus(status.package_id)"
                         >
                             Cập nhật
                         </button>
                     </td>
 
-                    <td class="border-e-2 border-white p-1 text-center">
+                    <td class="border-e-2 border-white py-1 text-center">
                         <router-link
                             class="rounded-lg bg-indigo-400 px-2 py-1 font-bold text-white hover:cursor-pointer hover:bg-indigo-500"
                             :to="'/package/detail/' + status.package_id"
@@ -175,6 +176,7 @@
             :show="!!isUpdateStatus"
             title="Cập nhật đơn hàng"
             @close="handleUpdateStatus"
+            @exit="resetFormUpdateStatus"
         >
             <form action="" class="flex flex-col gap-2">
                 <div class="grid grid-cols-2 items-center">
@@ -221,6 +223,14 @@
                 </div>
             </form>
         </update-status>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <base-dialog
+            :show="!!error"
+            title="Có lỗi xảy ra!"
+            @close="error = null"
+        >
+            <p>{{ error }}</p>
+        </base-dialog>
     </div>
 </template>
 
@@ -237,11 +247,14 @@ export default {
             updatePackageStatus: {
                 nextStatus: "Chuyển đến điểm tập kết",
                 aggregation: "Điểm tập kết",
+                package_id: null,
+                location_id: null,
             },
             aggregations: [],
             isUpdateStatus: false,
             location_id: null,
             packageStatuses: [],
+            error: null,
         };
     },
     methods: {
@@ -258,36 +271,62 @@ export default {
             await this.$store.dispatch("address/getProvinces");
             this.aggregations = this.$store.getters["address/getProvinces"];
         },
-        async clickUpdateStatus() {
+        async clickUpdateStatus(package_id) {
             this.isUpdateStatus = true;
+            this.updatePackageStatus.package_id = package_id;
         },
         async handleUpdateStatus() {
-            let formData = {};
-            if (
-                this.updatePackageStatus.nextStatus ===
-                "Chuyển đến điểm tập kết"
-            ) {
-                if (this.updatePackageStatus.aggregation === "Điểm tập kết") {
-                    alert("Vui lòng chọn điểm tập kết");
-                    return;
+            try {
+                this.isLoading = true;
+                let formData = {};
+                if (
+                    this.updatePackageStatus.nextStatus ===
+                    "Chuyển đến điểm tập kết"
+                ) {
+                    if (
+                        this.updatePackageStatus.aggregation === "Điểm tập kết"
+                    ) {
+                        alert("Vui lòng chọn điểm tập kết");
+                        return;
+                    }
+                    this.updatePackageStatus.location_id =
+                        await this.getLocationIdOfAggregationByName(
+                            this.updatePackageStatus.aggregation,
+                        );
+                    formData = {
+                        package_id: this.updatePackageStatus.package_id,
+                        location_id: this.updatePackageStatus.location_id,
+                        status: this.updatePackageStatus.nextStatus,
+                        next_destination: this.updatePackageStatus.aggregation,
+                    };
+                } else {
+                    formData = {
+                        package_status: this.updatePackageStatus.nextStatus,
+                        package_id: this.updatePackageStatus.package_id,
+                        location_id: this.updatePackageStatus.location_id,
+                    };
                 }
-                formData = {
-                    package_status: this.updatePackageStatus.nextStatus,
-                    aggregation: this.updatePackageStatus.aggregation,
-                };
-            } else {
-                formData = {
-                    package_status: this.updatePackageStatus.nextStatus,
-                };
+                await this.$store.dispatch(
+                    "package/addPackageStatus",
+                    formData,
+                );
+                this.resetFormUpdateStatus();
+                this.isLoading = false;
+                this.$notify({
+                    title: "Cập nhật đơn hàng thành công!",
+                    type: "success",
+                });
+                this.getPackageStatusByLocationId(this.location_id);
+            } catch (error) {
+                this.error = error.message;
             }
-
-            console.log(formData);
-            this.resetFormUpdateStatus();
         },
         resetFormUpdateStatus() {
             this.updatePackageStatus = {
                 nextStatus: "Chuyển đến điểm tập kết",
                 aggregation: "Điểm tập kết",
+                package_id: null,
+                location_id: null,
             };
             this.isUpdateStatus = false;
         },
@@ -299,8 +338,19 @@ export default {
 
             this.location_id = res.location_id;
         },
+        async getLocationIdOfAggregationByName(name) {
+            try {
+                const res = await this.$store.dispatch(
+                    "aggregation/getLocationIdByName",
+                    name,
+                );
+
+                return res;
+            } catch (error) {
+                throw new Error(error.message);
+            }
+        },
         async getPackageStatusByLocationId(location_id) {
-            console.log(location_id);
             const res = await this.$store.dispatch(
                 "package/getPackageStatusByLocationId",
                 location_id,

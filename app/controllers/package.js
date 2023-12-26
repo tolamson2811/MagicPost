@@ -81,27 +81,45 @@ exports.getListPackage = async (req, res, next) => {
             where: { location_id: location_id },
         });
 
-        let statusArr = [];
-        packageStatuses.forEach((status) => {
-            // Chuyển đổi createdAt thành chuỗi 'dd/mm/yyyy'
-            const formattedDate = formatDate(status.createdAt);
-            statusArr.push({
-                ...status.dataValues,
-                createdAt: formattedDate,
-            });
-        });
-
         // Sử dụng set để lấy ra các package_status mới nhất
         let mapByPackageId = new Map();
-        statusArr.forEach((status) => {
-            const currentSatus = mapByPackageId.get(status.package_id);
+        packageStatuses.forEach((status) => {
+            console.log(status.dataValues);
 
-            if (!currentSatus || currentSatus.createdAt < status.createdAt) {
+            const currentSatus = mapByPackageId.get(
+                status.dataValues.package_id
+            );
+
+            if (
+                !currentSatus ||
+                currentSatus.createdAt < status.dataValues.createdAt
+            ) {
                 // Cập nhật mapByPackageId với createdAt đã được chuyển đổi
-                mapByPackageId.set(status.package_id, status);
+                mapByPackageId.set(
+                    status.dataValues.package_id,
+                    status.dataValues
+                );
             }
         });
         let newPackageStatuses = Array.from(mapByPackageId.values());
+
+        newPackageStatuses = await Promise.all(
+            newPackageStatuses.map(async (status) => {
+                const packages = await PackagesStatus.findAll({
+                    where: { package_id: status.package_id },
+                });
+
+                const isLatest = packages.every(
+                    (package) => package.createdAt <= status.createdAt
+                );
+
+                if (isLatest) {
+                    return status;
+                }
+            })
+        );
+
+        newPackageStatuses = newPackageStatuses.filter(Boolean);
 
         // Lấy thông tin địa điểm đích của đơn hàng
         const promises = newPackageStatuses.map(async (status) => {
@@ -116,13 +134,18 @@ exports.getListPackage = async (req, res, next) => {
                 packageDetail.receiver_district +
                 ", " +
                 packageDetail.receiver_province;
+            const createdAt = formatDate(status.createdAt);
             return {
                 ...status,
                 destination: detination,
+                createdAt: createdAt,
             };
         });
 
+        //Lấy ra tất cả trạng thái đơn hàng của điểm giao dịch
         const result = await Promise.all(promises);
+
+        // console.log(result);
 
         res.status(200).json(result);
     } catch (error) {
@@ -155,6 +178,39 @@ exports.getPackageDetail = async (req, res, next) => {
             createdAt: createdAt,
             package_id: packageDetail.package_id,
         });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Thêm trạng thái của đơn hàng
+exports.addPackageStatus = async (req, res, next) => {
+    const package_id = req.body.package_id;
+    const location_id = req.body.location_id;
+    const status = req.body.status;
+    const fail_reason = req.body.fail_reason;
+    const shipper_id = req.body.shipper_id;
+    const time_delivery = req.body.time_delivery;
+    const next_destination = req.body.next_destination;
+
+    let package_status = "";
+    if (status === "Chuyển đến điểm tập kết") {
+        package_status =
+            "Đang trung chuyển đến điểm tập kết " + next_destination;
+    }
+
+    try {
+        const new_package_status = new PackagesStatus({
+            package_id: package_id,
+            status: package_status,
+            fail_reason: fail_reason,
+            time_delivery: time_delivery,
+            shipper_id: shipper_id,
+            location_id: location_id,
+        });
+        const result = await new_package_status.save();
+
+        res.status(201).json({ ...result.dataValues });
     } catch (error) {
         next(error);
     }

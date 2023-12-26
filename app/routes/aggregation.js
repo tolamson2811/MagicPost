@@ -7,6 +7,7 @@ const Accounts = require("../models/users/accounts");
 const Aggregations = require("../models/locations/aggregations");
 
 const aggregationAccountController = require("../controllers/aggregation/accounts");
+const aggregationController = require("../controllers/aggregation/aggregation");
 
 // PUT /aggregation/leader/account/create
 router.put(
@@ -46,6 +47,12 @@ router.delete(
     "/leader/account/delete/:account_id",
     isAuth,
     aggregationAccountController.deleteAggregationEmployee
+);
+
+//GET /aggregation/location/id
+router.get(
+    "/location/id",
+    aggregationController.getLocationIdOfAggregationByName
 );
 
 module.exports = router;

@@ -59,5 +59,27 @@ export default {
             throw error;
         }
         return responseData;
+    },
+
+    async addPackageStatus(context, payload) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl + "package/status/add",
+            {
+                method: "POST",
+                body: JSON.stringify(payload),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + context.rootGetters.getToken,
+                },
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message || "Không thể thêm trạng thái đơn hàng!",
+            );
+            throw error;
+        }
+        return responseData;
     }
 };

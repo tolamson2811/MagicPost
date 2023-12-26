@@ -248,7 +248,7 @@ const router = createRouter({
             component: EmployeeTransaction,
             redirect: (to) => {
                 const { params } = to;
-                return `/transaction/employee/${params.employee_id}/transport/create`;
+                return `/transaction/employee/${params.employee_id}/warehouse/list`;
             },
             props: true,
             children: [
