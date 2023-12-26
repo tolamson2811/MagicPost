@@ -10,24 +10,6 @@
                         class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         ID
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrows-up-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'default'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-up"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'increase'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'decrease'"
-                            @click="toggleIdFilter()"
-                        />
                     </th>
                     <th
                         class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
@@ -59,6 +41,7 @@
                             type="text"
                             placeholder="ID đơn hàng"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
+                            @input="searchByPackageId($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -66,6 +49,17 @@
                             type="text"
                             placeholder="Ngày nhập kho"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
+                            @input="searchByTimeArrived($event.target.value)"
+                        />
+                    </td>
+                    <td class="mt-1 border-e-2 border-white p-1">
+                        <input
+                            type="text"
+                            placeholder="Nơi đến"
+                            class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
+                            @input="
+                                searchByReceiverAddress($event.target.value)
+                            "
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1"></td>
@@ -76,7 +70,8 @@
                 <!-- Hiển thị data  -->
                 <tr
                     class="bg-gray-200"
-                    v-for="status in packageStatuses"
+                    v-for="(status, index) in packageStatuses"
+                    :class="index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-300'"
                     :key="status.id"
                 >
                     <td class="border-e-2 border-white py-1 text-center">
@@ -178,15 +173,15 @@
             @close="handleUpdateStatus"
             @exit="resetFormUpdateStatus"
         >
-            <form action="" class="flex flex-col gap-2">
-                <div class="grid grid-cols-2 items-center">
-                    <label for="action" class="font-semibold"
-                        >Trạng thái kế tiếp:</label
+            <form class="flex flex-col gap-2">
+                <div class="grid grid-cols-3 items-center justify-start">
+                    <label for="action" class="text-start font-semibold"
+                        >Trạng thái:</label
                     >
                     <select
                         name=""
                         id="action"
-                        class="rounded border border-black px-2 py-1"
+                        class="col-span-2 rounded border border-black px-2 py-1"
                         v-model="updatePackageStatus.nextStatus"
                     >
                         <option value="Chuyển đến điểm tập kết">
@@ -196,19 +191,19 @@
                     </select>
                 </div>
                 <div
-                    class="grid grid-cols-2 items-center"
+                    class="grid grid-cols-3 items-center justify-start"
                     v-if="
                         updatePackageStatus.nextStatus ===
                         'Chuyển đến điểm tập kết'
                     "
                 >
-                    <label for="aggregation" class="font-semibold"
+                    <label for="aggregation" class="text-start font-semibold"
                         >Điểm tập kết:</label
                     >
                     <select
                         name=""
                         id="aggregation"
-                        class="rounded border border-black px-2 py-1"
+                        class="col-span-2 rounded border border-black px-2 py-1"
                         v-model="updatePackageStatus.aggregation"
                     >
                         <option value="Điểm tập kết">Điểm tập kết</option>
@@ -235,12 +230,8 @@
 </template>
 
 <script>
-import UpdateStatus from "../../../../components/packages/UpdateStatus.vue";
 export default {
     props: ["employee_id"],
-    components: {
-        UpdateStatus,
-    },
     data() {
         return {
             idFilter: "default",
@@ -301,9 +292,9 @@ export default {
                     };
                 } else {
                     formData = {
-                        package_status: this.updatePackageStatus.nextStatus,
+                        status: this.updatePackageStatus.nextStatus,
                         package_id: this.updatePackageStatus.package_id,
-                        location_id: this.updatePackageStatus.location_id,
+                        location_id: this.location_id,
                     };
                 }
                 await this.$store.dispatch(
@@ -320,6 +311,7 @@ export default {
             } catch (error) {
                 this.error = error.message;
             }
+            this.isLoading = false;
         },
         resetFormUpdateStatus() {
             this.updatePackageStatus = {
@@ -356,6 +348,50 @@ export default {
                 location_id,
             );
             this.packageStatuses = res;
+        },
+        //Phần search
+        removeAccents(str) {
+            return str
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/Đ/g, "D");
+        },
+        async searchByPackageId(string) {
+            if (string === "") {
+                this.getPackageStatusByLocationId(this.location_id);
+            } else {
+                await this.getPackageStatusByLocationId(this.location_id);
+                this.packageStatuses = this.packageStatuses.filter((order) =>
+                    this.removeAccents(order.package_id.toString()).includes(
+                        this.removeAccents(string),
+                    ),
+                );
+            }
+        },
+        async searchByTimeArrived(string) {
+            if (string === "") {
+                this.getPackageStatusByLocationId(this.location_id);
+            } else {
+                await this.getPackageStatusByLocationId(this.location_id);
+                this.packageStatuses = this.packageStatuses.filter((order) =>
+                    this.removeAccents(order.createdAt).includes(
+                        this.removeAccents(string),
+                    ),
+                );
+            }
+        },
+        async searchByReceiverAddress(string) {
+            if (string === "") {
+                this.getPackageStatusByLocationId(this.location_id);
+            } else {
+                await this.getPackageStatusByLocationId(this.location_id);
+                this.packageStatuses = this.packageStatuses.filter((order) =>
+                    this.removeAccents(order.destination).includes(
+                        this.removeAccents(string),
+                    ),
+                );
+            }
         },
     },
     async mounted() {

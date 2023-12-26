@@ -1,8 +1,11 @@
 <template>
     <div class="mt-16 flex w-full items-center bg-gray-100 lg:mt-20">
         <div
-            class="flex h-full w-full flex-col items-start justify-start gap-4"
+            class="mt-4 flex h-full w-full flex-col items-start justify-start gap-4"
         >
+            <h1 class="mx-auto text-lg font-bold text-sky-900">
+                Thông tin đơn hàng
+            </h1>
             <table class="w-full">
                 <tr class="grid grid-cols-2">
                     <th
@@ -132,6 +135,60 @@
                     </td>
                 </tr>
             </table>
+            <h1 class="mx-auto text-lg font-bold text-sky-900">
+                Trạng thái giao hàng
+            </h1>
+            <table class="w-full">
+                <tr class="grid grid-cols-5">
+                    <th
+                        class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                    >
+                        Lượt
+                    </th>
+                    <th
+                        class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                    >
+                        Trạng thái
+                    </th>
+
+                    <th
+                        class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                    >
+                        Thời gian giao
+                    </th>
+                    <th
+                        class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                    >
+                        ID giao dịch viên
+                    </th>
+                    <th
+                        class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                    >
+                        *Lí do giao thất bại
+                    </th>
+                </tr>
+
+                <tr
+                    v-for="(status, index) in package_status"
+                    :key="index"
+                    class="grid grid-cols-5 bg-gray-200"
+                >
+                    <td class="border-e-2 border-white text-center">
+                        {{ index + 1 }}
+                    </td>
+                    <td class="border-e-2 border-white text-center">
+                        {{ status.status }}
+                    </td>
+                    <td class="border-e-2 border-white text-center">
+                        {{ status.time_delivery }}
+                    </td>
+                    <td class="border-e-2 border-white text-center">
+                        {{ status.shipper_id }}
+                    </td>                    <td class="border-e-2 border-white text-center">
+                        {{ status.fail_reason }}
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </template>
@@ -143,6 +200,7 @@ export default {
         return {
             package_detail: {},
             error: null,
+            package_status: [],
         };
     },
     methods: {
@@ -157,9 +215,16 @@ export default {
                 this.error = error.message;
             }
         },
+        async getDeliveryStatus() {
+            this.package_status = await this.$store.dispatch(
+                "package/getDeliveryStatus",
+                this.package_id,
+            );
+        },
     },
     mounted() {
         this.getPackageDetail();
+        this.getDeliveryStatus();
     },
 };
 </script>

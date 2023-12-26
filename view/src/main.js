@@ -11,6 +11,7 @@ import Notifications from "@kyvg/vue3-notification";
 import BaseDialog from "./components/ui/BaseDialog.vue";
 import BaseSpinner from "./components/ui/BaseSpinner.vue";
 import BaseList from "./components/ui/BaseList.vue";
+import UpdateStatus from './components/packages/UpdateStatus.vue'
 /* import the fontawesome core */
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -31,6 +32,7 @@ app.use(store);
 app.component("BaseDialog", BaseDialog);
 app.component("BaseSpinner", BaseSpinner);
 app.component("BaseList", BaseList);
+app.component("UpdateStatus", UpdateStatus);
 
 
 //use fontawesome

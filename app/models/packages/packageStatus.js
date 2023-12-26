@@ -20,10 +20,6 @@ const PackageStatus = sequelize.define("PackageStatus", {
         type: Sequelize.STRING,
         allowNull: true,
     },
-    time_delivery: {
-        type: Sequelize.DATE,
-        allowNull: true,
-    },
     location_id: {
         type: Sequelize.INTEGER,
         allowNull: true,

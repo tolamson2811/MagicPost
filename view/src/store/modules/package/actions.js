@@ -23,11 +23,12 @@ export default {
 
     async getPackageStatusByLocationId(context, location_id) {
         const response = await fetch(
-            context.rootGetters.getApiUrl + `package/list?location_id=${location_id}`,
+            context.rootGetters.getApiUrl +
+                `package/list?location_id=${location_id}`,
             {
                 method: "GET",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
             },
         );
@@ -47,7 +48,7 @@ export default {
             {
                 method: "GET",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
             },
         );
@@ -77,6 +78,94 @@ export default {
         if (!response.ok) {
             const error = new Error(
                 responseData.message || "Không thể thêm trạng thái đơn hàng!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
+
+    async getDeliveringPackage(context, location_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/list/transport?location_id=${location_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách đơn hàng đang vận chuyển!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
+
+    async getDeliveredPackage(context, location_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/list/delivered?location_id=${location_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách đơn hàng đã giao!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
+
+    async getFailedDeliveryPackage(context, location_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/list/failed?location_id=${location_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách đơn hàng giao thất bại!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
+
+    async getDeliveryStatus(context, package_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/detail/delivery/${package_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy trạng thái đơn hàng!",
             );
             throw error;
         }
