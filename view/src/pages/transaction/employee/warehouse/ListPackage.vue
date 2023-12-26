@@ -321,6 +321,7 @@ export default {
                 location_id: null,
             };
             this.isUpdateStatus = false;
+            this.isLoading = false;
         },
         async getLocationId() {
             const res = await this.$store.dispatch(
