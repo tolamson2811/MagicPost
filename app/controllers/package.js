@@ -3,6 +3,8 @@ const PackagesDetail = require("../models/packages/packagesDetail");
 const Packages = require("../models/packages/packages");
 const PackagesStatus = require("../models/packages/packageStatus");
 
+const { Op } = require("sequelize");
+
 // Khi tạo một đơn hàng mới phải tạo chi tiết đơn hàng và trạng thái đơn hàng
 exports.createNewOrder = async (req, res, next) => {
     const errors = validationResult(req);
@@ -72,27 +74,29 @@ exports.createNewOrder = async (req, res, next) => {
     }
 };
 
-// Lấy danh sách đơn hàng theo từng địa điểm
-exports.getListPackage = async (req, res, next) => {
+// Lấy danh sách đơn hàng theo từng địa điểm giao dịch
+exports.getPackgesByTransaction = async (req, res, next) => {
     const location_id = req.query.location_id;
 
     try {
         const packageStatuses = await PackagesStatus.findAll({
-            where: { location_id: location_id },
+            where: {
+                location_id: location_id,
+            },
         });
 
-        // Sử dụng set để lấy ra các package_status mới nhất
+        // Sử dụng set để lấy ra các package_status mới nhất của đơn hàng thuộc location
         let mapByPackageId = new Map();
         packageStatuses.forEach((status) => {
-            console.log(status.dataValues);
-
             const currentSatus = mapByPackageId.get(
                 status.dataValues.package_id
             );
 
             if (
-                !currentSatus ||
-                currentSatus.createdAt < status.dataValues.createdAt
+                (!currentSatus ||
+                    currentSatus.createdAt < status.dataValues.createdAt) &&
+                status.dataValues.status !== "Đang giao hàng" &&
+                status.dataValues.status !== "Giao thành công"
             ) {
                 // Cập nhật mapByPackageId với createdAt đã được chuyển đổi
                 mapByPackageId.set(
@@ -101,8 +105,9 @@ exports.getListPackage = async (req, res, next) => {
                 );
             }
         });
-        let newPackageStatuses = Array.from(mapByPackageId.values());
 
+        //Check xem có phải là trạng thái mới nhất của đơn hàng đó không
+        let newPackageStatuses = Array.from(mapByPackageId.values());
         newPackageStatuses = await Promise.all(
             newPackageStatuses.map(async (status) => {
                 const packages = await PackagesStatus.findAll({
@@ -118,10 +123,9 @@ exports.getListPackage = async (req, res, next) => {
                 }
             })
         );
-
         newPackageStatuses = newPackageStatuses.filter(Boolean);
 
-        // Lấy thông tin địa điểm đích của đơn hàng
+        //Lấy ra tất cả trạng thái đơn hàng của điểm giao dịch
         const promises = newPackageStatuses.map(async (status) => {
             const packageDetail = await PackagesDetail.findOne({
                 where: { package_id: status.package_id },
@@ -141,14 +145,199 @@ exports.getListPackage = async (req, res, next) => {
                 createdAt: createdAt,
             };
         });
-
-        //Lấy ra tất cả trạng thái đơn hàng của điểm giao dịch
         const result = await Promise.all(promises);
-
-        // console.log(result);
 
         res.status(200).json(result);
     } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+exports.getDeliveringPackage = async (req, res, next) => {
+    const location_id = req.query.location_id;
+
+    try {
+        const packages = await PackagesStatus.findAll({
+            where: { location_id: location_id, status: "Đang giao hàng" },
+        });
+
+        //Sử dụng set để lấy ra các package_status mới nhất của đơn hàng thuộc location
+        let mapByPackageId = new Map();
+        packages.forEach((status) => {
+            const currentSatus = mapByPackageId.get(
+                status.dataValues.package_id
+            );
+
+            if (
+                (!currentSatus ||
+                    currentSatus.createdAt < status.dataValues.createdAt) &&
+                status.dataValues.status === "Đang giao hàng"
+            ) {
+                // Cập nhật mapByPackageId với createdAt đã được chuyển đổi
+                mapByPackageId.set(
+                    status.dataValues.package_id,
+                    status.dataValues
+                );
+            }
+        });
+
+        //Check xem có phải là trạng thái mới nhất của đơn hàng đó không
+        let newPackageStatuses = Array.from(mapByPackageId.values());
+        newPackageStatuses = await Promise.all(
+            newPackageStatuses.map(async (status) => {
+                const packages = await PackagesStatus.findAll({
+                    where: { package_id: status.package_id },
+                });
+
+                const isLatest = packages.every(
+                    (package) => package.createdAt <= status.createdAt
+                );
+
+                if (isLatest) {
+                    return status;
+                }
+            })
+        );
+        newPackageStatuses = newPackageStatuses.filter(Boolean);
+
+        const promises = newPackageStatuses.map(async (status) => {
+            const packageDetail = await PackagesDetail.findOne({
+                where: { package_id: status.package_id },
+            });
+            const data = {
+                package_id: status.package_id,
+                receiver_name: packageDetail.receiver_name,
+                receiver_phone: packageDetail.receiver_phone,
+                receiver_address: `${packageDetail.receiver_detail_address}, ${packageDetail.receiver_ward}, ${packageDetail.receiver_district}, ${packageDetail.receiver_province}`,
+            };
+
+            return data;
+        });
+
+        const result = await Promise.all(promises);
+
+        res.status(200).json(result);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+//Lấy danh sách đơn hàng giao thành công theo location_id
+exports.getDeliveredPackage = async (req, res, next) => {
+    const location_id = req.query.location_id;
+
+    try {
+        const packages = await PackagesStatus.findAll({
+            where: { location_id: location_id, status: "Giao thành công" },
+        });
+
+        //Lấy thông tin chi tiết
+        const promises = packages.map(async (status) => {
+            const packageDetail = await PackagesDetail.findOne({
+                where: { package_id: status.package_id },
+            });
+            const data = {
+                package_id: status.package_id,
+                receiver_name: packageDetail.receiver_name,
+                receiver_phone: packageDetail.receiver_phone,
+                receiver_address: `${packageDetail.receiver_detail_address}, ${packageDetail.receiver_ward}, ${packageDetail.receiver_district}, ${packageDetail.receiver_province}`,
+                time_delivery: formatDate(status.createdAt),
+                shipper_id: status.shipper_id,
+            };
+
+            return data;
+        });
+
+        const result = await Promise.all(promises);
+
+        res.status(200).json(result);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+//Lấy danh sách đơn hàng giao thất bại theo location_id
+exports.getFailedDeliveryPackage = async (req, res, next) => {
+    const location_id = req.query.location_id;
+
+    try {
+        const packages = await PackagesStatus.findAll({
+            where: { location_id: location_id, status: "Giao thất bại" },
+            order: [["package_id", "ASC"]],
+        });
+
+        //Lấy thông tin chi tiết
+        const promises = packages.map(async (status) => {
+            const packageDetail = await PackagesDetail.findOne({
+                where: { package_id: status.package_id },
+            });
+            const data = {
+                package_id: status.package_id,
+                receiver_name: packageDetail.receiver_name,
+                receiver_phone: packageDetail.receiver_phone,
+                receiver_address: `${packageDetail.receiver_detail_address}, ${packageDetail.receiver_ward}, ${packageDetail.receiver_district}, ${packageDetail.receiver_province}`,
+                time_delivery: formatDate(status.createdAt),
+                shipper_id: status.shipper_id,
+                fail_reason: status.fail_reason,
+            };
+
+            return data;
+        });
+
+        const result = await Promise.all(promises);
+
+        res.status(200).json(result);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+//Lấy trạng thái giao hàng theo package_id
+exports.getDeliveryStatus = async (req, res, next) => {
+    try {
+        const statuses = await PackagesStatus.findAll({
+            where: {
+                package_id: req.params.package_id,
+                [Op.or]: [
+                    {
+                        status: "Giao thất bại",
+                    },
+                    {
+                        status: "Giao thành công",
+                    },
+                ],
+            },
+            order: [["createdAt", "ASC"]],
+        });
+
+        let result = []
+
+        for (let status of statuses) { 
+            result.push({
+                status: status.status,
+                time_delivery: formatDate(status.createdAt),
+                shipper_id: status.shipper_id,
+                fail_reason: status.fail_reason,
+            })
+        }
+
+        res.status(200).json(result);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
         next(error);
     }
 };
@@ -194,15 +383,24 @@ exports.addPackageStatus = async (req, res, next) => {
     const next_destination = req.body.next_destination;
 
     let package_status = "";
-    if (status === "Chuyển đến điểm tập kết") {
-        package_status =
-            "Đang trung chuyển đến điểm tập kết " + next_destination;
+    switch (status) {
+        case "Chuyển đến điểm tập kết":
+            package_status = "Đang trung chuyển đến điểm tập kết";
+            break;
+        case "Giao hàng":
+            package_status = "Đang giao hàng";
+            break;
+        case "Chuyển đến điểm giao dịch":
+            package_status = "Đang trung chuyển đến điểm giao dịch";
+            break;
+        default:
+            break;
     }
 
     try {
         const new_package_status = new PackagesStatus({
             package_id: package_id,
-            status: package_status,
+            status: package_status || status,
             fail_reason: fail_reason,
             time_delivery: time_delivery,
             shipper_id: shipper_id,
@@ -212,6 +410,9 @@ exports.addPackageStatus = async (req, res, next) => {
 
         res.status(201).json({ ...result.dataValues });
     } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
         next(error);
     }
 };

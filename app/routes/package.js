@@ -30,12 +30,26 @@ router.post(
 );
 
 // Lấy danh sách đơn hàng theo từng location_id
-router.get("/list", packageController.getListPackage);
+router.get("/list", packageController.getPackgesByTransaction);
 
 // lấy chi tiết đơn hàng
 router.get("/detail/:package_id", packageController.getPackageDetail);
 
 // Thêm trạng thái đơn hàng
 router.post("/status/add", isAuth, packageController.addPackageStatus);
+
+// Lấy danh đơn hàng đang 
+// GET /package/list/transport?location_id=
+router.get("/list/transport", packageController.getDeliveringPackage);
+
+// Lấy danh sách đơn hàng đã giao
+// GET /package/list/delivered?location_id=
+router.get("/list/delivered", packageController.getDeliveredPackage);
+
+// GET /package/list/failed?location_id=
+router.get("/list/failed", packageController.getFailedDeliveryPackage);
+
+//GET package/detail/delivery/:package_id
+router.get("/detail/delivery/:package_id", packageController.getDeliveryStatus);
 
 module.exports = router;

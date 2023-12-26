@@ -15,7 +15,7 @@
                     class="flex flex-col items-center justify-between gap-4 rounded-lg p-2"
                 >
                     <header
-                        class="flex w-full items-center justify-between text-sm font-bold text-sky-900 md:text-base lg:text-lg"
+                        class="flex w-full items-center justify-between gap-4 text-sm font-bold text-sky-900 md:text-base lg:text-lg"
                     >
                         <div></div>
                         <slot name="header">
