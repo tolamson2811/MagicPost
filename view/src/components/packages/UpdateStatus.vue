@@ -15,11 +15,17 @@
                     class="flex flex-col items-center justify-between gap-4 rounded-lg p-2"
                 >
                     <header
-                        class="text-sm font-bold text-sky-900 md:text-base lg:text-lg"
+                        class="flex w-full items-center justify-between text-sm font-bold text-sky-900 md:text-base lg:text-lg"
                     >
+                        <div></div>
                         <slot name="header">
                             <h2>{{ title }}</h2>
                         </slot>
+                        <font-awesome-icon
+                            icon="fa-solid fa-xmark"
+                            class="hover:cursor-pointer hover:text-sky-950"
+                            @click="tryExit"
+                        />
                     </header>
                     <section
                         class="text-center text-xs text-sky-900 md:text-sm lg:text-base"
@@ -54,10 +60,13 @@ export default {
             required: true,
         },
     },
-    emits: ["close"],
+    emits: ["close", "exit"],
     methods: {
         tryClose() {
             this.$emit("close");
+        },
+        tryExit() {
+            this.$emit("exit");
         },
     },
 };
