@@ -299,6 +299,7 @@ export default {
                 this.error = error.message;
             }
         },
+        //Phần cập nhật trạng thái đơn hàng
         handleClickUpdateStatus(order) {
             this.updatePackageStatus.package_id = order.package_id;
             this.updatePackageStatus.shipper_id = this.employee_id;

@@ -120,6 +120,7 @@
             :show="!!clickDelete.value"
             title="Xác nhận xóa tài khoản"
             @close="confirmDelete(clickDelete.id)"
+            @exit="this.clickDelete = { value: false, id: null }"
         >
             <p>Sau khi xóa, tài khoản không thể khôi phục!</p>
         </base-dialog>

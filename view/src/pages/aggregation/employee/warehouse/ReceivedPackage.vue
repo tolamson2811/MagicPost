@@ -12,7 +12,7 @@
                         ID
                     </th>
                     <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Ngày trung chuyển
                     </th>
@@ -139,7 +139,7 @@
             @close="handleConfirmImport"
         >
             <p>
-                Khi xác nhận, đơn hàng sẽ thuộc sự quản lý của điểm giao dịch này!
+                Khi xác nhận, đơn hàng sẽ thuộc sự quản lý của điểm tập kết này!
             </p>
         </base-dialog>
         <base-spinner v-if="isLoading"></base-spinner>
@@ -178,11 +178,10 @@ export default {
         async getPackageStatusByLocationId() {
             try {
                 const res = await this.$store.dispatch(
-                    "package/getTransactionWaitingPackage",
+                    "package/getAggregationWaitingPackage",
                     this.location_id,
                 );
                 this.packageStatuses = res;
-                console.log(this.packageStatuses);
             } catch (error) {
                 this.error = error.message;
             }
@@ -256,7 +255,7 @@ export default {
         async handleConfirmImport() {
             const formData = {
                 package_id: this.isConfirmImport.package_id,
-                status: "Đang ở điểm giao dịch",
+                status: "Đang ở điểm tập kết",
                 location_id: this.location_id,
             };
 

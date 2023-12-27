@@ -176,7 +176,14 @@
                     <td class="border-e-2 border-white text-center">
                         {{ index + 1 }}
                     </td>
-                    <td class="border-e-2 border-white text-center">
+                    <td
+                        class="border-e-2 border-white text-center"
+                        :class="
+                            status.status == 'Giao thành công'
+                                ? 'font-bold text-red-500'
+                                : 'text-black'
+                        "
+                    >
                         {{ status.status }}
                     </td>
                     <td class="border-e-2 border-white text-center">
@@ -184,7 +191,8 @@
                     </td>
                     <td class="border-e-2 border-white text-center">
                         {{ status.shipper_id }}
-                    </td>                    <td class="border-e-2 border-white text-center">
+                    </td>
+                    <td class="border-e-2 border-white text-center">
                         {{ status.fail_reason }}
                     </td>
                 </tr>

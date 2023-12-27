@@ -279,6 +279,12 @@ export default {
                 id: id,
             };
         },
+        async test() {
+            this.clickDelete = {
+                value: false,
+                id: null,
+            };
+        },
         async confirmDelete(id) {
             try {
                 this.isLoading = true;

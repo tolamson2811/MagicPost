@@ -5,6 +5,7 @@ const { body } = require("express-validator");
 const isAuth = require("../middleware/is-auth");
 
 const transactionAccountController = require("../controllers/transaction/accounts");
+const transactionController = require('../controllers/transaction/transaction')
 
 const Transactions = require("../models/locations/transactions");
 const Accounts = require("../models/users/accounts");
@@ -49,6 +50,12 @@ router.delete(
     "/leader/account/delete/:account_id",
     isAuth,
     transactionAccountController.deleteTransactionEmployee
+);
+
+//GET /transaction/location/id?province=...&district=...
+router.get(
+    "/location/id",
+    transactionController.getLocationIdOfTransactionByName
 );
 
 module.exports = router;

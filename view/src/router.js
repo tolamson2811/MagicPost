@@ -1,95 +1,110 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { defineAsyncComponent } from "vue";
 
-const PackageHistory = defineAsyncComponent(() =>
-    import("./pages/customer/PackageHistory.vue")
+const PackageHistory = defineAsyncComponent(
+    () => import("./pages/customer/PackageHistory.vue"),
 );
 const HomePage = defineAsyncComponent(() => import("./pages/HomePage.vue"));
-const AuthPage = defineAsyncComponent(() =>
-    import("./pages/auth/AuthPage.vue")
+const AuthPage = defineAsyncComponent(
+    () => import("./pages/auth/AuthPage.vue"),
 );
-const ManagerPage = defineAsyncComponent(() =>
-    import("./pages/manager/ManagerPage.vue")
+const ManagerPage = defineAsyncComponent(
+    () => import("./pages/manager/ManagerPage.vue"),
 );
-const ManageAggregation = defineAsyncComponent(() =>
-    import("./pages/manager/ManageAggregation.vue")
+const ManageAggregation = defineAsyncComponent(
+    () => import("./pages/manager/ManageAggregation.vue"),
 );
-const ManageTransaction = defineAsyncComponent(() =>
-    import("./pages/manager/ManageTransaction.vue")
+const ManageTransaction = defineAsyncComponent(
+    () => import("./pages/manager/ManageTransaction.vue"),
 );
-const CreateAccount = defineAsyncComponent(() =>
-    import("./pages/manager/CreateAccount.vue")
+const CreateAccount = defineAsyncComponent(
+    () => import("./pages/manager/CreateAccount.vue"),
 );
-const ListAccount = defineAsyncComponent(() =>
-    import("./pages/manager/ListAccount.vue")
+const ListAccount = defineAsyncComponent(
+    () => import("./pages/manager/ListAccount.vue"),
 );
-const StatisticAggregation = defineAsyncComponent(() =>
-    import("./pages/manager/StatisticAggregation.vue")
+const StatisticAggregation = defineAsyncComponent(
+    () => import("./pages/manager/StatisticAggregation.vue"),
 );
-const StatisticTransaction = defineAsyncComponent(() =>
-    import("./pages/manager/StatisticTransaction.vue")
+const StatisticTransaction = defineAsyncComponent(
+    () => import("./pages/manager/StatisticTransaction.vue"),
 );
-const PackageDetail = defineAsyncComponent(() =>
-    import("./pages/PackageDetail.vue")
+const PackageDetail = defineAsyncComponent(
+    () => import("./pages/PackageDetail.vue"),
 );
-const PackageList = defineAsyncComponent(() =>
-    import("./pages/customer/PackageList.vue")
+const PackageList = defineAsyncComponent(
+    () => import("./pages/customer/PackageList.vue"),
 );
 // Route của điểm tập kết
-const LeaderAggregation = defineAsyncComponent(() =>
-    import("./pages/aggregation/leader/LeaderAggregation.vue")
+const LeaderAggregation = defineAsyncComponent(
+    () => import("./pages/aggregation/leader/LeaderAggregation.vue"),
 );
-const LeaderCreateAccount = defineAsyncComponent(() =>
-    import("./pages/aggregation/leader/CreateAccount.vue")
+const LeaderCreateAccount = defineAsyncComponent(
+    () => import("./pages/aggregation/leader/CreateAccount.vue"),
 );
-const LeaderListAccount = defineAsyncComponent(() =>
-    import("./pages/aggregation/leader/ListAccount.vue")
+const LeaderListAccount = defineAsyncComponent(
+    () => import("./pages/aggregation/leader/ListAccount.vue"),
 );
-const LeaderStatisticAggregation = defineAsyncComponent(() =>
-    import("./pages/aggregation/leader/StatisticAggregation.vue")
+const LeaderStatisticAggregation = defineAsyncComponent(
+    () => import("./pages/aggregation/leader/StatisticAggregation.vue"),
 );
 // Route của điểm giao dịch
-const LeaderTransaction = defineAsyncComponent(() =>
-    import("./pages/transaction/leader/LeaderTransaction.vue")
+const LeaderTransaction = defineAsyncComponent(
+    () => import("./pages/transaction/leader/LeaderTransaction.vue"),
 );
-const CreateTransactionAccount = defineAsyncComponent(() =>
-    import("./pages/transaction/leader/CreateAccount.vue")
+const CreateTransactionAccount = defineAsyncComponent(
+    () => import("./pages/transaction/leader/CreateAccount.vue"),
 );
-const ListTransactionAccount = defineAsyncComponent(() =>
-    import("./pages/transaction/leader/ListAccount.vue")
+const ListTransactionAccount = defineAsyncComponent(
+    () => import("./pages/transaction/leader/ListAccount.vue"),
 );
-const StatisticTransactionSent = defineAsyncComponent(() =>
-    import("./pages/transaction/leader/StatisticSent.vue")
+const StatisticTransactionSent = defineAsyncComponent(
+    () => import("./pages/transaction/leader/StatisticSent.vue"),
 );
-const StatisticTransactionReceived = defineAsyncComponent(() =>
-    import("./pages/transaction/leader/StatisticReceived.vue")
+const StatisticTransactionReceived = defineAsyncComponent(
+    () => import("./pages/transaction/leader/StatisticReceived.vue"),
 );
-const EmployeeTransaction = defineAsyncComponent(() =>
-    import("./pages/transaction/employee/EmployeeTransaction.vue")
+const EmployeeTransaction = defineAsyncComponent(
+    () => import("./pages/transaction/employee/EmployeeTransaction.vue"),
 );
-const CreateTransportPackage = defineAsyncComponent(() =>
-    import("./pages/transaction/employee/transport/CreateTransport.vue")
+const CreateTransportPackage = defineAsyncComponent(
+    () => import("./pages/transaction/employee/transport/CreateTransport.vue"),
 );
-const TransportPackageStatus = defineAsyncComponent(() =>
-    import("./pages/transaction/employee/transport/PackageStatus.vue")
+const TransportPackageStatus = defineAsyncComponent(
+    () => import("./pages/transaction/employee/transport/PackageStatus.vue"),
 );
-const ListPackageWarehouse = defineAsyncComponent(() =>
-    import("./pages/transaction/employee/warehouse/ListPackage.vue")
+const ListPackageWarehouse = defineAsyncComponent(
+    () => import("./pages/transaction/employee/warehouse/ListPackage.vue"),
 );
-const ReceivedPackageFromAggregation = defineAsyncComponent(() =>
-    import("./pages/transaction/employee/warehouse/ReceivedAggregation.vue")
+const ReceivedPackageFromAggregation = defineAsyncComponent(
+    () =>
+        import(
+            "./pages/transaction/employee/warehouse/ReceivedAggregation.vue"
+        ),
 );
-const SendPackageToAggregation = defineAsyncComponent(() =>
-    import("./pages/transaction/employee/warehouse/SendAggregation.vue")
+const SendPackageToAggregation = defineAsyncComponent(
+    () => import("./pages/transaction/employee/warehouse/SendAggregation.vue"),
 );
-const SuccessDelivery = defineAsyncComponent(() =>
-    import("./pages/transaction/employee/statistic/SuccessDelivery.vue")
+const SuccessDelivery = defineAsyncComponent(
+    () => import("./pages/transaction/employee/statistic/SuccessDelivery.vue"),
 );
-const FailedDelivery = defineAsyncComponent(() =>
-    import("./pages/transaction/employee/statistic/FailedDelivery.vue")
+const FailedDelivery = defineAsyncComponent(
+    () => import("./pages/transaction/employee/statistic/FailedDelivery.vue"),
 );
-const CreateOrder = defineAsyncComponent(() =>
-    import("./pages/transaction/employee/warehouse/CreateOrder.vue")
+const CreateOrder = defineAsyncComponent(
+    () => import("./pages/transaction/employee/warehouse/CreateOrder.vue"),
+);
+const AggregationEmployeePage = defineAsyncComponent(
+    () => import("./pages/aggregation/employee/EmployeeAggregation.vue"),
+);
+const AggregationListPackages = defineAsyncComponent(
+    () => import("./pages/aggregation/employee/warehouse/ListPackage.vue"),
+);
+const AggregationReceivedPackage = defineAsyncComponent(
+    () =>
+        import(
+            "./pages/aggregation/employee/warehouse/ReceivedPackage.vue"
+        ),
 );
 
 const router = createRouter({
@@ -159,33 +174,27 @@ const router = createRouter({
             component: PackageDetail,
             props: true,
         },
-        // {
-        //     path: "/leader",
-        //     redirect: "/leader/system/aggregation",
-        //     component: LeaderPage,
-        //     children: [
-        //         {
-        //             path: "system/transaction",
-        //             component: LeaderTransaction,
-        //         },
-        //         {
-        //             path: "account/create",
-        //             component: LeaderCreateAccount,
-        //         },
-        //         {
-        //             path: "account/list",
-        //             component: LeaderListAccount,
-        //         },
-        //         {
-        //             path: "statistic/aggregation",
-        //             component: LeaderStatisticAggregation,
-        //         },
-        //         {
-        //             path: "statistic/transaction",
-        //             component: LeaderStatisticTransaction,
-        //         },
-        //     ],
-        // },
+        {
+            path: "/aggregation/employee/:employee_id",
+            component: AggregationEmployeePage,
+            props: true,
+            redirect: (to) => {
+                const { params } = to;
+                return `/aggregation/employee/${params.employee_id}/warehouse/list`;
+            },
+            children: [
+                {
+                    path: "warehouse/list",
+                    component: AggregationListPackages,
+                    props: true,
+                },
+                {
+                    path: "warehouse/received",
+                    component: AggregationReceivedPackage,
+                    props: true,
+                }
+            ],
+        },
         {
             path: "/aggregation/leader/:leader_id",
             component: LeaderAggregation,

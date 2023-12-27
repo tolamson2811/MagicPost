@@ -12,17 +12,17 @@
                         ID
                     </th>
                     <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-3/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Địa chỉ nhận
                     </th>
                     <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-1/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Họ tên người nhận
                     </th>
                     <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-1/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         SĐT người nhận
                     </th>
@@ -37,7 +37,7 @@
                         Lí do
                     </th>
                     <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-1/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Chi tiết đơn hàng
                     </th>
