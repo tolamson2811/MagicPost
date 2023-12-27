@@ -59,7 +59,9 @@
                             @keyup="searchByEmail($event.target.value)"
                         />
                     </td>
-                    <td class="p-1 mt-1 border-e-2 border-white"></td>
+                    <td class="mt-1 border-e-2 border-white p-1 flex items-center justify-center text-rose-600 font-bold italic">
+                        <p>{{ employees.length }} tài khoản</p>
+                    </td>
                 </tr>
 
                 <!-- Hiển thị data  -->

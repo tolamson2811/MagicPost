@@ -45,9 +45,25 @@ const LeaderCreateAccount = defineAsyncComponent(
 const LeaderListAccount = defineAsyncComponent(
     () => import("./pages/aggregation/leader/ListAccount.vue"),
 );
-const LeaderStatisticAggregation = defineAsyncComponent(
-    () => import("./pages/aggregation/leader/StatisticAggregation.vue"),
+const AggregationEmployeePage = defineAsyncComponent(
+    () => import("./pages/aggregation/employee/EmployeeAggregation.vue"),
 );
+const AggregationListPackages = defineAsyncComponent(
+    () => import("./pages/aggregation/employee/warehouse/ListPackage.vue"),
+);
+const AggregationReceivedPackage = defineAsyncComponent(
+    () => import("./pages/aggregation/employee/warehouse/ReceivedPackage.vue"),
+);
+const AggregationTotalPackage = defineAsyncComponent(
+    () => import("./pages/aggregation/employee/statistic/TotalPackages.vue"),
+);
+const AggregationStatisticReceived = defineAsyncComponent(
+    () => import("./pages/aggregation/leader/StatisticReceived.vue"),
+);
+const AggregationStatisticSent = defineAsyncComponent(
+    () => import("./pages/aggregation/leader/StatisticSent.vue"),
+);
+
 // Route của điểm giao dịch
 const LeaderTransaction = defineAsyncComponent(
     () => import("./pages/transaction/leader/LeaderTransaction.vue"),
@@ -82,9 +98,7 @@ const ReceivedPackageFromAggregation = defineAsyncComponent(
             "./pages/transaction/employee/warehouse/ReceivedAggregation.vue"
         ),
 );
-const SendPackageToAggregation = defineAsyncComponent(
-    () => import("./pages/transaction/employee/warehouse/SendAggregation.vue"),
-);
+
 const SuccessDelivery = defineAsyncComponent(
     () => import("./pages/transaction/employee/statistic/SuccessDelivery.vue"),
 );
@@ -93,18 +107,6 @@ const FailedDelivery = defineAsyncComponent(
 );
 const CreateOrder = defineAsyncComponent(
     () => import("./pages/transaction/employee/warehouse/CreateOrder.vue"),
-);
-const AggregationEmployeePage = defineAsyncComponent(
-    () => import("./pages/aggregation/employee/EmployeeAggregation.vue"),
-);
-const AggregationListPackages = defineAsyncComponent(
-    () => import("./pages/aggregation/employee/warehouse/ListPackage.vue"),
-);
-const AggregationReceivedPackage = defineAsyncComponent(
-    () =>
-        import(
-            "./pages/aggregation/employee/warehouse/ReceivedPackage.vue"
-        ),
 );
 
 const router = createRouter({
@@ -192,7 +194,12 @@ const router = createRouter({
                     path: "warehouse/received",
                     component: AggregationReceivedPackage,
                     props: true,
-                }
+                },
+                {
+                    path: "statistic/package/total",
+                    component: AggregationTotalPackage,
+                    props: true,
+                },
             ],
         },
         {
@@ -215,8 +222,13 @@ const router = createRouter({
                     props: true,
                 },
                 {
-                    path: "statistic",
-                    component: LeaderStatisticAggregation,
+                    path: "statistic/received",
+                    component: AggregationStatisticReceived,
+                    props: true,
+                },
+                {
+                    path: "statistic/sent",
+                    component: AggregationStatisticSent,
                     props: true,
                 },
             ],
@@ -279,11 +291,6 @@ const router = createRouter({
                 {
                     path: "warehouse/received",
                     component: ReceivedPackageFromAggregation,
-                    props: true,
-                },
-                {
-                    path: "warehouse/send",
-                    component: SendPackageToAggregation,
                     props: true,
                 },
                 {

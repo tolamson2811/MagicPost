@@ -10,24 +10,6 @@
                         class="w-1/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         ID
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrows-up-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'default'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-up"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'increase'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'decrease'"
-                            @click="toggleIdFilter()"
-                        />
                     </th>
                     <th
                         class="w-3/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
@@ -93,7 +75,11 @@
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1"></td>
-                    <td class="mt-1 border-e-2 border-white p-1"></td>
+                    <td
+                        class="mt-1 flex items-center justify-center border-e-2 border-white p-1 font-bold italic text-rose-600"
+                    >
+                        <p>{{ packages.length }} đơn hàng</p>
+                    </td>
                 </tr>
 
                 <tr
@@ -369,9 +355,9 @@ export default {
             } else {
                 await this.getPackages();
                 this.packages = this.packages.filter((order) =>
-                    this.removeAccents(order.receiver_address).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.receiver_address.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },
@@ -381,9 +367,9 @@ export default {
             } else {
                 await this.getPackages();
                 this.packages = this.packages.filter((order) =>
-                    this.removeAccents(order.receiver_name).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.receiver_name.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },

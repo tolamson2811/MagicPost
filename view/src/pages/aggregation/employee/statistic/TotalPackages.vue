@@ -16,16 +16,6 @@
                     >
                         Ngày nhập kho
                     </th>
-                    <th
-                        class="w-5/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
-                    >
-                        Địa chỉ người nhận
-                    </th>
-                    <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
-                    >
-                        Cập nhật đơn hàng
-                    </th>
 
                     <th
                         class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
@@ -52,22 +42,7 @@
                             @input="searchByTimeArrived($event.target.value)"
                         />
                     </td>
-                    <td class="mt-1 w-3/12 border-e-2 border-white p-1">
-                        <input
-                            type="text"
-                            placeholder="Địa chỉ người nhận"
-                            class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="
-                                searchByReceiverAddress($event.target.value)
-                            "
-                        />
-                    </td>
                     <td class="mt-1 border-e-2 border-white p-1"></td>
-                    <td
-                        class="mt-1 flex items-center justify-center border-e-2 border-white p-1 font-bold italic text-rose-600"
-                    >
-                        <p>{{ packageStatuses.length }} đơn hàng</p>
-                    </td>
                 </tr>
 
                 <!-- Hiển thị data  -->
@@ -82,17 +57,6 @@
                     </td>
                     <td class="border-e-2 border-white py-1 text-center">
                         {{ status.time_import }}
-                    </td>
-                    <td class="border-e-2 border-white py-1 text-center">
-                        {{ status.receiver_address }}
-                    </td>
-                    <td class="border-e-2 border-white py-1 text-center">
-                        <button
-                            class="rounded-lg bg-rose-500 px-2 py-1 font-bold text-white hover:cursor-pointer hover:bg-rose-600"
-                            @click="handleClickUpdateStatus(status)"
-                        >
-                            Cập nhật
-                        </button>
                     </td>
 
                     <td class="border-e-2 border-white py-1 text-center">
@@ -309,9 +273,9 @@ export default {
             } else {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(
-                        order.receiver_address.toLowerCase(),
-                    ).includes(this.removeAccents(string.toLowerCase())),
+                    this.removeAccents(order.receiver_address).includes(
+                        this.removeAccents(string),
+                    ),
                 );
             }
         },

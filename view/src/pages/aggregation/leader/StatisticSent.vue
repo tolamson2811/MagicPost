@@ -47,17 +47,18 @@
                             @input="searchByTimeExport($event.target.value)"
                         />
                     </td>
+
                     <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
                             placeholder="Nơi đến"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="
-                                searchByNextDestination($event.target.value)
-                            "
+                            @input="searchByNextDestination($event.target.value)"
                         />
                     </td>
-                    <td class="mt-1 border-e-2 border-white p-1 flex items-center justify-center text-rose-600 font-bold italic">
+                    <td
+                        class="mt-1 flex items-center justify-center border-e-2 border-white p-1 text-rose-600 font-bold italic"
+                    >
                         <p>{{ packageStatuses.length }} đơn hàng</p>
                     </td>
                 </tr>
@@ -122,7 +123,7 @@ export default {
         },
         async getPackageStatusByLocationId() {
             const res = await this.$store.dispatch(
-                "package/getTransactionExportPackages",
+                "package/getAggregationExportPackages",
                 this.location_id,
             );
             this.packageStatuses = res;
@@ -142,9 +143,9 @@ export default {
             } else {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.package_id.toString()).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.package_id.toString().toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },
@@ -154,21 +155,9 @@ export default {
             } else {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.time_export.toString()).includes(
-                        this.removeAccents(string),
-                    ),
-                );
-            }
-        },
-        async searchByNextStatus(string) {
-            if (string === "") {
-                this.getPackageStatusByLocationId();
-            } else {
-                await this.getPackageStatusByLocationId();
-                this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.next_status.toString()).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.time_export.toString().toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },
@@ -179,8 +168,8 @@ export default {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
                     this.removeAccents(
-                        order.next_destination.toString(),
-                    ).includes(this.removeAccents(string)),
+                        order.next_destination.toString().toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },

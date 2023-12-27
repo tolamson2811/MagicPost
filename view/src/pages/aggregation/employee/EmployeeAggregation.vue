@@ -2,7 +2,7 @@
     <main class="flex flex-col lg:flex-row">
         <!-- Side bar  -->
         <div
-            class="flex lg:min-h-screen w-full basis-1/4 flex-col gap-10 bg-orange-100 p-10 pt-20"
+            class="flex w-full basis-1/4 flex-col gap-10 bg-orange-100 p-10 pt-20 lg:min-h-screen"
         >
             <!-- Giới thiệu thông tin  -->
             <div class="flex flex-col items-center gap-2 rounded p-4">
@@ -70,59 +70,12 @@
                                 <font-awesome-icon
                                     icon="fa-solid fa-truck-fast"
                                 />
-                                Đơn đến 
+                                Đơn đến
                             </router-link>
                         </ul>
                     </transition>
                 </div>
 
-                <!-- Thống kê số đơn hàng đến, đi -->
-                <div class="flex flex-col gap-2">
-                    <div
-                        class="flex items-center justify-between bg-indigo-400 px-4 py-2 text-xs font-semibold text-white hover:cursor-pointer hover:bg-indigo-500 sm:text-sm md:text-base lg:text-lg"
-                        @click="toggleManageStatistic"
-                    >
-                        <font-awesome-icon
-                            icon="fa-solid fa-filter"
-                            class="select-none text-sm sm:text-base md:text-xl lg:text-2xl"
-                        />
-                        <h1 class="select-none">Thống kê đơn hàng</h1>
-                        <font-awesome-icon
-                            icon="fa-solid fa-chevron-down"
-                            v-if="!isOpenManageStatistic"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-chevron-up"
-                            v-else
-                        />
-                    </div>
-
-                    <transition name="route">
-                        <ul
-                            class="flex flex-col gap-2"
-                            v-if="isOpenManageStatistic"
-                        >
-                            <router-link
-                                :to="successStatisticLink"
-                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
-                            >
-                                <font-awesome-icon
-                                    icon="fa-solid fa-paper-plane"
-                                />
-                                Hàng đi
-                            </router-link>
-                            <router-link
-                                :to="failStatisticLink"
-                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
-                            >
-                                <font-awesome-icon
-                                    icon="fa-solid fa-rotate-left"
-                                />
-                                Hàng đến
-                            </router-link>
-                        </ul>
-                    </transition>
-                </div>
             </div>
         </div>
 
@@ -136,7 +89,6 @@
 
 <script>
 export default {
-
     props: ["employee_id"],
     data() {
         return {
@@ -173,12 +125,14 @@ export default {
             return this.$store.getters.getUserId;
         },
         listWarehouseLink() {
-            return `/aggregation/employee/${this.employee_id}/warehouse/list`
+            return `/aggregation/employee/${this.employee_id}/warehouse/list`;
         },
         receivedTransactionLink() {
-            return `/aggregation/employee/${this.employee_id}/warehouse/received`
+            return `/aggregation/employee/${this.employee_id}/warehouse/received`;
         },
-        
+        totalPackageLink() {
+            return `/aggregation/employee/${this.employee_id}/statistic/package/total`;
+        },
     },
     async mounted() {
         await this.getEmployeeInfo();

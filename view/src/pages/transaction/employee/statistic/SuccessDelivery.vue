@@ -53,7 +53,9 @@
                             type="text"
                             placeholder="Địa chỉ nhận"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByReceiverAddress($event.target.value)"
+                            @input="
+                                searchByReceiverAddress($event.target.value)
+                            "
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -80,7 +82,11 @@
                             @input="searchByTimeDelivery($event.target.value)"
                         />
                     </td>
-                    <td class="mt-1 border-e-2 border-white p-1"></td>
+                    <td
+                        class="mt-1 flex items-center justify-center border-e-2 border-white p-1 font-bold italic text-rose-600"
+                    >
+                        <p>{{ packages.length }} lượt</p>
+                    </td>
                 </tr>
 
                 <tr
@@ -170,9 +176,9 @@ export default {
             } else {
                 await this.getDeliveredPackage();
                 this.packages = this.packages.filter((order) =>
-                    this.removeAccents(order.receiver_address).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.receiver_address.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },
@@ -182,9 +188,9 @@ export default {
             } else {
                 await this.getDeliveredPackage();
                 this.packages = this.packages.filter((order) =>
-                    this.removeAccents(order.receiver_name).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.receiver_name.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },

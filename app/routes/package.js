@@ -61,4 +61,16 @@ router.get("/aggregation/warehouse/list", packageController.getAggregationPackag
 //GET package/transaction/warehouse/received?location_id=
 router.get("/transaction/warehouse/received", packageController.getTransactionWaitingPackage);
 
+//GET package/transaction/package/export?location_id=
+router.get("/transaction/package/export", packageController.getAllTransactionExportPackage);
+
+//GET package/transaction/package/import?location_id=
+router.get("/transaction/package/import", packageController.getAllTransactionImportPackage);
+
+//GET package/aggregation/package/import?location_id=
+router.get("/aggregation/package/import", packageController.getAllAggregationImportPackage);
+
+//GET package/aggregation/package/export?location_id=
+router.get("/aggregation/package/export", packageController.getAllAggregationExportPackage);
+
 module.exports = router;

@@ -76,8 +76,11 @@
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1"></td>
-                    <td class="mt-1 border-e-2 border-white p-1"></td>
-                    <td class="mt-1 border-e-2 border-white p-1"></td>
+                    <td
+                        class="mt-1 flex items-center justify-center border-e-2 border-white p-1 font-bold italic text-rose-600"
+                    >
+                        <p>{{ packageStatuses.length }} đơn hàng</p>
+                    </td>
                 </tr>
 
                 <!-- Hiển thị data  -->
@@ -139,7 +142,8 @@
             @close="handleConfirmImport"
         >
             <p>
-                Khi xác nhận, đơn hàng sẽ thuộc sự quản lý của điểm giao dịch này!
+                Khi xác nhận, đơn hàng sẽ thuộc sự quản lý của điểm giao dịch
+                này!
             </p>
         </base-dialog>
         <base-spinner v-if="isLoading"></base-spinner>
@@ -151,7 +155,6 @@ export default {
     props: ["employee_id"],
     data() {
         return {
-            idFilter: "default",
             location_id: null,
             packageStatuses: [],
             error: null,
@@ -225,8 +228,8 @@ export default {
             } else {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.from).includes(
-                        this.removeAccents(string),
+                    this.removeAccents(order.from.toLowerCase()).includes(
+                        this.removeAccents(string.toLowerCase()),
                     ),
                 );
             }
@@ -238,9 +241,9 @@ export default {
             } else {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.receiver_address).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.receiver_address.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },
