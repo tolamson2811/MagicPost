@@ -12,17 +12,17 @@
                         ID
                     </th>
                     <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-3/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Địa chỉ nhận
                     </th>
                     <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-1/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Họ tên người nhận
                     </th>
                     <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-1/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         SĐT người nhận
                     </th>
@@ -37,7 +37,7 @@
                         Lí do
                     </th>
                     <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-1/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Chi tiết đơn hàng
                     </th>
@@ -95,7 +95,11 @@
                             @input="searchByFailReason($event.target.value)"
                         />
                     </td>
-                    <td class="mt-1 border-e-2 border-white p-1"></td>
+                    <td
+                        class="mt-1 flex items-center justify-center border-e-2 border-white p-1 font-bold italic text-rose-600"
+                    >
+                        <p>{{ packages.length }} lượt</p>
+                    </td>
                 </tr>
 
                 <tr
@@ -189,9 +193,9 @@ export default {
             } else {
                 await this.getFailedDeliveredPackage();
                 this.packages = this.packages.filter((order) =>
-                    this.removeAccents(order.receiver_address).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.receiver_address.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },
@@ -201,9 +205,9 @@ export default {
             } else {
                 await this.getFailedDeliveredPackage();
                 this.packages = this.packages.filter((order) =>
-                    this.removeAccents(order.receiver_name).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.receiver_name.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },
@@ -225,9 +229,9 @@ export default {
             } else {
                 await this.getFailedDeliveredPackage();
                 this.packages = this.packages.filter((order) =>
-                    this.removeAccents(order.time_delivery).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.time_delivery.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },
@@ -237,9 +241,9 @@ export default {
             } else {
                 await this.getFailedDeliveredPackage();
                 this.packages = this.packages.filter((order) =>
-                    this.removeAccents(order.fail_reason).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.fail_reason.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },

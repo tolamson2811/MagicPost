@@ -164,11 +164,170 @@ export default {
         const responseData = await response.json();
         if (!response.ok) {
             const error = new Error(
-                responseData.message ||
-                    "Không thể lấy trạng thái đơn hàng!",
+                responseData.message || "Không thể lấy trạng thái đơn hàng!",
             );
             throw error;
         }
         return responseData;
-    }
+    },
+
+    async getAggregationWaitingPackage(context, location_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/aggregation/warehouse/received?location_id=${location_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách đơn hàng đang chờ lấy!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
+
+    async getAggregationPackageInWarehouse(context, location_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/aggregation/warehouse/list?location_id=${location_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách đơn hàng đang trong kho!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
+
+    async getTransactionWaitingPackage(context, location_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/transaction/warehouse/received?location_id=${location_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách đơn hàng đang chờ xác nhận!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
+
+    async getTransactionExportPackages(context, location_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/transaction/package/export?location_id=${location_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách đơn hàng đã xuất kho!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
+
+    async getTransactionImportPackages(context, location_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/transaction/package/import?location_id=${location_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách đơn hàng đã nhập kho!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
+
+    async getAggregationImportPackages(context, location_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/aggregation/package/import?location_id=${location_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách đơn hàng đã nhập kho!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
+
+    async getAggregationExportPackages(context, location_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/aggregation/package/export?location_id=${location_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách đơn hàng đã xuất kho!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
 };

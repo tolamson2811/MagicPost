@@ -7,19 +7,29 @@
             <table class="w-full text-sm">
                 <tr class="">
                     <th
-                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-1/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         ID
                     </th>
                     <th
                         class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
-                        Ngày xuất kho
+                        Ngày trung chuyển
+                    </th>
+                    <th
+                        class="w-3/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                    >
+                        Điểm trung chuyển
+                    </th>
+                    <th
+                        class="w-3/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                    >
+                        Địa chỉ người nhận
                     </th>
                     <th
                         class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
-                        Nơi đến
+                        Xác nhận nhập kho
                     </th>
 
                     <th
@@ -42,22 +52,33 @@
                     <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
-                            placeholder="Ngày xuất kho"
+                            placeholder="Ngày trung chuyển"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByTimeExport($event.target.value)"
+                            @input="searchByTimeArrived($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
-                            placeholder="Nơi đến"
+                            placeholder="Điểm trung chuyển"
+                            class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
+                            @input="searchByTransaction($event.target.value)"
+                        />
+                    </td>
+                    <td class="mt-1 border-e-2 border-white p-1">
+                        <input
+                            type="text"
+                            placeholder="Địa chỉ người nhận"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
                             @input="
-                                searchByNextDestination($event.target.value)
+                                searchByReceiverAddress($event.target.value)
                             "
                         />
                     </td>
-                    <td class="mt-1 border-e-2 border-white p-1 flex items-center justify-center text-rose-600 font-bold italic">
+                    <td class="mt-1 border-e-2 border-white p-1"></td>
+                    <td
+                        class="mt-1 flex items-center justify-center border-e-2 border-white p-1 font-bold italic text-rose-600"
+                    >
                         <p>{{ packageStatuses.length }} đơn hàng</p>
                     </td>
                 </tr>
@@ -73,10 +94,21 @@
                         {{ status.package_id }}
                     </td>
                     <td class="border-e-2 border-white py-1 text-center">
-                        {{ status.time_export }}
+                        {{ status.arrived_time }}
                     </td>
                     <td class="border-e-2 border-white py-1 text-center">
-                        {{ status.next_destination }}
+                        {{ status.from }}
+                    </td>
+                    <td class="border-e-2 border-white py-1 text-center">
+                        {{ status.receiver_address }}
+                    </td>
+                    <td class="border-e-2 border-white py-1 text-center">
+                        <button
+                            class="rounded-lg bg-rose-500 px-2 py-1 font-bold text-white hover:cursor-pointer hover:bg-rose-600"
+                            @click="clickConfirmImport(status.package_id)"
+                        >
+                            Xác nhận
+                        </button>
                     </td>
 
                     <td class="border-e-2 border-white py-1 text-center">
@@ -98,35 +130,64 @@
         >
             <p>{{ error }}</p>
         </base-dialog>
+        <base-dialog
+            :show="!!isConfirmImport.value"
+            title="Xác nhận nhập kho"
+            @exit="
+                this.isConfirmImport = {
+                    package_id: null,
+                    value: false,
+                }
+            "
+            @close="handleConfirmImport"
+        >
+            <p>
+                Khi xác nhận, đơn hàng sẽ thuộc sự quản lý của điểm tập kết này!
+            </p>
+        </base-dialog>
+        <base-spinner v-if="isLoading"></base-spinner>
     </div>
 </template>
 
 <script>
 export default {
-    props: ["leader_id"],
+    props: ["employee_id"],
     data() {
         return {
+            idFilter: "default",
             location_id: null,
-            error: null,
             packageStatuses: [],
+            error: null,
+            isLoading: false,
+            isConfirmImport: {
+                package_id: null,
+                value: false,
+            },
         };
     },
     methods: {
         async getLocationId() {
-            const res = await this.$store.dispatch(
-                "manager/getEmployeeById",
-                this.leader_id,
-            );
+            try {
+                const res = await this.$store.dispatch(
+                    "manager/getEmployeeById",
+                    this.employee_id,
+                );
 
-            this.location_id = res.location_id;
+                this.location_id = res.location_id;
+            } catch (error) {
+                this.error = error.message;
+            }
         },
         async getPackageStatusByLocationId() {
-            const res = await this.$store.dispatch(
-                "package/getTransactionExportPackages",
-                this.location_id,
-            );
-            this.packageStatuses = res;
-            console.log(this.packageStatuses);
+            try {
+                const res = await this.$store.dispatch(
+                    "package/getAggregationWaitingPackage",
+                    this.location_id,
+                );
+                this.packageStatuses = res;
+            } catch (error) {
+                this.error = error.message;
+            }
         },
         //Phần search
         removeAccents(str) {
@@ -148,41 +209,79 @@ export default {
                 );
             }
         },
-        async searchByTimeExport(string) {
+        async searchByTimeArrived(string) {
             if (string === "") {
                 this.getPackageStatusByLocationId();
             } else {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.time_export.toString()).includes(
+                    this.removeAccents(order.arrived_time).includes(
                         this.removeAccents(string),
                     ),
                 );
             }
         },
-        async searchByNextStatus(string) {
+        async searchByTransaction(string) {
             if (string === "") {
                 this.getPackageStatusByLocationId();
             } else {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.next_status.toString()).includes(
-                        this.removeAccents(string),
+                    this.removeAccents(order.from.toLowerCase()).includes(
+                        this.removeAccents(string.toLowerCase()),
                     ),
                 );
             }
         },
-        async searchByNextDestination(string) {
+
+        async searchByReceiverAddress(string) {
             if (string === "") {
                 this.getPackageStatusByLocationId();
             } else {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
                     this.removeAccents(
-                        order.next_destination.toString(),
-                    ).includes(this.removeAccents(string)),
+                        order.receiver_address.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
+        },
+
+        //Xác nhận nhập kho
+        clickConfirmImport(package_id) {
+            this.isConfirmImport = {
+                package_id: package_id,
+                value: true,
+            };
+        },
+
+        async handleConfirmImport() {
+            const formData = {
+                package_id: this.isConfirmImport.package_id,
+                status: "Đang ở điểm tập kết",
+                location_id: this.location_id,
+            };
+
+            try {
+                this.isLoading = true;
+                await this.$store.dispatch(
+                    "package/addPackageStatus",
+                    formData,
+                );
+                this.isLoading = false;
+                this.isConfirmImport = {
+                    package_id: null,
+                    value: false,
+                };
+                this.$notify({
+                    title: "Cập nhật đơn hàng thành công!",
+                    type: "success",
+                });
+                this.getPackageStatusByLocationId();
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false;
         },
     },
     async mounted() {

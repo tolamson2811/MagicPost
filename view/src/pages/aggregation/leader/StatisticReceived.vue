@@ -14,12 +14,12 @@
                     <th
                         class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
-                        Ngày xuất kho
+                        Ngày nhập kho
                     </th>
                     <th
                         class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
-                        Nơi đến
+                        Nguồn gốc
                     </th>
 
                     <th
@@ -42,22 +42,23 @@
                     <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
-                            placeholder="Ngày xuất kho"
+                            placeholder="Ngày nhập kho"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByTimeExport($event.target.value)"
+                            @input="searchByTimeImport($event.target.value)"
                         />
                     </td>
+
                     <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
-                            placeholder="Nơi đến"
+                            placeholder="Nguồn gốc"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="
-                                searchByNextDestination($event.target.value)
-                            "
+                            @input="searchByFrom($event.target.value)"
                         />
                     </td>
-                    <td class="mt-1 border-e-2 border-white p-1 flex items-center justify-center text-rose-600 font-bold italic">
+                    <td
+                        class="mt-1 flex items-center justify-center border-e-2 border-white p-1 text-rose-600 font-bold italic"
+                    >
                         <p>{{ packageStatuses.length }} đơn hàng</p>
                     </td>
                 </tr>
@@ -73,10 +74,10 @@
                         {{ status.package_id }}
                     </td>
                     <td class="border-e-2 border-white py-1 text-center">
-                        {{ status.time_export }}
+                        {{ status.time_import }}
                     </td>
                     <td class="border-e-2 border-white py-1 text-center">
-                        {{ status.next_destination }}
+                        {{ status.from }}
                     </td>
 
                     <td class="border-e-2 border-white py-1 text-center">
@@ -122,7 +123,7 @@ export default {
         },
         async getPackageStatusByLocationId() {
             const res = await this.$store.dispatch(
-                "package/getTransactionExportPackages",
+                "package/getAggregationImportPackages",
                 this.location_id,
             );
             this.packageStatuses = res;
@@ -142,45 +143,33 @@ export default {
             } else {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.package_id.toString()).includes(
-                        this.removeAccents(string),
-                    ),
+                    this.removeAccents(
+                        order.package_id.toString().toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },
-        async searchByTimeExport(string) {
-            if (string === "") {
-                this.getPackageStatusByLocationId();
-            } else {
-                await this.getPackageStatusByLocationId();
-                this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.time_export.toString()).includes(
-                        this.removeAccents(string),
-                    ),
-                );
-            }
-        },
-        async searchByNextStatus(string) {
-            if (string === "") {
-                this.getPackageStatusByLocationId();
-            } else {
-                await this.getPackageStatusByLocationId();
-                this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.next_status.toString()).includes(
-                        this.removeAccents(string),
-                    ),
-                );
-            }
-        },
-        async searchByNextDestination(string) {
+        async searchByTimeImport(string) {
             if (string === "") {
                 this.getPackageStatusByLocationId();
             } else {
                 await this.getPackageStatusByLocationId();
                 this.packageStatuses = this.packageStatuses.filter((order) =>
                     this.removeAccents(
-                        order.next_destination.toString(),
-                    ).includes(this.removeAccents(string)),
+                        order.time_import.toString().toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
+                );
+            }
+        },
+        async searchByFrom(string) {
+            if (string === "") {
+                this.getPackageStatusByLocationId();
+            } else {
+                await this.getPackageStatusByLocationId();
+                this.packageStatuses = this.packageStatuses.filter((order) =>
+                    this.removeAccents(
+                        order.from.toString().toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
                 );
             }
         },

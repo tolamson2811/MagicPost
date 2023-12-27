@@ -2,6 +2,8 @@ const { validationResult } = require("express-validator");
 const PackagesDetail = require("../models/packages/packagesDetail");
 const Packages = require("../models/packages/packages");
 const PackagesStatus = require("../models/packages/packageStatus");
+const Transactions = require("../models/locations/transactions");
+const Aggregations = require("../models/locations/aggregations");
 
 const { Op } = require("sequelize");
 
@@ -74,7 +76,7 @@ exports.createNewOrder = async (req, res, next) => {
     }
 };
 
-// Lấy danh sách đơn hàng theo từng địa điểm giao dịch
+// Lấy danh sách đơn hàng trong kho của điểm giao dịch
 exports.getPackgesByTransaction = async (req, res, next) => {
     const location_id = req.query.location_id;
 
@@ -96,7 +98,9 @@ exports.getPackgesByTransaction = async (req, res, next) => {
                 (!currentSatus ||
                     currentSatus.createdAt < status.dataValues.createdAt) &&
                 status.dataValues.status !== "Đang giao hàng" &&
-                status.dataValues.status !== "Giao thành công"
+                status.dataValues.status !== "Giao thành công" &&
+                status.dataValues.status !==
+                    "Đang trung chuyển đến điểm giao dịch"
             ) {
                 // Cập nhật mapByPackageId với createdAt đã được chuyển đổi
                 mapByPackageId.set(
@@ -145,6 +149,82 @@ exports.getPackgesByTransaction = async (req, res, next) => {
                 createdAt: createdAt,
             };
         });
+        const result = await Promise.all(promises);
+
+        res.status(200).json(result);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+// Lấy danh sách đơn hàng đang chờ xác nhận
+exports.getTransactionWaitingPackage = async (req, res, next) => {
+    const location_id = req.query.location_id;
+
+    try {
+        const packages = await PackagesStatus.findAll({
+            where: {
+                location_id: location_id,
+                status: "Đang trung chuyển đến điểm giao dịch",
+            },
+        });
+
+        //Check xem có phải là trạng thái mới nhất của đơn hàng đó không
+        let newPackageStatuses = await Promise.all(
+            packages.map(async (status) => {
+                const packages = await PackagesStatus.findAll({
+                    where: { package_id: status.package_id },
+                });
+
+                const isLatest = packages.every(
+                    (package) => package.createdAt <= status.createdAt
+                );
+
+                if (isLatest) {
+                    return status;
+                }
+            })
+        );
+        newPackageStatuses = newPackageStatuses.filter(Boolean);
+
+        //Lấy thông tin chi tiết
+        const promises = newPackageStatuses.map(async (status) => {
+            // Lấy thông tin điểm giao dịch trước đó của đơn hàng
+            const previousStatus = await PackagesStatus.findAll({
+                where: {
+                    package_id: status.package_id,
+                    [Op.or]: [
+                        {
+                            status: "Đang ở điểm tập kết",
+                        },
+                    ],
+                },
+                order: [["createdAt", "DESC"]],
+                limit: 1,
+            });
+            const aggregation = await Aggregations.findOne({
+                where: { location_id: previousStatus[0].location_id },
+            });
+            const from = aggregation.province;
+
+            //Lấy thông tin chi tiết đơn hàng
+            const packageDetail = await PackagesDetail.findOne({
+                where: { package_id: status.package_id },
+            });
+
+            const data = {
+                package_id: status.package_id,
+                from: from,
+                receiver_address: `${packageDetail.receiver_detail_address}, ${packageDetail.receiver_ward}, ${packageDetail.receiver_district}, ${packageDetail.receiver_province}`,
+                arrived_time: formatDate(status.createdAt),
+            };
+
+            return data;
+        });
+
         const result = await Promise.all(promises);
 
         res.status(200).json(result);
@@ -322,16 +402,163 @@ exports.getDeliveryStatus = async (req, res, next) => {
             order: [["createdAt", "ASC"]],
         });
 
-        let result = []
+        let result = [];
 
-        for (let status of statuses) { 
+        for (let status of statuses) {
             result.push({
                 status: status.status,
                 time_delivery: formatDate(status.createdAt),
                 shipper_id: status.shipper_id,
                 fail_reason: status.fail_reason,
-            })
+            });
         }
+
+        res.status(200).json(result);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+//Lấy đơn hàng đang chờ xác nhận ở điểm tập kết theo location_id
+exports.getAggregationWaitingPackage = async (req, res, next) => {
+    const location_id = req.query.location_id;
+
+    try {
+        const packages = await PackagesStatus.findAll({
+            where: {
+                location_id: location_id,
+                status: "Đang trung chuyển đến điểm tập kết",
+            },
+        });
+
+        //Check xem có phải là trạng thái mới nhất của đơn hàng đó không
+        let newPackageStatuses = await Promise.all(
+            packages.map(async (status) => {
+                const packages = await PackagesStatus.findAll({
+                    where: { package_id: status.package_id },
+                });
+
+                const isLatest = packages.every(
+                    (package) => package.createdAt <= status.createdAt
+                );
+
+                if (isLatest) {
+                    return status;
+                }
+            })
+        );
+        newPackageStatuses = newPackageStatuses.filter(Boolean);
+
+        //Lấy thông tin chi tiết
+        const promises = newPackageStatuses.map(async (status) => {
+            // Lấy thông tin điểm giao dịch trước đó của đơn hàng
+            const previousStatus = await PackagesStatus.findAll({
+                where: {
+                    package_id: status.package_id,
+                    [Op.or]: [
+                        {
+                            status: "Đã bàn giao cho đơn vị vận chuyển",
+                        },
+                        {
+                            status: "Đang ở điểm giao dịch",
+                        },
+                        {
+                            status: "Đang ở điểm tập kết",
+                        },
+                    ],
+                },
+                order: [["createdAt", "DESC"]],
+                limit: 1,
+            });
+            let from = "";
+            const transaction = await Transactions.findOne({
+                where: { location_id: previousStatus[0].location_id },
+            });
+            if (transaction) {
+                from = `${transaction.district}, ${transaction.province}`;
+            } else {
+                const aggregation = await Aggregations.findOne({
+                    where: { location_id: previousStatus[0].location_id },
+                });
+                from = aggregation.province;
+            }
+
+            //Lấy thông tin chi tiết đơn hàng
+            const packageDetail = await PackagesDetail.findOne({
+                where: { package_id: status.package_id },
+            });
+
+            const data = {
+                package_id: status.package_id,
+                from: from,
+                receiver_address: `${packageDetail.receiver_detail_address}, ${packageDetail.receiver_ward}, ${packageDetail.receiver_district}, ${packageDetail.receiver_province}`,
+                arrived_time: formatDate(status.createdAt),
+            };
+
+            return data;
+        });
+
+        const result = await Promise.all(promises);
+
+        res.status(200).json(result);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+// Lấy đơn hàng trong kho của điểm tập kết
+exports.getAggregationPackageInWarehouse = async (req, res, next) => {
+    const location_id = req.query.location_id;
+
+    try {
+        const packages = await PackagesStatus.findAll({
+            where: {
+                location_id: location_id,
+                status: "Đang ở điểm tập kết",
+            },
+        });
+
+        //Check xem có phải là trạng thái mới nhất của đơn hàng đó không
+        let newPackageStatuses = await Promise.all(
+            packages.map(async (status) => {
+                const packages = await PackagesStatus.findAll({
+                    where: { package_id: status.package_id },
+                });
+
+                const isLatest = packages.every(
+                    (package) => package.createdAt <= status.createdAt
+                );
+
+                if (isLatest) {
+                    return status;
+                }
+            })
+        );
+        newPackageStatuses = newPackageStatuses.filter(Boolean);
+
+        //Lấy thông tin chi tiết
+        const promises = newPackageStatuses.map(async (status) => {
+            //Lấy thông tin chi tiết đơn hàng
+            const packageDetail = await PackagesDetail.findOne({
+                where: { package_id: status.package_id },
+            });
+
+            const data = {
+                package_id: status.package_id,
+                time_import: formatDate(status.createdAt),
+                receiver_address: `${packageDetail.receiver_detail_address}, ${packageDetail.receiver_ward}, ${packageDetail.receiver_district}, ${packageDetail.receiver_province}`,
+            };
+
+            return data;
+        });
+
+        const result = await Promise.all(promises);
 
         res.status(200).json(result);
     } catch (error) {
@@ -368,6 +595,406 @@ exports.getPackageDetail = async (req, res, next) => {
             package_id: packageDetail.package_id,
         });
     } catch (error) {
+        next(error);
+    }
+};
+
+// Lấy tất cả đơn hàng đã xuất kho của điểm giao dịch (bao gồm mang đi giao hàng và chuyển đến điểm tập kết)
+exports.getAllTransactionExportPackage = async (req, res, next) => {
+    const location_id = req.query.location_id;
+
+    try {
+        const packages = await PackagesStatus.findAll({
+            where: {
+                location_id: location_id,
+                [Op.or]: [
+                    {
+                        status: "Đã bàn giao cho đơn vị vận chuyển",
+                    },
+                    {
+                        status: "Đang ở điểm giao dịch",
+                    },
+                ],
+            },
+        });
+
+        // Kiểm tra xem có phải là trạng thái mới nhất của đơn hàng đó không
+        let newPackageStatuses1 = await Promise.all(
+            // Nếu không phải là mới nhất => hàng đã được chuyển đi nơi khác
+            packages.map(async (status) => {
+                const packages = await PackagesStatus.findAll({
+                    where: { package_id: status.dataValues.package_id },
+                });
+
+                const isLatest = packages.every(
+                    (package) => package.createdAt <= status.createdAt
+                );
+
+                if (!isLatest) {
+                    return status.dataValues;
+                }
+            })
+        );
+        newPackageStatuses1 = newPackageStatuses1.filter(Boolean);
+
+        //Lấy trạng thái kế tiếp
+        const promises1 = newPackageStatuses1.map(async (status) => {
+            const packageDetail = await PackagesDetail.findOne({
+                where: { package_id: status.package_id },
+            });
+            const nextStatus = await PackagesStatus.findOne({
+                where: {
+                    package_id: status.package_id,
+                    createdAt: {
+                        [Op.gt]: status.createdAt,
+                    },
+                },
+                order: [["createdAt", "ASC"]],
+            });
+
+            let next_destination = "";
+
+            if (
+                nextStatus.status === "Đang trung chuyển đến điểm tập kết" ||
+                nextStatus.status === "Chuyển đến điểm tập kết"
+            ) {
+                const aggregation = await Aggregations.findOne({
+                    where: { location_id: nextStatus.location_id },
+                });
+                next_destination = `Điểm tập kết: ${aggregation.province}`;
+            } else if (nextStatus.status === "Đang giao hàng") {
+                const detail_address = `Khách hàng: ${packageDetail.receiver_detail_address}, ${packageDetail.receiver_ward}, ${packageDetail.receiver_district}, ${packageDetail.receiver_province}`;
+                next_destination = detail_address;
+            }
+
+            const data = {
+                package_id: status.package_id,
+                time_export: status.createdAt,
+                next_destination: next_destination,
+            };
+            return data;
+        });
+
+        let newPackageStatuses2 = await Promise.all(promises1);
+
+        //Sắp xếp theo thời gian gần nhất xuất kho
+        newPackageStatuses2.sort((a, b) => {
+            return b.time_export - a.time_export;
+        });
+        //Loại bỏ package_id trùng lặp
+        newPackageStatuses2 = newPackageStatuses2.filter(
+            (status, index, self) =>
+                index ===
+                self.findIndex((t) => t.package_id === status.package_id)
+        );
+
+        //format lại thời gian
+        for (let status of newPackageStatuses2) {
+            status.time_export = formatDate(status.time_export);
+        }
+
+        res.status(200).json(newPackageStatuses2);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+//Lấy tất cả đơn hàng đã nhập kho của điểm giao dịch (bao gồm đơn hàng chuyển đến từ điểm tập kết và đơn tạo mới)
+exports.getAllTransactionImportPackage = async (req, res, next) => {
+    const location_id = req.query.location_id;
+
+    try {
+        const packageStatuses = await PackagesStatus.findAll({
+            where: {
+                location_id: location_id,
+                [Op.or]: [
+                    {
+                        status: "Đang ở điểm giao dịch",
+                    },
+                    {
+                        status: "Đã bàn giao cho đơn vị vận chuyển",
+                    },
+                ],
+            },
+            order: [["createdAt", "DESC"]],
+        });
+
+        // lọc ra các package_status mới nhất của đơn hàng thuộc location
+        let mapByPackageId = new Map();
+        packageStatuses.forEach((status) => {
+            const currentSatus = mapByPackageId.get(
+                status.dataValues.package_id
+            );
+
+            if (
+                !currentSatus ||
+                currentSatus.createdAt < status.dataValues.createdAt
+            ) {
+                // Cập nhật mapByPackageId với createdAt đã được chuyển đổi
+                mapByPackageId.set(
+                    status.dataValues.package_id,
+                    status.dataValues
+                );
+            }
+        });
+
+        //Lấy trạng thái trước khi chuyển đến điểm giao dịch
+        const packagePromises = Array.from(mapByPackageId.values()).map(
+            async (package) => {
+                const previousStatuses = await PackagesStatus.findAll({
+                    where: {
+                        package_id: package.package_id,
+                        [Op.or]: [
+                            {
+                                status: "Đang ở điểm tập kết",
+                            },
+                            {
+                                status: "Đã bàn giao cho đơn vị vận chuyển",
+                            },
+                        ],
+                    },
+                    order: [["createdAt", "DESC"]],
+                });
+
+                for (let previousStatus of previousStatuses) {
+                    if (package.createdAt > previousStatus.createdAt) {
+                        if (previousStatus.status === "Đang ở điểm tập kết") {
+                            const aggregation = await Aggregations.findOne({
+                                where: {
+                                    location_id: previousStatus.location_id,
+                                },
+                            });
+                            return {
+                                package_id: package.package_id,
+                                time_import: formatDate(package.createdAt),
+                                from: `Điểm tập kết: ${aggregation.province}`,
+                            };
+                        }
+                        break;
+                    }
+                    if (
+                        package.status === "Đã bàn giao cho đơn vị vận chuyển"
+                    ) {
+                        return {
+                            package_id: package.package_id,
+                            time_import: formatDate(package.createdAt),
+                            from: "Khách hàng gửi",
+                        };
+                    }
+                }
+            }
+        );
+        const result = await Promise.all(packagePromises);
+        res.status(200).json(result);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+exports.getAllAggregationImportPackage = async (req, res, next) => {
+    const location_id = req.query.location_id;
+
+    try {
+        const packageStatus = await PackagesStatus.findAll({
+            where: {
+                location_id: location_id,
+                [Op.or]: [
+                    {
+                        status: "Đang ở điểm tập kết",
+                    },
+                ],
+            },
+            order: [["createdAt", "DESC"]],
+        });
+
+        // lọc ra các package_status mới nhất của đơn hàng thuộc location
+        let mapByPackageId = new Map();
+        packageStatus.forEach((status) => {
+            const currentSatus = mapByPackageId.get(
+                status.dataValues.package_id
+            );
+
+            if (
+                (!currentSatus ||
+                    currentSatus.createdAt < status.dataValues.createdAt) &&
+                status.dataValues.status === "Đang ở điểm tập kết"
+            ) {
+                // Cập nhật mapByPackageId với createdAt đã được chuyển đổi
+                mapByPackageId.set(
+                    status.dataValues.package_id,
+                    status.dataValues
+                );
+            }
+        });
+
+        //Lấy trạng thái trước khi chuyển đến điểm tập kết
+        const packagePromises = Array.from(mapByPackageId.values()).map(
+            async (package) => {
+                const previousStatuses = await PackagesStatus.findAll({
+                    where: {
+                        package_id: package.package_id,
+                        [Op.or]: [
+                            {
+                                status: "Đang ở điểm giao dịch",
+                            },
+                            {
+                                status: "Đang ở điểm tập kết",
+                            },
+                            {
+                                status: "Đã bàn giao cho đơn vị vận chuyển",
+                            },
+                        ],
+                    },
+                    order: [["createdAt", "DESC"]],
+                });
+
+                for (let previousStatus of previousStatuses) {
+                    if (package.createdAt > previousStatus.createdAt) {
+                        if (
+                            previousStatus.status === "Đang ở điểm giao dịch" ||
+                            previousStatus.status ===
+                                "Đã bàn giao cho đơn vị vận chuyển"
+                        ) {
+                            const transaction = await Transactions.findOne({
+                                where: {
+                                    location_id: previousStatus.location_id,
+                                },
+                            });
+                            return {
+                                package_id: package.package_id,
+                                time_import: formatDate(package.createdAt),
+                                from: `Điểm giao dịch: ${transaction.district}, ${transaction.province}`,
+                            };
+                        } else if (
+                            previousStatus.status === "Đang ở điểm tập kết"
+                        ) {
+                            const aggregation = await Aggregations.findOne({
+                                where: {
+                                    location_id: previousStatus.location_id,
+                                },
+                            });
+                            return {
+                                package_id: package.package_id,
+                                time_import: formatDate(package.createdAt),
+                                from: `Điểm tập kết: ${aggregation.province}`,
+                            };
+                        }
+                        break;
+                    }
+                }
+            }
+        );
+
+        const result = await Promise.all(packagePromises);
+        res.status(200).json(result);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+exports.getAllAggregationExportPackage = async (req, res, next) => {
+    const location_id = req.query.location_id;
+
+    try {
+        const packageStatus = await PackagesStatus.findAll({
+            where: {
+                location_id: location_id,
+                [Op.or]: [
+                    {
+                        status: "Đang ở điểm tập kết",
+                    },
+                ],
+            },
+            order: [["createdAt", "DESC"]],
+        });
+
+        // lọc ra các package_status mới nhất của đơn hàng thuộc location
+        let mapByPackageId = new Map();
+        packageStatus.forEach((status) => {
+            const currentSatus = mapByPackageId.get(
+                status.dataValues.package_id
+            );
+
+            if (
+                (!currentSatus ||
+                    currentSatus.createdAt < status.dataValues.createdAt) &&
+                status.dataValues.status === "Đang ở điểm tập kết"
+            ) {
+                mapByPackageId.set(
+                    status.dataValues.package_id,
+                    status.dataValues
+                );
+            }
+        });
+
+        //Lấy trạng thái sau khi xuất kho
+        const packagePromises = Array.from(mapByPackageId.values()).map(
+            async (package) => {
+                const nextStatuses = await PackagesStatus.findAll({
+                    where: {
+                        package_id: package.package_id,
+                        [Op.or]: [
+                            {
+                                status: "Đang trung chuyển đến điểm giao dịch",
+                            },
+                            {
+                                status: "Đang trung chuyển đến điểm tập kết",
+                            },
+                        ],
+                    },
+                    order: [["createdAt", "ASC"]],
+                });
+
+                for (let nextStatus of nextStatuses) {
+                    if (package.createdAt < nextStatus.createdAt) {
+                        if (
+                            nextStatus.status ===
+                            "Đang trung chuyển đến điểm giao dịch"
+                        ) {
+                            const transaction = await Transactions.findOne({
+                                where: {
+                                    location_id: nextStatus.location_id,
+                                },
+                            });
+                            return {
+                                package_id: package.package_id,
+                                time_export: formatDate(nextStatus.createdAt),
+                                next_destination: `Điểm giao dịch: ${transaction.district}, ${transaction.province}`,
+                            };
+                        } else if (
+                            nextStatus.status ===
+                            "Đang trung chuyển đến điểm tập kết"
+                        ) {
+                            const aggregation = await Aggregations.findOne({
+                                where: {
+                                    location_id: nextStatus.location_id,
+                                },
+                            });
+                            return {
+                                package_id: package.package_id,
+                                time_export: formatDate(nextStatus.createdAt),
+                                next_destination: `Điểm tập kết: ${aggregation.province}`,
+                            };
+                        }
+                    }
+                }
+            }
+        );
+        const result = await Promise.all(packagePromises);
+        res.status(200).json(result);
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
         next(error);
     }
 };

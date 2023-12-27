@@ -9,7 +9,7 @@
             <dialog
                 open
                 v-if="show"
-                class="fixed z-50 flex h-48 w-96 flex-col items-center justify-between rounded-lg px-2 py-4"
+                class="fixed z-50 flex min-h-48 w-96 flex-col items-center justify-between rounded-lg px-2 py-4 gap-4"
             >
                 <header
                     class="flex w-full items-center justify-between gap-4 text-sm font-bold text-sky-900 md:text-base lg:text-lg"

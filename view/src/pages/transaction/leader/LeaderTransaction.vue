@@ -109,7 +109,7 @@
                                 <font-awesome-icon
                                     icon="fa-solid fa-paper-plane"
                                 />
-                                Hàng gửi
+                                Hàng đi
                             </router-link>
                             <router-link
                                 :to="statisticReceivedLink"
@@ -118,7 +118,7 @@
                                 <font-awesome-icon
                                     icon="fa-solid fa-satellite-dish"
                                 />
-                                Hàng nhận
+                                Hàng đến
                             </router-link>
                         </ul>
                     </transition>

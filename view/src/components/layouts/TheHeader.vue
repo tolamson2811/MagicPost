@@ -90,6 +90,13 @@
                         >Quản lý</router-link
                     >
                 </li>
+                <li v-if="isAggregationEmployee">
+                    <router-link
+                        :to="employeeAggregationLink"
+                        class="hover:cursor-pointer"
+                        >Quản lý</router-link
+                    >
+                </li>
             </ul>
         </nav>
 
@@ -197,6 +204,10 @@ export default {
         leaderAggregationLink() {
             const userId = this.$store.getters.getUserId;
             return `/aggregation/leader/${userId}`;
+        },
+        employeeAggregationLink() {
+            const userId = this.$store.getters.getUserId;
+            return `/aggregation/employee/${userId}`;
         },
     },
 };

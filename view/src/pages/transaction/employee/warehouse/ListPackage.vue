@@ -63,8 +63,9 @@
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1"></td>
-                    <td class="mt-1 border-e-2 border-white p-1"></td>
-                    <td class="mt-1 border-e-2 border-white p-1"></td>
+                    <td class="mt-1 border-e-2 border-white p-1 flex items-center justify-center text-rose-600 font-bold italic">
+                        <p>{{ packageStatuses.length }} đơn hàng</p>
+                    </td>
                 </tr>
 
                 <!-- Hiển thị data  -->
@@ -376,8 +377,8 @@ export default {
             } else {
                 await this.getPackageStatusByLocationId(this.location_id);
                 this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.createdAt).includes(
-                        this.removeAccents(string),
+                    this.removeAccents(order.createdAt.toLowerCase()).includes(
+                        this.removeAccents(string.toLowerCase()),
                     ),
                 );
             }
@@ -388,8 +389,8 @@ export default {
             } else {
                 await this.getPackageStatusByLocationId(this.location_id);
                 this.packageStatuses = this.packageStatuses.filter((order) =>
-                    this.removeAccents(order.destination).includes(
-                        this.removeAccents(string),
+                    this.removeAccents(order.destination.toLowerCase()).includes(
+                        this.removeAccents(string.toLowerCase()),
                     ),
                 );
             }

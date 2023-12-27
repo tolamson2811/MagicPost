@@ -9,13 +9,13 @@ export default {
                     Authorization: "Bearer " + context.rootGetters.getToken,
                 },
                 body: JSON.stringify(payload),
-            }
+            },
         );
         const responseData = await response.json();
         if (!response.ok) {
             const error = new Error(
                 responseData.message ||
-                    "Không thể tạo tài khoản, kiểm tra dữ liệu của bạn!"
+                    "Không thể tạo tài khoản, kiểm tra dữ liệu của bạn!",
             );
             throw error;
         }
@@ -26,19 +26,19 @@ export default {
                 `transaction/leader/account/list?location_id=${payload.location_id}&page=${payload.page}`,
             {
                 method: "GET",
-            }
+            },
         );
         const responseData = await response.json();
         if (!response.ok) {
             const error = new Error(
-                responseData.message || "Không thể lấy danh sách tài khoản!"
+                responseData.message || "Không thể lấy danh sách tài khoản!",
             );
             throw error;
         }
 
         context.commit(
             "setTransactionEmployees",
-            responseData.transaction_employees
+            responseData.transaction_employees,
         );
 
         return responseData;
@@ -53,14 +53,35 @@ export default {
                 headers: {
                     Authorization: "Bearer " + context.rootGetters.getToken,
                 },
-            }
+            },
         );
         const responseData = await response.json();
         if (!response.ok) {
             const error = new Error(
-                responseData.message || "Không thể xóa tài khoản!"
+                responseData.message || "Không thể xóa tài khoản!",
             );
             throw error;
         }
-    }
+    },
+    async getLocationIdByName(context, payload) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `transaction/location/id?province=${payload.province}&district=${payload.district}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message || "Không thể lấy mã điểm giao dịch!",
+            );
+            throw error;
+        }
+
+        return responseData;
+    },
 };
