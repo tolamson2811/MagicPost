@@ -1,13 +1,13 @@
 <template>
-    <main class="flex">
+    <main class="flex flex-col xl:flex-row">
         <!-- Side bar  -->
         <div
-            class="basis-1/4 w-full min-h-screen pt-20 p-10 bg-orange-100 flex flex-col gap-10"
+            class="flex w-full basis-1/4 flex-col gap-10 bg-orange-100 p-10 pt-20 lg:min-h-screen"
         >
             <!-- Giới thiệu thông tin  -->
-            <div class="flex flex-col items-center gap-2 p-4 rounded">
+            <div class="flex flex-col items-center gap-2 rounded p-4">
                 <h1
-                    class="text-sm sm:text-base md:text-lg lg:text-xl font-bold"
+                    class="text-sm font-bold sm:text-base md:text-lg lg:text-xl"
                 >
                     Trưởng điểm giao dịch
                 </h1>
@@ -22,7 +22,7 @@
                 <p class="text-xs md:text-sm lg:text-base">ID: {{ userId }}</p>
 
                 <p class="text-xs md:text-sm lg:text-base">
-                    {{ leaderInfo.location  }}
+                    {{ leaderInfo.location }}
                 </p>
             </div>
 
@@ -31,12 +31,12 @@
                 <!-- Quản lý tài khoản  -->
                 <div class="flex flex-col gap-2">
                     <div
-                        class="flex justify-between items-center text-xs sm:text-sm md:text-base lg:text-lg px-4 py-2 text-white font-semibold bg-indigo-400 hover:cursor-pointer hover:bg-indigo-500"
+                        class="flex items-center justify-between bg-indigo-400 px-4 py-2 text-xs font-semibold text-white hover:cursor-pointer hover:bg-indigo-500 sm:text-sm md:text-base lg:text-lg"
                         @click="toggleManageAccount"
                     >
                         <font-awesome-icon
                             icon="fa-solid fa-certificate"
-                            class="text-sm sm:text-base md:text-xl lg:text-2xl select-none"
+                            class="select-none text-sm sm:text-base md:text-xl lg:text-2xl"
                         />
                         <h1 class="select-none">Quản lý tài khoản</h1>
                         <font-awesome-icon
@@ -56,7 +56,7 @@
                         >
                             <router-link
                                 :to="createAccountLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 text-xs font-semibold hover:cursor-pointer hover:bg-amber-100 lg:text-sm xl:text-base"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-user-plus"
@@ -65,7 +65,7 @@
                             </router-link>
                             <router-link
                                 :to="listAccountLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 text-xs font-semibold hover:cursor-pointer hover:bg-amber-100 lg:text-sm xl:text-base"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-rectangle-list"
@@ -79,12 +79,12 @@
                 <!-- Thống kê số đơn hàng đến, đi của từng điểm giao dịch, tập kết  -->
                 <div class="flex flex-col gap-2">
                     <div
-                        class="flex justify-between items-center text-xs sm:text-sm md:text-base lg:text-lg px-4 py-2 text-white font-semibold bg-indigo-400 hover:cursor-pointer hover:bg-indigo-500"
+                        class="flex items-center justify-between bg-indigo-400 px-4 py-2 text-xs font-semibold text-white hover:cursor-pointer hover:bg-indigo-500 sm:text-sm md:text-base lg:text-lg"
                         @click="toggleManageStatistic"
                     >
                         <font-awesome-icon
                             icon="fa-solid fa-filter"
-                            class="text-sm sm:text-base md:text-xl lg:text-2xl select-none"
+                            class="select-none text-sm sm:text-base md:text-xl lg:text-2xl"
                         />
                         <h1 class="select-none">Thống kê hàng hóa</h1>
                         <font-awesome-icon
@@ -104,7 +104,7 @@
                         >
                             <router-link
                                 :to="statisticSentLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 text-xs font-semibold hover:cursor-pointer hover:bg-amber-100 lg:text-sm xl:text-base"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-paper-plane"
@@ -113,7 +113,7 @@
                             </router-link>
                             <router-link
                                 :to="statisticReceivedLink"
-                                class="select-none px-4 py-2 border-2 border-black font-semibold rounded hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none rounded border-2 border-black px-4 py-2 text-xs font-semibold hover:cursor-pointer hover:bg-amber-100 lg:text-sm xl:text-base"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-satellite-dish"
@@ -166,7 +166,7 @@ export default {
             try {
                 this.leaderInfo = await this.$store.dispatch(
                     "manager/getEmployeeById",
-                    account_id
+                    account_id,
                 );
             } catch (error) {
                 console.log(error);

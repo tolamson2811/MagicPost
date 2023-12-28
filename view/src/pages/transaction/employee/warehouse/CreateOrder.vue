@@ -1,6 +1,6 @@
 <template>
     <div
-        class="mt-16 flex w-full basis-3/4 flex-col items-center justify-center bg-indigo-300 lg:mt-20"
+        class="mt-0 flex w-full basis-3/4 flex-col items-center justify-center bg-indigo-300 py-2 xl:mt-20 xl:py-0"
     >
         <form
             @submit.prevent="handleSubmit"
@@ -633,9 +633,7 @@ export default {
                         type: "success",
                     });
                     this.resetForm();
-                    this.$router.push(
-                        `/receipt/${package_id}`,
-                    );
+                    this.$router.push(`/receipt/${package_id}`);
                 } catch (error) {
                     this.isLoading = false;
                     this.error = error.message;

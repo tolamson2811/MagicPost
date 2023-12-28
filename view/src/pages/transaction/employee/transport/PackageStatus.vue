@@ -1,10 +1,10 @@
 <template>
-    <div class="mt-16 flex w-full basis-3/4 items-center bg-gray-100 lg:mt-20">
+    <div class="mt-0 flex w-full basis-3/4 items-center bg-gray-100 xl:mt-20">
         <!-- list danh sách tài khoản  -->
         <div
             class="flex h-full w-full flex-col items-start justify-start gap-4"
         >
-            <table class="w-full text-sm">
+            <table class="w-full text-xs xl:text-sm">
                 <tr>
                     <th
                         class="w-1/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
@@ -88,19 +88,19 @@
                     class="bg-gray-200"
                     :class="index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-300'"
                 >
-                    <td class="border-e-2 border-white py-1 text-center">
+                    <td class="border-e-2 border-white py-2 text-center">
                         {{ order.package_id }}
                     </td>
-                    <td class="border-e-2 border-white py-1 text-center">
+                    <td class="border-e-2 border-white py-2 text-center">
                         {{ order.receiver_address }}
                     </td>
-                    <td class="border-e-2 border-white py-1 text-center">
+                    <td class="border-e-2 border-white py-2 text-center">
                         {{ order.receiver_name }}
                     </td>
-                    <td class="border-e-2 border-white py-1 text-center">
+                    <td class="border-e-2 border-white py-2 text-center">
                         {{ order.receiver_phone }}
                     </td>
-                    <td class="border-e-2 border-white py-1 text-center">
+                    <td class="border-e-2 border-white py-2 text-center">
                         <button
                             class="rounded-lg bg-rose-500 px-2 py-1 font-bold text-white hover:cursor-pointer hover:bg-rose-600"
                             @click="handleClickUpdateStatus(order)"
@@ -108,7 +108,7 @@
                             Cập nhật
                         </button>
                     </td>
-                    <td class="border-e-2 border-white py-1 text-center">
+                    <td class="border-e-2 border-white py-2 text-center">
                         <router-link
                             class="rounded-lg bg-indigo-400 px-2 py-1 font-bold text-white hover:cursor-pointer hover:bg-indigo-500"
                             :to="'/package/detail/' + order.package_id"

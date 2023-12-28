@@ -1,9 +1,9 @@
 <template>
     <div
-        class="basis-3/4 w-full mt-16 lg:mt-20 bg-gray-100 flex justify-center items-center"
+    class="mt-0 flex w-full basis-3/4 flex-col items-center justify-center bg-indigo-300 py-2 xl:mt-20 xl:py-0"
     >
         <section
-            class="w-1/2 px-10 py-4 bg-indigo-400 rounded-xl flex flex-col items-center gap-4"
+        class="flex w-4/5 flex-col items-center gap-4 rounded-xl bg-indigo-400 px-10 py-4 lg:w-2/3 xl:w-1/2"
         >
             <h1
                 class="text-base sm:text-lg md:text-xl lg:text-2xl font-bold select-none text-white"
@@ -18,7 +18,7 @@
                     <select
                         name="role"
                         id="role"
-                        class="px-4 py-2 text-sm md:text-base lg:text-lg border outline-green-300 rounded"
+                        class="px-4 py-2 text-xs md:text-sm lg:text-base xl:text-lg border outline-green-300 rounded"
                         v-model="role.value"
                     >
                         <option value="Trưởng điểm tập kết">
@@ -52,7 +52,7 @@
                     <div class="w-full grid grid-cols-2 gap-4">
                         <select
                             id="province"
-                            class="px-4 py-2 text-sm md:text-base lg:text-lg border outline-green-300 rounded"
+                            class="px-4 py-2 text-xs md:text-sm lg:text-base xl:text-lg border outline-green-300 rounded"
                             v-model="selectedProvince.value"
                             @change="handleChangeProvince"
                         >
@@ -70,7 +70,7 @@
 
                         <select
                             id="district"
-                            class="px-4 py-2 text-sm md:text-base lg:text-lg border outline-green-300 rounded"
+                            class="px-4 py-2 text-xs md:text-sm lg:text-base xl:text-lg border outline-green-300 rounded"
                             v-if="role.value !== 'Trưởng điểm tập kết'"
                             v-model="selectedDistrict.value"
                             @change="selectedDistrict.errorMessage = ''"
@@ -103,7 +103,7 @@
                     <input
                         type="text"
                         id="email"
-                        class="px-4 py-2 text-sm md:text-base lg:text-lg border outline-green-300 rounded"
+                        class="px-4 py-2 text-xs md:text-sm lg:text-base xl:text-lg border outline-green-300 rounded"
                         @input="email.errorMessage = ''"
                         v-model="email.value"
                     />
@@ -126,7 +126,7 @@
                     <input
                         type="password"
                         id="password"
-                        class="px-4 py-2 text-sm md:text-base lg:text-lg border outline-green-300 rounded"
+                        class="px-4 py-2 text-xs md:text-sm lg:text-base xl:text-lg border outline-green-300 rounded"
                         @input="password.errorMessage = ''"
                         v-model="password.value"
                     />
@@ -149,7 +149,7 @@
                         type="password"
                         id="confirm-password"
                         placeholder=""
-                        class="px-4 py-2 text-sm md:text-base lg:text-lg border outline-green-300 rounded"
+                        class="px-4 py-2 text-xs md:text-sm lg:text-base xl:text-lg border outline-green-300 rounded"
                         @input="confirmPassword.errorMessage = ''"
                         v-model="confirmPassword.value"
                     />

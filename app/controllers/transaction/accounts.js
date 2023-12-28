@@ -175,17 +175,8 @@ exports.createNewTransactionEmployee = async (req, res, next) => {
 //Lấy danh sách tài khoản nhân viên giao dịch
 exports.getAllTransactionEmployee = async (req, res, next) => {
     const location_id = req.query.location_id;
-
-    const page = req.query.page || 1; // Default to page 1
-    const limit = 20; // Number of records per page
-    const offset = (page - 1) * limit;
-
-    const totalResult = await Employees.count();
-    const totalPages = Math.ceil(totalResult / limit);
     try {
         const transaction_employee = await Employees.findAll({
-            limit: limit,
-            offset: offset,
             where: { role: "Transaction Employee", location_id: location_id },
             attributes: ["id", "account_id", "location_id"],
             include: [
@@ -208,8 +199,6 @@ exports.getAllTransactionEmployee = async (req, res, next) => {
         res.status(200).json({
             message: "Lấy danh sách tài khoản nhân viên giao dịch thành công!",
             transaction_employee: employees,
-            totalPages: totalPages,
-            totalResult: totalResult,
         });
     } catch (err) {
         if (!err.statusCode) {
