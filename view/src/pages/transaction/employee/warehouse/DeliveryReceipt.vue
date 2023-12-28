@@ -250,6 +250,10 @@ export default {
     },
     computed: {
         linkQrCode() {
+            const apiUrl = this.$store.state.apiUrl;
+            if (apiUrl === "http://localhost:8080") {
+                return `http://localhost:5173/package/detail/${this.package_id}`;
+            }
             return `https://magicpost.vercel.app/package/detail/${this.package_id}`;
         },
     },
