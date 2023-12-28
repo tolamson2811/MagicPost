@@ -250,12 +250,7 @@ export default {
     },
     computed: {
         linkQrCode() {
-            const baseUrl = import.meta.env.VITE_BASE_URL;
-            if (baseUrl.includes("localhost")) {
-                return `http://localhost:5173/package/detail/${this.package_id}`;
-            } else {
-                return `https://magicpost.vercel.app/package/detail/${this.package_id}`;
-            }
+            return `https://magicpost.vercel.app/package/detail/${this.package_id}`;
         },
     },
     async mounted() {
