@@ -250,8 +250,8 @@ export default {
     },
     computed: {
         linkQrCode() {
-            const apiUrl = this.$store.state.apiUrl;
-            return `${apiUrl}/package/detail/${this.package_id}`;
+            const baseUrl = import.meta.env.VITE_BASE_URL
+            return `${baseUrl}/package/detail/${this.package_id}`;
         },
     },
     async mounted() {
