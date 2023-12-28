@@ -250,7 +250,11 @@ export default {
     },
     computed: {
         linkQrCode() {
-            return `http://localhost:5173/package/detail/${this.package_id}`;
+            const apiUrl = this.$store.getters.getApiUrl;
+            if (apiUrl === "http://localhost:8080/") {
+                return `http://localhost:5173/package/detail/${this.package_id}`;
+            }
+            return `https://magicpost.vercel.app/package/detail/${this.package_id}`;
         },
     },
     async mounted() {

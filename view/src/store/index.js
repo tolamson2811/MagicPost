@@ -7,6 +7,8 @@ import transactionModule from './modules/transaction/index.js'
 import aggregationModule from './modules/aggregation/index.js'
 import packageModule from './modules/package/index.js'
 
+const baseUrl = import.meta.env.VITE_BASE_URL
+
 const store = createStore({
     modules: {
         auth: authModule,
@@ -18,7 +20,9 @@ const store = createStore({
     },
     state() {
         return {
-            apiUrl: 'http://localhost:8080/'
+            // apiUrl: 'http://localhost:8080/'
+            // apiUrl: 'https://magic-post-api.vercel.app/'
+            apiUrl: baseUrl
         }
     },
     getters: {

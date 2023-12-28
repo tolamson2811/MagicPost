@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { defineAsyncComponent } from "vue";
+import store from "./store/index.js";
+
+const NotFound = defineAsyncComponent(() => import("./pages/NotFound.vue"));
 
 const PackageHistory = defineAsyncComponent(
     () => import("./pages/customer/PackageHistory.vue"),
@@ -130,6 +133,7 @@ const router = createRouter({
             path: "/manager",
             redirect: "/manager/system/transaction",
             component: ManagerPage,
+            meta: { requiereManager: true },
             children: [
                 {
                     path: "system/aggregation",
@@ -186,6 +190,7 @@ const router = createRouter({
                 const { params } = to;
                 return `/aggregation/employee/${params.employee_id}/warehouse/list`;
             },
+            meta: { requiereAggregationEmployee: true },
             children: [
                 {
                     path: "warehouse/list",
@@ -206,6 +211,7 @@ const router = createRouter({
                 const { params } = to;
                 return `/aggregation/leader/${params.leader_id}/account/list`;
             },
+            meta: { requiereAggregationLead: true },
             props: true,
             children: [
                 {
@@ -237,6 +243,7 @@ const router = createRouter({
                 const { params } = to;
                 return `/transaction/leader/${params.leader_id}/account/list`;
             },
+            meta: { requiereTransactionLead: true },
             props: true,
             children: [
                 {
@@ -268,6 +275,7 @@ const router = createRouter({
                 const { params } = to;
                 return `/transaction/employee/${params.employee_id}/warehouse/list`;
             },
+            meta: { requiereTransactionEmployee: true },
             props: true,
             children: [
                 {
@@ -302,10 +310,42 @@ const router = createRouter({
                 },
             ],
         },
+        {
+            path: "/:notFound(.*)",
+            component: NotFound,
+        }
     ],
     scrollBehavior() {
         return { top: 0, behavior: "smooth" };
     },
+});
+
+router.beforeEach(function (to, _, next) {
+    if (to.meta.requiereManager && !store.getters.isManager) {
+        next("/notfound");
+    } else if (
+        to.meta.requiereTransactionEmployee &&
+        !store.getters.isTransactionEmployee
+    ) {
+        next("/notfound");
+    } else if (
+        to.meta.requiereAggregationEmployee &&
+        !store.getters.isAggregationEmployee
+    ) {
+        next("/notfound");
+    } else if (
+        to.meta.requiereTransactionLead &&
+        !store.getters.isTransactionLead
+    ) {
+        next("/notfound");
+    } else if (
+        to.meta.requiereAggregationLead &&
+        !store.getters.isAggregationLead
+    ) {
+        next("/notfound");
+    } else {
+        next();
+    }
 });
 
 export default router;

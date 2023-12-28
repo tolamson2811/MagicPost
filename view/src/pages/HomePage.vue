@@ -98,6 +98,7 @@
                                 for="orderId"
                                 class="search-btn w-full basis-3/12 rounded-md px-4 py-2 text-center font-bold text-white hover:cursor-pointer hover:opacity-80 lg:basis-1/12"
                                 @click="handleSearchPackageProcess"
+                                @keyup.enter="handleSearchPackageProcess"
                             >
                                 <p class="w-full">Tra cứu</p>
                             </button>
