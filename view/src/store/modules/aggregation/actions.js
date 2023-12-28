@@ -87,4 +87,41 @@ export default {
 
         return responseData;
     },
+
+    async getAllAggregations(context) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl + `aggregation/list`,
+            {
+                method: "GET",
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message || "Không thể lấy danh sách điểm tập kết!",
+            );
+            throw error;
+        }
+
+        context.commit("setAggregations", responseData.aggregations);
+
+        return responseData;
+    },
+
+    async getPackageStatistics(context) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl + `aggregation/package/statistics`,
+            {
+                method: "GET",
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message || "Không thể lấy thống kê gói hàng!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
 };

@@ -175,68 +175,6 @@
                 
             </table>
 
-            <div class="grid grid-cols-12 gap-2 w-full px-1">
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    <font-awesome-icon icon="fa-solid fa-chevron-left" />
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    1
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    2
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    3
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    4
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    5
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    6
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    7
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    8
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    9
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    10
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-indigo-300 hover:cursor-pointer hover:bg-indigo-400"
-                >
-                    <font-awesome-icon icon="fa-solid fa-chevron-right" />
-                </button>
-            </div>
         </div>
     </div>
 </template>

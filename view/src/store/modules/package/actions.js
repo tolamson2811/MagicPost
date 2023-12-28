@@ -330,4 +330,28 @@ export default {
         }
         return responseData;
     },
+
+    async getPackageProcess(context, package_id) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl +
+                `package/customer/status/${package_id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy tiến trình đơn hàng!",
+            );
+            throw error;
+        }
+        return responseData;
+    },
 };

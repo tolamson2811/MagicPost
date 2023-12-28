@@ -19,7 +19,7 @@
                         >Trang chủ</router-link
                     >
                 </li>
-                <!-- <li
+                <li
                     v-if="
                         !isManager &&
                         !isTransactionLead &&
@@ -33,8 +33,8 @@
                         @click.prevent="scrollToElement('search-service')"
                         >Tra cứu
                     </a>
-                </li> -->
-                <li
+                </li>
+                <!-- <li
                     v-if="
                         !isManager &&
                         !isTransactionLead &&
@@ -48,8 +48,8 @@
                         class="hover:cursor-pointer"
                         >Lịch sử đơn hàng
                     </router-link>
-                </li>
-                <!-- <li
+                </li> -->
+                <li
                     v-if="
                         !isManager &&
                         !isTransactionLead &&
@@ -63,7 +63,7 @@
                         @click.prevent="scrollToElement('service-list')"
                         >Dịch vụ</a
                     >
-                </li> -->
+                </li>
                 <li v-if="isManager">
                     <router-link to="/manager" class="hover:cursor-pointer"
                         >Quản lý</router-link

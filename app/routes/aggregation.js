@@ -55,4 +55,13 @@ router.get(
     aggregationController.getLocationIdOfAggregationByName
 );
 
+//GET /aggregation/list
+router.get("/list", aggregationController.getAllAggregation);
+
+//GET /aggregation/package/statistics
+router.get(
+    "/package/statistics",
+    aggregationController.getPackageStatistics
+);
+
 module.exports = router;
