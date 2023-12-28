@@ -250,7 +250,8 @@ export default {
     },
     computed: {
         linkQrCode() {
-            return `http://localhost:5173/package/detail/${this.package_id}`;
+            const apiUrl = this.$store.state.apiUrl;
+            return `${apiUrl}/package/detail/${this.package_id}`;
         },
     },
     async mounted() {

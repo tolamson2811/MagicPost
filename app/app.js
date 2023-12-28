@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const sequelize = require("./utils/database");
+const bcrypt = require("bcryptjs");
 
 //routes
 const authRoutes = require("./routes/auth");
@@ -54,12 +55,10 @@ Accounts.hasOne(Employees, { foreignKey: "account_id", sourceKey: "id" });
 Accounts.hasOne(Aggregations, {
     foreignKey: "leader_id",
     sourceKey: "id",
-    onDelete: "SET NULL",
 });
 Accounts.hasOne(Transactions, {
     foreignKey: "leader_id",
     sourceKey: "id",
-    onDelete: "SET NULL",
 });
 
 Customers.belongsTo(Accounts, {
@@ -141,8 +140,23 @@ PackageStatus.belongsTo(Packages, {
 
 sequelize
     .sync()
-    .then((result) => {
-        console.log("Connected to database");
+    .then(async (result) => {
+        // Kiểm tra xem đã có tài khoản manager nào chưa
+        const managerExists = await Accounts.findOne({
+            where: { role: "Manager" },
+        });
+
+        // Nếu chưa có, tạo một tài khoản manager
+        if (!managerExists) {
+            const password = process.env.MANAGER_PASSWORD;
+            const hashedPw = await bcrypt.hash(password, 12);
+            await Accounts.create({
+                email: "manager@gmail.com",
+                password: hashedPw,
+                role: "Manager",
+            });
+        }
+
         app.listen(8080);
     })
     .catch((err) => {

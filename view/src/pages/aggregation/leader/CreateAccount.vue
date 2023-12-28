@@ -82,6 +82,7 @@
                 <span
                     class="mt-4 rounded bg-black px-4 py-2 text-center text-xs font-bold text-white hover:cursor-pointer hover:opacity-90 sm:text-sm md:text-base lg:text-lg"
                     @click="handleSubmit"
+                    @keyup.enter="handleSubmit"
                 >
                     Tạo tài khoản
                 </span>

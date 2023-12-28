@@ -13,14 +13,6 @@ const Locations = sequelize.define("Locations", {
         values: ["Aggregation", "Transaction"],
         allowNull: false,
     },
-    total_packages: {
-        type: Sequelize.BIGINT,
-        allowNull: true,
-    },
-    onstock_packages: {
-        type: Sequelize.BIGINT,
-        allowNull: true,
-    },
 });
 
 module.exports = Locations;
