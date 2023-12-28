@@ -32,7 +32,7 @@
                     <th
                         class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white select-none"
                     >
-                        Điểm tập kết
+                        Điểm giao dịch
                     </th>
                     <th
                         class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white select-none"
@@ -64,7 +64,7 @@
                     <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
-                            placeholder="ID điểm tập kết"
+                            placeholder="ID điểm giao dịch"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
                             @keyup="searchBytransactionId($event.target.value)"
                         />
@@ -72,7 +72,7 @@
                     <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
-                            placeholder="Tên điểm tập kết "
+                            placeholder="Tên điểm giao dịch "
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
                             @keyup="searchByName($event.target.value)"
                         />

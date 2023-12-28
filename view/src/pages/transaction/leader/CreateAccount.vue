@@ -3,7 +3,7 @@
         class="mt-0 flex w-full basis-3/4 flex-col items-center justify-center bg-indigo-300 py-2 xl:mt-20 xl:py-0"
     >
         <section
-            class="flex w-4/5 lg:w-2/3 xl:w-1/2 flex-col items-center gap-4 rounded-xl bg-indigo-400 px-10 py-4"
+            class="flex w-4/5 flex-col items-center gap-4 rounded-xl bg-indigo-400 px-10 py-4 lg:w-2/3 xl:w-1/2"
         >
             <h1
                 class="select-none text-base font-bold text-white sm:text-lg md:text-xl lg:text-2xl"
@@ -82,6 +82,7 @@
                 <span
                     class="mt-4 rounded bg-black px-4 py-2 text-center text-xs font-bold text-white hover:cursor-pointer hover:opacity-90 sm:text-sm md:text-base lg:text-lg"
                     @click="handleSubmit"
+                    @keyup.enter="handleSubmit"
                 >
                     Tạo tài khoản
                 </span>
