@@ -1,10 +1,10 @@
 <template>
-    <div class="mt-16 flex w-full basis-3/4 items-center bg-gray-100 lg:mt-20">
+    <div class="mt-0 flex w-full basis-3/4 items-center bg-gray-100 xl:mt-20">
         <!-- list danh sách điểm giao dịch  -->
         <div
             class="flex h-full w-full flex-col items-start justify-start gap-4"
         >
-            <table class="w-full text-sm">
+            <table class="w-full text-xs xl:text-sm">
                 <tr class="">
                     <th
                         class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"

@@ -23,7 +23,7 @@ export default {
     async getAllTransactionEmployees(context, payload) {
         const response = await fetch(
             context.rootGetters.getApiUrl +
-                `transaction/leader/account/list?location_id=${payload.location_id}&page=${payload.page}`,
+                `transaction/leader/account/list?location_id=${payload.location_id}`,
             {
                 method: "GET",
             },

@@ -1,25 +1,25 @@
 <template>
     <div
-        class="basis-3/4 w-full mt-16 lg:mt-20 bg-gray-100 flex justify-center items-center"
+        class="mt-0 flex w-full basis-3/4 flex-col items-center justify-center bg-indigo-300 py-2 xl:mt-20 xl:py-0"
     >
         <section
-            class="w-1/2 px-10 py-4 bg-indigo-400 rounded-xl flex flex-col items-center gap-4"
+            class="flex w-4/5 lg:w-2/3 xl:w-1/2 flex-col items-center gap-4 rounded-xl bg-indigo-400 px-10 py-4"
         >
             <h1
-                class="text-base sm:text-lg md:text-xl lg:text-2xl font-bold select-none text-white"
+                class="select-none text-base font-bold text-white sm:text-lg md:text-xl lg:text-2xl"
             >
                 Tạo tài khoản giao dịch viên
             </h1>
-            <form class="flex flex-col gap-2 w-full">
+            <form class="flex w-full flex-col gap-2">
                 <div class="flex flex-col gap-1">
                     <span class="flex items-center gap-2">
                         <label
                             for="email"
-                            class="lg:text-base md:text-sm text-xs"
+                            class="text-xs md:text-sm lg:text-base"
                             >Email</label
                         >
                         <span
-                            class="lg:text-sm text-xs text-yellow-300"
+                            class="text-xs text-yellow-300 lg:text-sm"
                             v-if="email.errorMessage"
                             >{{ email.errorMessage }}</span
                         >
@@ -27,7 +27,7 @@
                     <input
                         type="text"
                         id="email"
-                        class="px-4 py-2 text-sm md:text-base lg:text-lg border outline-green-300 rounded"
+                        class="rounded border px-4 py-2 text-sm outline-green-300 md:text-base lg:text-lg"
                         @input="email.errorMessage = ''"
                         v-model="email.value"
                     />
@@ -37,11 +37,11 @@
                     <span class="flex items-center gap-2">
                         <label
                             for="password"
-                            class="lg:text-base md:text-sm text-xs"
+                            class="text-xs md:text-sm lg:text-base"
                             >Mật khẩu</label
                         >
                         <span
-                            class="lg:text-sm text-xs text-yellow-300"
+                            class="text-xs text-yellow-300 lg:text-sm"
                             v-if="password.errorMessage"
                         >
                             {{ password.errorMessage }}</span
@@ -50,7 +50,7 @@
                     <input
                         type="password"
                         id="password"
-                        class="px-4 py-2 text-sm md:text-base lg:text-lg border outline-green-300 rounded"
+                        class="rounded border px-4 py-2 text-sm outline-green-300 md:text-base lg:text-lg"
                         @input="password.errorMessage = ''"
                         v-model="password.value"
                     />
@@ -60,11 +60,11 @@
                     <span class="flex items-center gap-2">
                         <label
                             for="confirm-password"
-                            class="lg:text-base md:text-sm text-xs"
+                            class="text-xs md:text-sm lg:text-base"
                             >Nhập lại mật khẩu</label
                         >
                         <span
-                            class="lg:text-sm text-xs text-yellow-300"
+                            class="text-xs text-yellow-300 lg:text-sm"
                             v-if="confirmPassword.errorMessage"
                             >{{ confirmPassword.errorMessage }}</span
                         >
@@ -73,14 +73,14 @@
                         type="password"
                         id="confirm-password"
                         placeholder=""
-                        class="px-4 py-2 text-sm md:text-base lg:text-lg border outline-green-300 rounded"
+                        class="rounded border px-4 py-2 text-sm outline-green-300 md:text-base lg:text-lg"
                         @input="confirmPassword.errorMessage = ''"
                         v-model="confirmPassword.value"
                     />
                 </div>
 
                 <span
-                    class="bg-black px-4 py-2 lg:text-lg md:text-base sm:text-sm text-xs text-white font-bold rounded mt-4 hover:cursor-pointer hover:opacity-90 text-center"
+                    class="mt-4 rounded bg-black px-4 py-2 text-center text-xs font-bold text-white hover:cursor-pointer hover:opacity-90 sm:text-sm md:text-base lg:text-lg"
                     @click="handleSubmit"
                 >
                     Tạo tài khoản
@@ -136,7 +136,7 @@ export default {
                     this.isLoading = true;
                     await this.$store.dispatch(
                         "transaction/createNewTransactionEmployee",
-                        formData
+                        formData,
                     );
                     this.isLoading = false;
                     this.$notify({
@@ -170,7 +170,7 @@ export default {
         async getLocationId() {
             const res = await this.$store.dispatch(
                 "manager/getEmployeeById",
-                this.leader_id
+                this.leader_id,
             );
             this.location_id = res.location_id;
         },

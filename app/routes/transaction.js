@@ -39,7 +39,7 @@ router.put(
     transactionAccountController.createNewTransactionEmployee
 );
 
-//GET /transaction/leader/account/list
+//GET /transaction/leader/account/list?location_id=...
 router.get(
     "/leader/account/list",
     transactionAccountController.getAllTransactionEmployee

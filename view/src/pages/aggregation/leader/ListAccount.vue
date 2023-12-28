@@ -1,41 +1,23 @@
 <template>
-    <div class="basis-3/4 w-full mt-16 lg:mt-20 bg-gray-100 flex items-center">
+    <div class="mt-0 flex w-full basis-3/4 items-center bg-gray-100 xl:mt-20">
         <!-- list danh sách tài khoản  -->
         <div
-            class="flex flex-col justify-start items-start h-full w-full gap-4"
+            class="flex h-full w-full flex-col items-start justify-start gap-4"
         >
-            <table class="w-full text-sm">
+            <table class="w-full text-xs xl:text-sm">
                 <tr class="">
                     <th
-                        class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white w-2/12"
+                        class="w-2/12 border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         ID
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrows-up-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'default'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-up"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'increase'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'decrease'"
-                            @click="toggleIdFilter()"
-                        />
                     </th>
                     <th
-                        class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white"
+                        class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Email
                     </th>
                     <th
-                        class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white"
+                        class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Xóa
                     </th>
@@ -43,19 +25,19 @@
 
                 <!-- Phần tìm kiếm theo từng danh mục  -->
                 <tr class="bg-indigo-300">
-                    <td class="p-1 mt-1 border-e-2 border-white">
+                    <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
                             placeholder="ID tài khoản"
-                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                            class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
                             @keyup="searchById($event.target.value)"
                         />
                     </td>
-                    <td class="p-1 mt-1 border-e-2 border-white">
+                    <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="email"
                             placeholder="Email"
-                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                            class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
                             @keyup="searchByEmail($event.target.value)"
                         />
                     </td>
@@ -90,16 +72,16 @@
             </table>
 
             <!-- Phân trang  -->
-            <div class="flex justify-center items-center gap-2 px-2">
+            <div class="flex items-center justify-center gap-2 px-2">
                 <font-awesome-icon
                     icon="fa-solid fa-arrow-left"
-                    class="hover:cursor-pointer text-lg"
+                    class="text-lg hover:cursor-pointer"
                     v-if="currentPage > 1"
                     @click="switchPage(currentPage - 1)"
                 />
-                <div class="flex justify-center items-center gap-2">
+                <div class="flex items-center justify-center gap-2">
                     <div
-                        class="w-8 h-8 flex justify-center items-center border border-black hover:bg-indigo-500 hover:text-white"
+                        class="flex h-8 w-8 items-center justify-center border border-black hover:bg-indigo-500 hover:text-white"
                         v-for="page in totalPage"
                         :key="page"
                         :class="
@@ -114,7 +96,7 @@
                 </div>
                 <font-awesome-icon
                     icon="fa-solid fa-arrow-right"
-                    class="hover:cursor-pointer text-lg"
+                    class="text-lg hover:cursor-pointer"
                     v-if="currentPage < totalPage"
                     @click="switchPage(currentPage + 1)"
                 />
@@ -196,8 +178,8 @@ export default {
                 });
                 this.employees = this.employees.filter((employee) =>
                     this.removeAccents(employee.email.toLowerCase()).includes(
-                        this.removeAccents(string.toLowerCase())
-                    )
+                        this.removeAccents(string.toLowerCase()),
+                    ),
                 );
             }
         },
@@ -213,7 +195,7 @@ export default {
                     page: this.currentPage,
                 });
                 this.employees = this.employees.filter((employee) =>
-                    employee.id.toString().includes(string)
+                    employee.id.toString().includes(string),
                 );
             }
         },
@@ -221,7 +203,7 @@ export default {
             try {
                 const result = await this.$store.dispatch(
                     "aggregation/getAllAggregationEmployees",
-                    payload
+                    payload,
                 );
 
                 this.employees = result.aggregation_employee;
@@ -255,7 +237,7 @@ export default {
                 this.isLoading = true;
                 await this.$store.dispatch(
                     "transaction/deleteTransactionEmployee",
-                    id
+                    id,
                 );
                 this.clickDelete = {
                     value: false,
@@ -284,7 +266,7 @@ export default {
         async getLocationId() {
             const res = await this.$store.dispatch(
                 "manager/getEmployeeById",
-                this.leader_id
+                this.leader_id,
             );
             this.location_id = res.location_id;
         },

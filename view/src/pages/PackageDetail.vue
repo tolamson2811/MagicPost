@@ -8,10 +8,10 @@
                 class="flex w-full flex-col items-center gap-4"
                 id="element-convert-pdf"
             >
-                <h1 class="mx-auto text-lg font-bold text-sky-900">
+                <h1 class="mx-auto text-sm md:text-base lg:text-lg font-bold text-sky-900">
                     Thông tin đơn hàng
                 </h1>
-                <table class="w-full">
+                <table class="w-full text-xs md:text-sm lg:text-base">
                     <tr class="grid grid-cols-2">
                         <th
                             class="w-full border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
@@ -66,7 +66,7 @@
                         </td>
                     </tr>
                 </table>
-                <table class="w-full">
+                <table class="w-full text-xs md:text-sm lg:text-base">
                     <tr class="grid grid-cols-2">
                         <th
                             class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
@@ -105,7 +105,7 @@
                         </td>
                     </tr>
                 </table>
-                <table class="w-full">
+                <table class="w-full text-xs md:text-sm lg:text-base">
                     <tr class="grid grid-cols-2">
                         <th
                             class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
@@ -147,10 +147,10 @@
             </div>
             <!-- Trạng thái giao hàng  -->
             <div class="flex w-full flex-col items-center gap-4">
-                <h1 class="mx-auto text-lg font-bold text-sky-900">
+                <h1 class="mx-auto text-sm md:text-base lg:text-lg font-bold text-sky-900">
                     Trạng thái giao hàng
                 </h1>
-                <table class="w-full">
+                <table class="w-full text-xs md:text-sm lg:text-base">
                     <tr class="grid grid-cols-5">
                         <th
                             class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
@@ -213,13 +213,13 @@
             <!-- Tiến trình vận chuyển  -->
             <div class="flex w-full flex-col items-center gap-4 mb-4">
                 <h1
-                    class="mx-auto text-lg font-bold text-sky-900"
+                    class="mx-auto text-sm md:text-base lg:text-lg font-bold text-sky-900"
                     v-if="package_process"
                 >
                     Tiến trình vận chuyển
                 </h1>
                 <div
-                    class="mt-4 flex w-full flex-col gap-2 border-2 border-black p-4 text-xs sm:text-sm md:text-base lg:text-lg"
+                    class="mt-4 flex w-full flex-col gap-2 border-y-2 border-black p-4 text-xs sm:text-sm md:text-base lg:text-lg"
                     v-if="package_process"
                 >
                     <span class="flex gap-2">

@@ -1,5 +1,5 @@
 <template>
-    <main class="flex flex-col lg:flex-row">
+    <main class="flex flex-col xl:flex-row">
         <!-- Side bar  -->
         <div
             class="flex lg:min-h-screen w-full basis-1/4 flex-col gap-10 bg-orange-100 p-10 pt-20"
@@ -29,7 +29,7 @@
             </div>
 
             <!-- List các danh mục  -->
-            <div class="flex flex-col gap-10">
+            <div class="flex flex-col gap-4 lg:gap-8 xl:gap-10">
                 <!-- Quản lý đơn hàng  -->
                 <!-- <div class="flex flex-col gap-2">
                     <div
@@ -106,14 +106,14 @@
                         >
                             <router-link
                                 :to="listWarehouseLink"
-                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none text-xs lg:text-sm xl:text-base rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon icon="fa-solid fa-cubes" />
                                 Danh sách đơn hàng
                             </router-link>
                             <router-link
                                 :to="receivedWarehouseLink"
-                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none text-xs lg:text-sm xl:text-base rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-truck-fast"
@@ -122,7 +122,7 @@
                             </router-link>
                             <!-- <router-link
                                 :to="sendWarehouseLink"
-                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none text-xs lg:text-sm xl:text-base rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-paper-plane"
@@ -131,7 +131,7 @@
                             </router-link> -->
                             <router-link
                                 :to="createOrderWarehouseLink"
-                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none text-xs lg:text-sm xl:text-base rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-cart-plus"
@@ -141,7 +141,7 @@
 
                             <router-link
                                 :to="transportStatusLink"
-                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none text-xs lg:text-sm xl:text-base rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-motorcycle"
@@ -180,7 +180,7 @@
                         >
                             <router-link
                                 :to="successStatisticLink"
-                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none text-xs lg:text-sm xl:text-base rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-paper-plane"
@@ -189,7 +189,7 @@
                             </router-link>
                             <router-link
                                 :to="failStatisticLink"
-                                class="select-none rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
+                                class="select-none text-xs lg:text-sm xl:text-base rounded border-2 border-black px-4 py-2 font-semibold hover:cursor-pointer hover:bg-amber-100"
                             >
                                 <font-awesome-icon
                                     icon="fa-solid fa-rotate-left"

@@ -1,33 +1,15 @@
 <template>
-    <div class="basis-3/4 w-full mt-16 lg:mt-20 bg-gray-100 flex items-center">
+    <div class="mt-0 flex w-full basis-3/4 items-center bg-gray-100 xl:mt-20">
         <!-- list danh sách tài khoản  -->
         <div
             class="flex flex-col justify-start items-start h-full w-full gap-4"
         >
-            <table class="w-full text-sm">
+            <table class="w-full text-xs xl:text-sm">
                 <tr class="">
                     <th
                         class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white w-2/12"
                     >
                         ID
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrows-up-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'default'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-up"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'increase'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'decrease'"
-                            @click="toggleIdFilter()"
-                        />
                     </th>
                     <th
                         class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white"
@@ -88,7 +70,7 @@
             </table>
 
             <!-- Phân trang  -->
-            <div class="flex justify-center items-center gap-2 px-2">
+            <!-- <div class="flex justify-center items-center gap-2 px-2">
                 <font-awesome-icon
                     icon="fa-solid fa-arrow-left"
                     class="hover:cursor-pointer text-lg"
@@ -116,7 +98,7 @@
                     v-if="currentPage < totalPage"
                     @click="switchPage(currentPage + 1)"
                 />
-            </div>
+            </div> -->
         </div>
         <base-dialog
             :show="!!clickDelete.value"
@@ -168,7 +150,6 @@ export default {
                 this.idFilter = "default";
                 this.getEmployees({
                     location_id: this.location_id,
-                    page: this.currentPage,
                 });
             }
         },
@@ -184,12 +165,10 @@ export default {
             if (string === "") {
                 this.getEmployees({
                     location_id: this.location_id,
-                    page: this.currentPage,
                 });
             } else {
                 await this.getEmployees({
                     location_id: this.location_id,
-                    page: this.currentPage,
                 });
                 this.employees = this.employees.filter((employee) =>
                     this.removeAccents(employee.email.toLowerCase()).includes(
@@ -202,12 +181,10 @@ export default {
             if (string === "") {
                 this.getEmployees({
                     location_id: this.location_id,
-                    page: this.currentPage,
                 });
             } else {
                 await this.getEmployees({
                     location_id: this.location_id,
-                    page: this.currentPage,
                 });
                 this.employees = this.employees.filter((employee) =>
                     employee.id.toString().includes(string)
@@ -222,17 +199,6 @@ export default {
                 );
 
                 this.employees = result.transaction_employee;
-                this.totalPage = result.totalPage;
-                this.totalResult = result.totalResult;
-
-                //change url
-                this.$router.push({
-                    path: this.$route.path,
-                    query: {
-                        location_id: this.location_id,
-                        page: this.currentPage,
-                    },
-                });
             } catch (error) {
                 this.error = error.message;
             }
@@ -264,7 +230,6 @@ export default {
                 });
                 this.getEmployees({
                     location_id: this.location_id,
-                    page: this.currentPage,
                 });
             } catch (error) {
                 this.error = error.message;

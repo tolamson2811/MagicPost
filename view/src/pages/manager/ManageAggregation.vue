@@ -1,23 +1,23 @@
 <template>
-    <div class="mt-16 flex w-full basis-3/4 items-center bg-gray-100 lg:mt-20">
+    <div class="mt-0 flex w-full basis-3/4 items-center bg-gray-100 xl:mt-20">
         <!-- list danh sách điểm giao dịch  -->
         <div
             class="flex h-full w-full flex-col items-start justify-start gap-4"
         >
-            <table class="w-full text-sm">
+            <table class="w-full text-xs xl:text-sm">
                 <tr class="">
                     <th
-                        class="select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-1/12 select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         ID
                     </th>
                     <th
-                        class="select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-4/12 select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Điểm tập kết
                     </th>
                     <th
-                        class="select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-3/12 select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Số lượng nhân viên
                         <font-awesome-icon
@@ -40,7 +40,7 @@
                         />
                     </th>
                     <th
-                        class="select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
+                        class="w-4/12 select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Trưởng điểm
                     </th>
@@ -104,7 +104,7 @@
                     </td>
                 </tr>
             </table>
-            <p class="px-2 font-bold italic text-rose-500">
+            <p class="px-2 font-bold italic text-rose-500 text-xs lg:text-sm xl:text-base">
                 {{ aggregations.length }} điểm tập kết
             </p>
         </div>

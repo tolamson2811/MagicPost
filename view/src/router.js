@@ -54,9 +54,6 @@ const AggregationListPackages = defineAsyncComponent(
 const AggregationReceivedPackage = defineAsyncComponent(
     () => import("./pages/aggregation/employee/warehouse/ReceivedPackage.vue"),
 );
-const AggregationTotalPackage = defineAsyncComponent(
-    () => import("./pages/aggregation/employee/statistic/TotalPackages.vue"),
-);
 const AggregationStatisticReceived = defineAsyncComponent(
     () => import("./pages/aggregation/leader/StatisticReceived.vue"),
 );
@@ -82,9 +79,6 @@ const StatisticTransactionReceived = defineAsyncComponent(
 );
 const EmployeeTransaction = defineAsyncComponent(
     () => import("./pages/transaction/employee/EmployeeTransaction.vue"),
-);
-const CreateTransportPackage = defineAsyncComponent(
-    () => import("./pages/transaction/employee/transport/CreateTransport.vue"),
 );
 const TransportPackageStatus = defineAsyncComponent(
     () => import("./pages/transaction/employee/transport/PackageStatus.vue"),
@@ -116,7 +110,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
-            path: '/receipt/:package_id',
+            path: "/receipt/:package_id",
             component: DeliveryReceipt,
             props: true,
         },
@@ -203,11 +197,6 @@ const router = createRouter({
                     component: AggregationReceivedPackage,
                     props: true,
                 },
-                {
-                    path: "statistic/package/total",
-                    component: AggregationTotalPackage,
-                    props: true,
-                },
             ],
         },
         {
@@ -281,11 +270,6 @@ const router = createRouter({
             },
             props: true,
             children: [
-                {
-                    path: "transport/create",
-                    component: CreateTransportPackage,
-                    props: true,
-                },
                 {
                     path: "transport/status",
                     component: TransportPackageStatus,
