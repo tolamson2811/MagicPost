@@ -73,4 +73,7 @@ router.get("/aggregation/package/import", packageController.getAllAggregationImp
 //GET package/aggregation/package/export?location_id=
 router.get("/aggregation/package/export", packageController.getAllAggregationExportPackage);
 
+//GET package/customer/status/package_id
+router.get("/customer/status/:package_id", packageController.getPackageProcess);
+
 module.exports = router;

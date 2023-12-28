@@ -58,4 +58,13 @@ router.get(
     transactionController.getLocationIdOfTransactionByName
 );
 
+//GET /transaction/list
+router.get("/list", transactionController.getAllTransactions);
+
+//GET /transaction/package/statistics
+router.get(
+    "/package/statistics",
+    transactionController.getPackageStatistics
+);
+
 module.exports = router;

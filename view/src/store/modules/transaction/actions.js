@@ -84,4 +84,39 @@ export default {
 
         return responseData;
     },
+    async getAllTransactions(context) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl + "transaction/list",
+            {
+                method: "GET",
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message ||
+                    "Không thể lấy danh sách điểm giao dịch!",
+            );
+            throw error;
+        }
+
+        return responseData;
+    },
+    async getPackageStatistics(context) {
+        const response = await fetch(
+            context.rootGetters.getApiUrl + "transaction/package/statistics",
+            {
+                method: "GET",
+            },
+        );
+        const responseData = await response.json();
+        if (!response.ok) {
+            const error = new Error(
+                responseData.message || "Không thể lấy thống kê gói hàng!",
+            );
+            throw error;
+        }
+
+        return responseData;
+    },
 };

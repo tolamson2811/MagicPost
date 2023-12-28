@@ -1,42 +1,23 @@
 <template>
-    <div class="basis-3/4 w-full mt-16 lg:mt-20 bg-gray-100 flex items-center">
-        
+    <div class="mt-16 flex w-full basis-3/4 items-center bg-gray-100 lg:mt-20">
         <!-- list danh sách điểm giao dịch  -->
         <div
-            class="flex flex-col gap-4 justify-start items-start h-full w-full"
+            class="flex h-full w-full flex-col items-start justify-start gap-4"
         >
-            <table class="w-full">
+            <table class="w-full text-sm">
                 <tr class="">
                     <th
-                        class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white"
+                        class="select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         ID
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrows-up-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'default'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-up"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'increase'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'decrease'"
-                            @click="toggleIdFilter()"
-                        />
                     </th>
                     <th
-                        class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white"
+                        class="select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Điểm giao dịch
                     </th>
                     <th
-                        class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white"
+                        class="select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Số lượng nhân viên
                         <font-awesome-icon
@@ -59,7 +40,7 @@
                         />
                     </th>
                     <th
-                        class="bg-indigo-500 border border-e-2 border-white px-4 py-1 text-white"
+                        class="select-none border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         Trưởng điểm
                     </th>
@@ -67,221 +48,65 @@
 
                 <!-- Phần tìm kiếm theo từng danh mục  -->
                 <tr class="bg-indigo-300">
-                    <td class="p-1 mt-1 border-e-2 border-white">
+                    <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
                             placeholder="ID điểm giao dịch"
-                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                            class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
+                            @keyup="searchByTransactionId($event.target.value)"
                         />
                     </td>
-                    <td class="p-1 mt-1 border-e-2 border-white">
+                    <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
                             placeholder="Tên điểm giao dịch"
-                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                            class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
+                            @keyup="searchByName($event.target.value)"
                         />
                     </td>
-                    <td class="p-1 mt-1 border-e-2 border-white">
+                    <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
                             placeholder="Số lượng nhân viên"
-                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                            class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
+                            @keyup="
+                                searchByEmployeeQuantity($event.target.value)
+                            "
                         />
                     </td>
-                    <td class="p-1 mt-1 border-e-2 border-white">
+                    <td class="mt-1 border-e-2 border-white p-1">
                         <input
                             type="text"
-                            placeholder="Trưởng điểm giao dịch"
-                            class="px-2 py-1 border border-black w-full rounded outline-green-500 text-center"
+                            placeholder="Email trưởng điểm giao dịch"
+                            class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
+                            @keyup="searchByLeader($event.target.value)"
                         />
                     </td>
                 </tr>
 
-                <tr class="bg-gray-200">
-                    <td class="border-e-2 border-white text-center">1</td>
+                <tr
+                    v-for="(transaction, index) in transactions"
+                    :key="transaction.id"
+                    class="bg-gray-200"
+                    :class="{ 'bg-gray-300': index % 2 === 0 }"
+                >
                     <td class="border-e-2 border-white text-center">
-                        test@gmail.com
+                        {{ transaction.id }}
                     </td>
                     <td class="border-e-2 border-white text-center">
-                        abc123456
+                        {{ transaction.address }}
                     </td>
                     <td class="border-e-2 border-white text-center">
-                        Trưởng điểm giao dịch
-                    </td>
-                </tr>
-
-                <tr class="bg-gray-200">
-                    <td class="border-e-2 border-white text-center">1</td>
-                    <td class="border-e-2 border-white text-center">
-                        test@gmail.com
+                        {{ transaction.employee_quantity }}
                     </td>
                     <td class="border-e-2 border-white text-center">
-                        abc123456
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        Trưởng điểm giao dịch
-                    </td>
-                </tr>
-                <tr class="bg-gray-200">
-                    <td class="border-e-2 border-white text-center">1</td>
-                    <td class="border-e-2 border-white text-center">
-                        test@gmail.com
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        abc123456
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        Trưởng điểm giao dịch
-                    </td>
-                </tr>
-                <tr class="bg-gray-200">
-                    <td class="border-e-2 border-white text-center">1</td>
-                    <td class="border-e-2 border-white text-center">
-                        test@gmail.com
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        abc123456
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        Trưởng điểm giao dịch
-                    </td>
-                </tr>
-                <tr class="bg-gray-200">
-                    <td class="border-e-2 border-white text-center">1</td>
-                    <td class="border-e-2 border-white text-center">
-                        test@gmail.com
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        abc123456
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        Trưởng điểm giao dịch
-                    </td>
-                </tr>
-                <tr class="bg-gray-200">
-                    <td class="border-e-2 border-white text-center">1</td>
-                    <td class="border-e-2 border-white text-center">
-                        test@gmail.com
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        abc123456
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        Trưởng điểm giao dịch
-                    </td>
-                </tr>
-                <tr class="bg-gray-200">
-                    <td class="border-e-2 border-white text-center">1</td>
-                    <td class="border-e-2 border-white text-center">
-                        test@gmail.com
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        abc123456
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        Trưởng điểm giao dịch
-                    </td>
-                </tr>
-                <tr class="bg-gray-200">
-                    <td class="border-e-2 border-white text-center">1</td>
-                    <td class="border-e-2 border-white text-center">
-                        test@gmail.com
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        abc123456
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        Trưởng điểm giao dịch
-                    </td>
-                </tr>
-                <tr class="bg-gray-200">
-                    <td class="border-e-2 border-white text-center">1</td>
-                    <td class="border-e-2 border-white text-center">
-                        test@gmail.com
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        abc123456
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        Trưởng điểm giao dịch
-                    </td>
-                </tr>
-                <tr class="bg-gray-200">
-                    <td class="border-e-2 border-white text-center">1</td>
-                    <td class="border-e-2 border-white text-center">
-                        test@gmail.com
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        abc123456
-                    </td>
-                    <td class="border-e-2 border-white text-center">
-                        Trưởng điểm giao dịch
+                        {{ transaction.leader }}
                     </td>
                 </tr>
             </table>
-
-            <div class="grid grid-cols-12 gap-2 w-full px-1">
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    <font-awesome-icon icon="fa-solid fa-chevron-left" />
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    1
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    2
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    3
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    4
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    5
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    6
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    7
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    8
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    9
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    10
-                </button>
-                <button
-                    class="px-4 py-1 rounded bg-green-300 hover:cursor-pointer hover:bg-green-400"
-                >
-                    <font-awesome-icon icon="fa-solid fa-chevron-right" />
-                </button>
-            </div>
+            <p class="px-2 font-bold italic text-rose-500">
+                {{ transactions.length }} điểm giao dịch
+            </p>
         </div>
     </div>
 </template>
@@ -292,6 +117,7 @@ export default {
         return {
             idFilter: "default",
             quantityFilter: "default",
+            transactions: [],
         };
     },
     methods: {
@@ -305,16 +131,90 @@ export default {
                 this.idFilter = "default";
             }
         },
-        toggleQuantityFilter() {
+        async toggleQuantityFilter() {
             this.idFilter = "default";
             if (this.quantityFilter === "default") {
                 this.quantityFilter = "increase";
+                await this.getAllTransactions();
+                this.transactions.sort((a, b) => {
+                    return a.employee_quantity - b.employee_quantity;
+                });
             } else if (this.quantityFilter === "increase") {
                 this.quantityFilter = "decrease";
+                await this.getAllTransactions();
+                this.transactions.sort((a, b) => {
+                    return b.employee_quantity - a.employee_quantity;
+                });
             } else {
                 this.quantityFilter = "default";
+                await this.getAllTransactions();
             }
         },
+        async getAllTransactions() {
+            this.transactions = await this.$store.dispatch(
+                "transaction/getAllTransactions",
+            );
+        },
+        //Phần search
+        // Xóa bỏ dấu tiếng Việt
+        removeAccents(str) {
+            return str
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/Đ/g, "D");
+        },
+        async searchByTransactionId(string) {
+            if (string === "") {
+                this.getAllTransactions();
+            } else {
+                await this.getAllTransactions();
+                this.transactions = this.transactions.filter((transaction) =>
+                    this.removeAccents(
+                        String(transaction.id).toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
+                );
+            }
+        },
+        async searchByName(string) {
+            if (string === "") {
+                this.getAllTransactions();
+            } else {
+                await this.getAllTransactions();
+                this.transactions = this.transactions.filter((transaction) =>
+                    this.removeAccents(
+                        transaction.address.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
+                );
+            }
+        },
+        async searchByEmployeeQuantity(string) {
+            if (string === "") {
+                this.getAllTransactions();
+            } else {
+                await this.getAllTransactions();
+                this.transactions = this.transactions.filter((transaction) =>
+                    this.removeAccents(
+                        transaction.employee_quantity.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
+                );
+            }
+        },
+        async searchByLeader(string) {
+            if (string === "") {
+                this.getAllTransactions();
+            } else {
+                await this.getAllTransactions();
+                this.transactions = this.transactions.filter((transaction) =>
+                    this.removeAccents(
+                        transaction.leader.toLowerCase(),
+                    ).includes(this.removeAccents(string.toLowerCase())),
+                );
+            }
+        },
+    },
+    mounted() {
+        this.getAllTransactions();
     },
 };
 </script>

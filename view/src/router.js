@@ -108,10 +108,18 @@ const FailedDelivery = defineAsyncComponent(
 const CreateOrder = defineAsyncComponent(
     () => import("./pages/transaction/employee/warehouse/CreateOrder.vue"),
 );
+const DeliveryReceipt = defineAsyncComponent(
+    () => import("./pages/transaction/employee/warehouse/DeliveryReceipt.vue"),
+);
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
+        {
+            path: '/receipt/:package_id',
+            component: DeliveryReceipt,
+            props: true,
+        },
         {
             path: "/",
             redirect: "/homepage",

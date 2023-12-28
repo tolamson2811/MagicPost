@@ -83,7 +83,7 @@
 
                 <!-- tra cứu vận đơn -->
                 <transition name="element">
-                    <div class="bg-indigo-400 p-4" v-if="isSearchOrder">
+                    <div class="bg-indigo-400 p-4">
                         <div
                             class="flex w-full gap-2 text-xs md:text-sm lg:text-base"
                         >
@@ -92,10 +92,12 @@
                                 placeholder="Mã vận đơn"
                                 id="orderId"
                                 class="basis-9/12 rounded-2xl p-2 lg:basis-11/12"
+                                v-model="search_package_id"
                             />
                             <button
                                 for="orderId"
                                 class="search-btn w-full basis-3/12 rounded-md px-4 py-2 text-center font-bold text-white hover:cursor-pointer hover:opacity-80 lg:basis-1/12"
+                                @click="handleSearchPackageProcess"
                             >
                                 <p class="w-full">Tra cứu</p>
                             </button>
@@ -103,53 +105,48 @@
 
                         <div
                             class="mt-4 flex flex-col gap-2 rounded-lg bg-white p-4 text-xs sm:text-sm md:text-base lg:text-lg"
+                            v-if="package_process"
                         >
                             <span class="flex gap-2">
                                 <h1 class="font-bold">Mã vận đơn:</h1>
-                                <p class="">908xxxeqw</p>
+                                <p class="">{{ package_process.package_id }}</p>
                             </span>
                             <span class="flex gap-2">
                                 <h1 class="font-bold">Ngày tạo đơn:</h1>
-                                <p class="">24/11/2003</p>
+                                <p class="">{{ package_process.createdAt }}</p>
                             </span>
                             <span class="flex gap-2">
                                 <h1 class="font-bold">Trạng thái:</h1>
-                                <p class="">Đang vận chuyển</p>
+                                <p class="">{{ package_process.status }}</p>
                             </span>
                             <span class="flex flex-col">
                                 <h1 class="font-bold">
                                     Theo dõi quá trình đơn hàng:
                                 </h1>
                                 <div>
-                                    <span class="flex gap-1">
+                                    <span
+                                        v-for="(
+                                            process, index
+                                        ) in package_process.process"
+                                        :key="index"
+                                        class="flex gap-4"
+                                    >
                                         <h2 class="italic text-red-500">
-                                            12/12/2023:
+                                            {{ process.time }}
                                         </h2>
                                         <p>
-                                            Đơn hàng đã được gửi tới điểm giao
-                                            dịch.
-                                        </p>
-                                    </span>
-                                    <span class="flex gap-1">
-                                        <h2 class="italic text-red-500">
-                                            12/12/2023:
-                                        </h2>
-                                        <p>
-                                            Đơn hàng đã được gửi tới điểm giao
-                                            dịch.
-                                        </p>
-                                    </span>
-                                    <span class="flex gap-1">
-                                        <h2 class="italic text-red-500">
-                                            12/12/2023:
-                                        </h2>
-                                        <p>
-                                            Đơn hàng đã được gửi tới điểm giao
-                                            dịch.
+                                            {{ process.status }}
                                         </p>
                                     </span>
                                 </div>
                             </span>
+
+                            <router-link
+                                class="rounded-lg bg-indigo-400 px-2 py-1 font-bold text-white hover:cursor-pointer hover:bg-indigo-500 max-w-fit"
+                                :to="'/package/detail/' + package_process.package_id"
+                            >
+                                Xem chi tiết
+                            </router-link>
                         </div>
                     </div>
                 </transition>
@@ -659,7 +656,7 @@
             >
                 Đội ngũ của chúng tôi
             </button>
-            <div class="grid lg:grid-cols-3 gap-16 px-2">
+            <div class="grid gap-16 px-2 lg:grid-cols-3">
                 <div
                     class="max-w-sm rounded-lg border border-gray-200 bg-white shadow"
                 >
@@ -670,11 +667,13 @@
                     />
                     <div class="p-5">
                         <h5
-                            class="mb-2 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold tracking-tight text-gray-900"
+                            class="mb-2 text-sm font-bold tracking-tight text-gray-900 sm:text-base md:text-lg lg:text-xl xl:text-2xl"
                         >
                             Nguyen Duc Thien
                         </h5>
-                        <p class="mb-3 font-normal text-gray-700 text-xs md:text-sm lg:text-base">
+                        <p
+                            class="mb-3 text-xs font-normal text-gray-700 md:text-sm lg:text-base"
+                        >
                             Chairman of directors
                         </p>
                     </div>
@@ -689,11 +688,13 @@
                     />
                     <div class="p-5">
                         <h5
-                            class="mb-2 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold tracking-tight text-gray-900"
+                            class="mb-2 text-sm font-bold tracking-tight text-gray-900 sm:text-base md:text-lg lg:text-xl xl:text-2xl"
                         >
                             To Lam Son
                         </h5>
-                        <p class="mb-3 font-normal text-gray-700 text-xs md:text-sm lg:text-base">
+                        <p
+                            class="mb-3 text-xs font-normal text-gray-700 md:text-sm lg:text-base"
+                        >
                             Chief Executive Officer
                         </p>
                     </div>
@@ -708,17 +709,28 @@
                     />
                     <div class="p-5">
                         <h5
-                            class="mb-2 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold tracking-tight text-gray-900"
+                            class="mb-2 text-sm font-bold tracking-tight text-gray-900 sm:text-base md:text-lg lg:text-xl xl:text-2xl"
                         >
                             Ta Khanh Phuong
                         </h5>
-                        <p class="mb-3 font-normal text-gray-700 text-xs md:text-sm lg:text-base">
+                        <p
+                            class="mb-3 text-xs font-normal text-gray-700 md:text-sm lg:text-base"
+                        >
                             Director of Development
                         </p>
                     </div>
                 </div>
             </div>
         </div>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <base-dialog
+            :show="!!error"
+            title="Có lỗi xảy ra!"
+            @close="error = null"
+            @exit="error = null"
+        >
+            <p>{{ error }}</p>
+        </base-dialog>
     </main>
 </template>
 
@@ -727,441 +739,429 @@ export default {
     data() {
         return {
             // data của dữ tra cứu vận đơn
-            isSearchOrder: true,
-            isSearchFee: false,
-            isSearchTransaction: false,
-
+            // isSearchOrder: true,
+            // isSearchFee: false,
+            // isSearchTransaction: false,
             //data của ước tính cước phí
-            sentProvinces: [],
-            receiveProvinces: [],
-            sentDistricts: [],
-            receiveDistricts: [],
-            sentWards: [],
-            receiveWards: [],
-            sentProvince: {
-                value: "Tỉnh/Thành phố gửi",
-                isValid: true,
-                errorMessage: "",
-            },
-            receiveProvince: {
-                value: "Tỉnh/Thành phố nhận",
-                isValid: true,
-                errorMessage: "",
-            },
-            sentDistrict: {
-                value: "Quận/Huyện gửi",
-                isValid: true,
-                errorMessage: "",
-            },
-            receiveDistrict: {
-                value: "Quận/Huyện nhận",
-                isValid: true,
-                errorMessage: "",
-            },
-            sentWard: {
-                value: "Phường/Xã gửi",
-                isValid: true,
-                errorMessage: "",
-            },
-            receiveWard: {
-                value: "Phường/Xã nhận",
-                isValid: true,
-                errorMessage: "",
-            },
-            packageCategory: {
-                value: "Loại hàng",
-                isValid: true,
-                errorMessage: "",
-            },
-            packageWeight: { value: null, isValid: true, errorMessage: "" },
-
+            // sentProvinces: [],
+            // receiveProvinces: [],
+            // sentDistricts: [],
+            // receiveDistricts: [],
+            // sentWards: [],
+            // receiveWards: [],
+            // sentProvince: {
+            //     value: "Tỉnh/Thành phố gửi",
+            //     isValid: true,
+            //     errorMessage: "",
+            // },
+            // receiveProvince: {
+            //     value: "Tỉnh/Thành phố nhận",
+            //     isValid: true,
+            //     errorMessage: "",
+            // },
+            // sentDistrict: {
+            //     value: "Quận/Huyện gửi",
+            //     isValid: true,
+            //     errorMessage: "",
+            // },
+            // receiveDistrict: {
+            //     value: "Quận/Huyện nhận",
+            //     isValid: true,
+            //     errorMessage: "",
+            // },
+            // sentWard: {
+            //     value: "Phường/Xã gửi",
+            //     isValid: true,
+            //     errorMessage: "",
+            // },
+            // receiveWard: {
+            //     value: "Phường/Xã nhận",
+            //     isValid: true,
+            //     errorMessage: "",
+            // },
+            // packageCategory: {
+            //     value: "Loại hàng",
+            //     isValid: true,
+            //     errorMessage: "",
+            // },
+            // packageWeight: { value: null, isValid: true, errorMessage: "" },
             //data của tìm điểm giao dịch
-            transactionProvinces: [],
-            transactionDistricts: [],
-            transactionWards: [],
-            transactionProvince: {
-                value: "Tỉnh/Thành phố",
-                isValid: true,
-                errorMessage: "",
-            },
-            transactionDistrict: {
-                value: "Quận/Huyện",
-                isValid: true,
-                errorMessage: "",
-            },
-            transactionWard: {
-                value: "Phường/Xã",
-                isValid: true,
-                errorMessage: "",
-            },
+            // transactionProvinces: [],
+            // transactionDistricts: [],
+            // transactionWards: [],
+            // transactionProvince: {
+            //     value: "Tỉnh/Thành phố",
+            //     isValid: true,
+            //     errorMessage: "",
+            // },
+            // transactionDistrict: {
+            //     value: "Quận/Huyện",
+            //     isValid: true,
+            //     errorMessage: "",
+            // },
+            // transactionWard: {
+            //     value: "Phường/Xã",
+            //     isValid: true,
+            //     errorMessage: "",
+            // },
+
+            // phần tra cứu vận đơn
+            search_package_id: null,
+            isLoading: false,
+            error: null,
+            package_process: null,
         };
     },
     methods: {
         //method chuyển các mục trong tra cứu
-
-        chooseService(type) {
-            switch (type) {
-                case "search":
-                    this.isSearch = true;
-                    this.isService = false;
-                    break;
-                case "service":
-                    this.isSearch = false;
-                    this.isService = true;
-                    break;
-            }
-        },
-        chooseSearchService(type) {
-            switch (type) {
-                case "order":
-                    this.isSearchOrder = true;
-                    this.isSearchFee = false;
-                    this.isSearchTransaction = false;
-                    break;
-                case "fee":
-                    this.isSearchOrder = false;
-                    this.isSearchFee = true;
-                    this.isSearchTransaction = false;
-                    break;
-                case "transaction":
-                    this.isSearchOrder = false;
-                    this.isSearchFee = false;
-                    this.isSearchTransaction = true;
-                    break;
-            }
-        },
-
+        // chooseService(type) {
+        //     switch (type) {
+        //         case "search":
+        //             this.isSearch = true;
+        //             this.isService = false;
+        //             break;
+        //         case "service":
+        //             this.isSearch = false;
+        //             this.isService = true;
+        //             break;
+        //     }
+        // },
+        // chooseSearchService(type) {
+        //     switch (type) {
+        //         case "order":
+        //             this.isSearchOrder = true;
+        //             this.isSearchFee = false;
+        //             this.isSearchTransaction = false;
+        //             break;
+        //         case "fee":
+        //             this.isSearchOrder = false;
+        //             this.isSearchFee = true;
+        //             this.isSearchTransaction = false;
+        //             break;
+        //         case "transaction":
+        //             this.isSearchOrder = false;
+        //             this.isSearchFee = false;
+        //             this.isSearchTransaction = true;
+        //             break;
+        //     }
+        // },
         //method xử lí phần ước tính cước phí
-        async setEstimateProvinces() {
-            await this.$store.dispatch("address/getProvinces");
-            this.sentProvinces = this.$store.getters["address/getProvinces"];
-            this.receiveProvinces = this.$store.getters["address/getProvinces"];
-        },
-        async handleSentProvinceChange() {
-            this.sentProvince.errorMessage = "";
-
-            this.sentDistricts = [];
-            this.sentDistrict.value = "Quận/Huyện gửi";
-            this.sentWards = [];
-            this.sentWard.value = "Phường/Xã gửi";
-            let provinceCode = "";
-            for (let province of this.sentProvinces) {
-                if (province.name === this.sentProvince.value) {
-                    provinceCode = province.code;
-                    break;
-                }
-            }
-
-            const districts = this.$store.getters["address/getDistricts"];
-
-            for (const district in districts) {
-                if (districts[district].province_code === provinceCode) {
-                    this.sentDistricts.push(districts[district]);
-                }
-            }
-        },
-        async handleReceiveProvinceChange() {
-            this.receiveProvince.errorMessage = "";
-
-            this.receiveDistricts = [];
-            this.receiveDistrict.value = "Quận/Huyện nhận";
-            this.receiveWards = [];
-            this.receiveWard.value = "Phường/Xã nhận";
-            let provinceCode = "";
-            for (let province of this.receiveProvinces) {
-                if (province.name === this.receiveProvince.value) {
-                    provinceCode = province.code;
-                    break;
-                }
-            }
-
-            const districts = this.$store.getters["address/getDistricts"];
-
-            for (const district in districts) {
-                if (districts[district].province_code === provinceCode) {
-                    this.receiveDistricts.push(districts[district]);
-                }
-            }
-        },
-        async handleSentDistrictChange() {
-            this.sentDistrict.errorMessage = "";
-
-            this.sentWards = [];
-            this.sentWard.value = "Phường/Xã gửi";
-
-            let districtCode = "";
-            for (let district of this.sentDistricts) {
-                if (district.name === this.sentDistrict.value) {
-                    districtCode = district.code;
-                    break;
-                }
-            }
-
-            const wards = this.$store.getters["address/getWards"];
-
-            for (const ward in wards) {
-                if (wards[ward].district_code === districtCode) {
-                    this.sentWards.push(wards[ward]);
-                }
-            }
-        },
-        async handleReceiveDistrictChange() {
-            this.receiveDistrict.errorMessage = "";
-
-            this.receiveWards = [];
-            this.receiveWard.value = "Phường/Xã nhận";
-
-            let districtCode = "";
-            for (let district of this.receiveDistricts) {
-                if (district.name === this.receiveDistrict.value) {
-                    districtCode = district.code;
-                    break;
-                }
-            }
-
-            const wards = this.$store.getters["address/getWards"];
-
-            for (const ward in wards) {
-                if (wards[ward].district_code === districtCode) {
-                    this.receiveWards.push(wards[ward]);
-                }
-            }
-        },
-        handleEstimateFee() {
-            if (this.validateEstimateForm) {
-                const formData = {
-                    sentProvince: this.sentProvince.value,
-                    receiveProvince: this.receiveProvince.value,
-                    sentDistrict: this.sentDistrict.value,
-                    receiveDistrict: this.receiveDistrict.value,
-                    sentWard: this.sentWard.value,
-                    receiveWard: this.receiveWard.value,
-                    packageCategory: this.packageCategory.value,
-                    packageWeight: this.packageWeight.value,
-                };
-
-                console.log(formData);
-                this.resetEstimateFeeForm();
-            } else {
-                console.log("invalid form");
-                return;
-            }
-        },
-        resetEstimateFeeForm() {
-            this.sentProvince.value = "Tỉnh/Thành phố gửi";
-            this.receiveProvince.value = "Tỉnh/Thành phố nhận";
-            this.sentDistrict.value = "Quận/Huyện gửi";
-            this.receiveDistrict.value = "Quận/Huyện nhận";
-            this.sentWard.value = "Phường/Xã gửi";
-            this.receiveWard.value = "Phường/Xã nhận";
-            this.packageCategory.value = "Loại hàng";
-            this.packageWeight.value = null;
-            this.sentProvince.isValid = true;
-            this.receiveProvince.isValid = true;
-            this.sentDistrict.isValid = true;
-            this.receiveDistrict.isValid = true;
-            this.sentWard.isValid = true;
-            this.receiveWard.isValid = true;
-            this.packageCategory.isValid = true;
-            this.packageWeight.isValid = true;
-            this.sentProvince.errorMessage = "";
-            this.receiveProvince.errorMessage = "";
-            this.sentDistrict.errorMessage = "";
-            this.receiveDistrict.errorMessage = "";
-            this.sentWard.errorMessage = "";
-            this.receiveWard.errorMessage = "";
-            this.packageCategory.errorMessage = "";
-            this.packageWeight.errorMessage = "";
-        },
-
+        // async setEstimateProvinces() {
+        //     await this.$store.dispatch("address/getProvinces");
+        //     this.sentProvinces = this.$store.getters["address/getProvinces"];
+        //     this.receiveProvinces = this.$store.getters["address/getProvinces"];
+        // },
+        // async handleSentProvinceChange() {
+        //     this.sentProvince.errorMessage = "";
+        //     this.sentDistricts = [];
+        //     this.sentDistrict.value = "Quận/Huyện gửi";
+        //     this.sentWards = [];
+        //     this.sentWard.value = "Phường/Xã gửi";
+        //     let provinceCode = "";
+        //     for (let province of this.sentProvinces) {
+        //         if (province.name === this.sentProvince.value) {
+        //             provinceCode = province.code;
+        //             break;
+        //         }
+        //     }
+        //     const districts = this.$store.getters["address/getDistricts"];
+        //     for (const district in districts) {
+        //         if (districts[district].province_code === provinceCode) {
+        //             this.sentDistricts.push(districts[district]);
+        //         }
+        //     }
+        // },
+        // async handleReceiveProvinceChange() {
+        //     this.receiveProvince.errorMessage = "";
+        //     this.receiveDistricts = [];
+        //     this.receiveDistrict.value = "Quận/Huyện nhận";
+        //     this.receiveWards = [];
+        //     this.receiveWard.value = "Phường/Xã nhận";
+        //     let provinceCode = "";
+        //     for (let province of this.receiveProvinces) {
+        //         if (province.name === this.receiveProvince.value) {
+        //             provinceCode = province.code;
+        //             break;
+        //         }
+        //     }
+        //     const districts = this.$store.getters["address/getDistricts"];
+        //     for (const district in districts) {
+        //         if (districts[district].province_code === provinceCode) {
+        //             this.receiveDistricts.push(districts[district]);
+        //         }
+        //     }
+        // },
+        // async handleSentDistrictChange() {
+        //     this.sentDistrict.errorMessage = "";
+        //     this.sentWards = [];
+        //     this.sentWard.value = "Phường/Xã gửi";
+        //     let districtCode = "";
+        //     for (let district of this.sentDistricts) {
+        //         if (district.name === this.sentDistrict.value) {
+        //             districtCode = district.code;
+        //             break;
+        //         }
+        //     }
+        //     const wards = this.$store.getters["address/getWards"];
+        //     for (const ward in wards) {
+        //         if (wards[ward].district_code === districtCode) {
+        //             this.sentWards.push(wards[ward]);
+        //         }
+        //     }
+        // },
+        // async handleReceiveDistrictChange() {
+        //     this.receiveDistrict.errorMessage = "";
+        //     this.receiveWards = [];
+        //     this.receiveWard.value = "Phường/Xã nhận";
+        //     let districtCode = "";
+        //     for (let district of this.receiveDistricts) {
+        //         if (district.name === this.receiveDistrict.value) {
+        //             districtCode = district.code;
+        //             break;
+        //         }
+        //     }
+        //     const wards = this.$store.getters["address/getWards"];
+        //     for (const ward in wards) {
+        //         if (wards[ward].district_code === districtCode) {
+        //             this.receiveWards.push(wards[ward]);
+        //         }
+        //     }
+        // },
+        // handleEstimateFee() {
+        //     if (this.validateEstimateForm) {
+        //         const formData = {
+        //             sentProvince: this.sentProvince.value,
+        //             receiveProvince: this.receiveProvince.value,
+        //             sentDistrict: this.sentDistrict.value,
+        //             receiveDistrict: this.receiveDistrict.value,
+        //             sentWard: this.sentWard.value,
+        //             receiveWard: this.receiveWard.value,
+        //             packageCategory: this.packageCategory.value,
+        //             packageWeight: this.packageWeight.value,
+        //         };
+        //         console.log(formData);
+        //         this.resetEstimateFeeForm();
+        //     } else {
+        //         console.log("invalid form");
+        //         return;
+        //     }
+        // },
+        // resetEstimateFeeForm() {
+        //     this.sentProvince.value = "Tỉnh/Thành phố gửi";
+        //     this.receiveProvince.value = "Tỉnh/Thành phố nhận";
+        //     this.sentDistrict.value = "Quận/Huyện gửi";
+        //     this.receiveDistrict.value = "Quận/Huyện nhận";
+        //     this.sentWard.value = "Phường/Xã gửi";
+        //     this.receiveWard.value = "Phường/Xã nhận";
+        //     this.packageCategory.value = "Loại hàng";
+        //     this.packageWeight.value = null;
+        //     this.sentProvince.isValid = true;
+        //     this.receiveProvince.isValid = true;
+        //     this.sentDistrict.isValid = true;
+        //     this.receiveDistrict.isValid = true;
+        //     this.sentWard.isValid = true;
+        //     this.receiveWard.isValid = true;
+        //     this.packageCategory.isValid = true;
+        //     this.packageWeight.isValid = true;
+        //     this.sentProvince.errorMessage = "";
+        //     this.receiveProvince.errorMessage = "";
+        //     this.sentDistrict.errorMessage = "";
+        //     this.receiveDistrict.errorMessage = "";
+        //     this.sentWard.errorMessage = "";
+        //     this.receiveWard.errorMessage = "";
+        //     this.packageCategory.errorMessage = "";
+        //     this.packageWeight.errorMessage = "";
+        // },
         //method xử lí phần tìm điểm giao dịch
-        async setTransactionProvinces() {
-            await this.$store.dispatch("address/getProvinces");
-            this.transactionProvinces =
-                this.$store.getters["address/getProvinces"];
-        },
+        // async setTransactionProvinces() {
+        //     await this.$store.dispatch("address/getProvinces");
+        //     this.transactionProvinces =
+        //         this.$store.getters["address/getProvinces"];
+        // },
+        // async handleTransactionProvinceChange() {
+        //     this.transactionProvince.errorMessage = "";
+        //     this.transactionDistricts = [];
+        //     this.transactionDistrict.value = "Quận/Huyện";
+        //     this.transactionWards = [];
+        //     this.transactionWard.value = "Phường/Xã";
+        //     let provinceCode = "";
+        //     for (let province of this.transactionProvinces) {
+        //         if (province.name === this.transactionProvince.value) {
+        //             provinceCode = province.code;
+        //             break;
+        //         }
+        //     }
+        //     const districts = this.$store.getters["address/getDistricts"];
+        //     for (const district in districts) {
+        //         if (districts[district].province_code === provinceCode) {
+        //             this.transactionDistricts.push(districts[district]);
+        //         }
+        //     }
+        // },
+        // async handleTransactionDistrictChange() {
+        //     this.transactionDistrict.errorMessage = "";
+        //     this.transactionWards = [];
+        //     this.transactionWard.value = "Phường/Xã";
+        //     let districtCode = "";
+        //     for (let district of this.transactionDistricts) {
+        //         if (district.name === this.transactionDistrict.value) {
+        //             districtCode = district.code;
+        //             break;
+        //         }
+        //     }
+        //     const wards = this.$store.getters["address/getWards"];
+        //     for (const ward in wards) {
+        //         if (wards[ward].district_code === districtCode) {
+        //             this.transactionWards.push(wards[ward]);
+        //         }
+        //     }
+        // },
+        // handleTransaction() {
+        //     if (this.validateTransactionForm) {
+        //         const formData = {
+        //             transactionProvince: this.transactionProvince.value,
+        //             transactionDistrict: this.transactionDistrict.value,
+        //             transactionWard: this.transactionWard.value,
+        //         };
+        //         console.log(formData);
+        //         this.resetTransactionForm();
+        //     } else {
+        //         console.log("invalid form");
+        //         return;
+        //     }
+        // },
+        // resetTransactionForm() {
+        //     this.transactionProvince.value = "Tỉnh/Thành phố";
+        //     this.transactionDistrict.value = "Quận/Huyện";
+        //     this.transactionWard.value = "Phường/Xã";
+        //     this.transactionProvince.isValid = true;
+        //     this.transactionDistrict.isValid = true;
+        //     this.transactionWard.isValid = true;
+        //     this.transactionProvince.errorMessage = "";
+        //     this.transactionDistrict.errorMessage = "";
+        //     this.transactionWard.errorMessage = "";
+        // },
 
-        async handleTransactionProvinceChange() {
-            this.transactionProvince.errorMessage = "";
-
-            this.transactionDistricts = [];
-            this.transactionDistrict.value = "Quận/Huyện";
-            this.transactionWards = [];
-            this.transactionWard.value = "Phường/Xã";
-            let provinceCode = "";
-            for (let province of this.transactionProvinces) {
-                if (province.name === this.transactionProvince.value) {
-                    provinceCode = province.code;
-                    break;
-                }
-            }
-
-            const districts = this.$store.getters["address/getDistricts"];
-
-            for (const district in districts) {
-                if (districts[district].province_code === provinceCode) {
-                    this.transactionDistricts.push(districts[district]);
-                }
-            }
-        },
-
-        async handleTransactionDistrictChange() {
-            this.transactionDistrict.errorMessage = "";
-
-            this.transactionWards = [];
-            this.transactionWard.value = "Phường/Xã";
-
-            let districtCode = "";
-            for (let district of this.transactionDistricts) {
-                if (district.name === this.transactionDistrict.value) {
-                    districtCode = district.code;
-                    break;
-                }
-            }
-
-            const wards = this.$store.getters["address/getWards"];
-
-            for (const ward in wards) {
-                if (wards[ward].district_code === districtCode) {
-                    this.transactionWards.push(wards[ward]);
-                }
-            }
-        },
-
-        handleTransaction() {
-            if (this.validateTransactionForm) {
-                const formData = {
-                    transactionProvince: this.transactionProvince.value,
-                    transactionDistrict: this.transactionDistrict.value,
-                    transactionWard: this.transactionWard.value,
-                };
-
-                console.log(formData);
-                this.resetTransactionForm();
-            } else {
-                console.log("invalid form");
+        // phần tra cứu vận đơn
+        async handleSearchPackageProcess() {
+            if (
+                this.search_package_id === null ||
+                this.search_package_id.trim() == ""
+            ) {
+                alert("Vui lòng nhập mã vận đơn");
                 return;
             }
-        },
+            try {
+                this.isLoading = true;
+                this.package_process = await this.$store.dispatch(
+                    "package/getPackageProcess",
+                    Number(this.search_package_id),
+                );
+                this.isLoading = false;
 
-        resetTransactionForm() {
-            this.transactionProvince.value = "Tỉnh/Thành phố";
-            this.transactionDistrict.value = "Quận/Huyện";
-            this.transactionWard.value = "Phường/Xã";
-            this.transactionProvince.isValid = true;
-            this.transactionDistrict.isValid = true;
-            this.transactionWard.isValid = true;
-            this.transactionProvince.errorMessage = "";
-            this.transactionDistrict.errorMessage = "";
-            this.transactionWard.errorMessage = "";
+                console.log(this.package_process);
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false;
         },
     },
     computed: {
         //computed của ước tính cước phí
-        validateEstimateForm() {
-            let isValid = true;
-            if (this.sentProvince.value === "Tỉnh/Thành phố gửi") {
-                this.sentProvince.isValid = false;
-                this.sentProvince.errorMessage =
-                    "Vui lòng chọn tỉnh/thành phố gửi";
-                isValid = false;
-            } else {
-                this.sentProvince.isValid = true;
-                this.sentProvince.errorMessage = "";
-            }
-
-            if (this.receiveProvince.value === "Tỉnh/Thành phố nhận") {
-                this.receiveProvince.isValid = false;
-                this.receiveProvince.errorMessage =
-                    "Vui lòng chọn tỉnh/thành phố nhận";
-                isValid = false;
-            } else {
-                this.receiveProvince.isValid = true;
-                this.receiveProvince.errorMessage = "";
-            }
-
-            if (this.sentDistrict.value === "Quận/Huyện gửi") {
-                this.sentDistrict.isValid = false;
-                this.sentDistrict.errorMessage = "Vui lòng chọn quận/huyện gửi";
-                isValid = false;
-            } else {
-                this.sentDistrict.isValid = true;
-                this.sentDistrict.errorMessage = "";
-            }
-
-            if (this.receiveDistrict.value === "Quận/Huyện nhận") {
-                this.receiveDistrict.isValid = false;
-                this.receiveDistrict.errorMessage =
-                    "Vui lòng chọn quận/huyện nhận";
-                isValid = false;
-            } else {
-                this.receiveDistrict.isValid = true;
-                this.receiveDistrict.errorMessage = "";
-            }
-
-            if (this.sentWard.value === "Phường/Xã gửi") {
-                this.sentWard.isValid = false;
-                this.sentWard.errorMessage = "Vui lòng chọn phường/xã gửi";
-                isValid = false;
-            } else {
-                this.sentWard.isValid = true;
-                this.sentWard.errorMessage = "";
-            }
-
-            if (this.receiveWard.value === "Phường/Xã nhận") {
-                this.receiveWard.isValid = false;
-                this.receiveWard.errorMessage = "Vui lòng chọn phường/xã nhận";
-                isValid = false;
-            } else {
-                this.receiveWard.isValid = true;
-                this.receiveWard.errorMessage = "";
-            }
-
-            if (this.packageCategory.value === "Loại hàng") {
-                this.packageCategory.isValid = false;
-                this.packageCategory.errorMessage =
-                    "Vui lòng chọn loại hàng hóa";
-                isValid = false;
-            } else {
-                this.packageCategory.isValid = true;
-                this.packageCategory.errorMessage = "";
-            }
-
-            if (this.packageWeight.value === null) {
-                this.packageWeight.isValid = false;
-                this.packageWeight.errorMessage =
-                    "Vui lòng nhập khối lượng hàng hóa";
-                isValid = false;
-            } else {
-                this.packageWeight.isValid = true;
-                this.packageWeight.errorMessage = "";
-            }
-
-            return isValid;
-        },
-
+        // validateEstimateForm() {
+        //     let isValid = true;
+        //     if (this.sentProvince.value === "Tỉnh/Thành phố gửi") {
+        //         this.sentProvince.isValid = false;
+        //         this.sentProvince.errorMessage =
+        //             "Vui lòng chọn tỉnh/thành phố gửi";
+        //         isValid = false;
+        //     } else {
+        //         this.sentProvince.isValid = true;
+        //         this.sentProvince.errorMessage = "";
+        //     }
+        //     if (this.receiveProvince.value === "Tỉnh/Thành phố nhận") {
+        //         this.receiveProvince.isValid = false;
+        //         this.receiveProvince.errorMessage =
+        //             "Vui lòng chọn tỉnh/thành phố nhận";
+        //         isValid = false;
+        //     } else {
+        //         this.receiveProvince.isValid = true;
+        //         this.receiveProvince.errorMessage = "";
+        //     }
+        //     if (this.sentDistrict.value === "Quận/Huyện gửi") {
+        //         this.sentDistrict.isValid = false;
+        //         this.sentDistrict.errorMessage = "Vui lòng chọn quận/huyện gửi";
+        //         isValid = false;
+        //     } else {
+        //         this.sentDistrict.isValid = true;
+        //         this.sentDistrict.errorMessage = "";
+        //     }
+        //     if (this.receiveDistrict.value === "Quận/Huyện nhận") {
+        //         this.receiveDistrict.isValid = false;
+        //         this.receiveDistrict.errorMessage =
+        //             "Vui lòng chọn quận/huyện nhận";
+        //         isValid = false;
+        //     } else {
+        //         this.receiveDistrict.isValid = true;
+        //         this.receiveDistrict.errorMessage = "";
+        //     }
+        //     if (this.sentWard.value === "Phường/Xã gửi") {
+        //         this.sentWard.isValid = false;
+        //         this.sentWard.errorMessage = "Vui lòng chọn phường/xã gửi";
+        //         isValid = false;
+        //     } else {
+        //         this.sentWard.isValid = true;
+        //         this.sentWard.errorMessage = "";
+        //     }
+        //     if (this.receiveWard.value === "Phường/Xã nhận") {
+        //         this.receiveWard.isValid = false;
+        //         this.receiveWard.errorMessage = "Vui lòng chọn phường/xã nhận";
+        //         isValid = false;
+        //     } else {
+        //         this.receiveWard.isValid = true;
+        //         this.receiveWard.errorMessage = "";
+        //     }
+        //     if (this.packageCategory.value === "Loại hàng") {
+        //         this.packageCategory.isValid = false;
+        //         this.packageCategory.errorMessage =
+        //             "Vui lòng chọn loại hàng hóa";
+        //         isValid = false;
+        //     } else {
+        //         this.packageCategory.isValid = true;
+        //         this.packageCategory.errorMessage = "";
+        //     }
+        //     if (this.packageWeight.value === null) {
+        //         this.packageWeight.isValid = false;
+        //         this.packageWeight.errorMessage =
+        //             "Vui lòng nhập khối lượng hàng hóa";
+        //         isValid = false;
+        //     } else {
+        //         this.packageWeight.isValid = true;
+        //         this.packageWeight.errorMessage = "";
+        //     }
+        //     return isValid;
+        // },
         //computed của tìm điểm giao dịch
-        validateTransactionForm() {
-            let isValid = true;
-            if (this.transactionProvince.value === "Tỉnh/Thành phố") {
-                this.transactionProvince.isValid = false;
-                this.transactionProvince.errorMessage =
-                    "Vui lòng chọn tỉnh/thành phố";
-                isValid = false;
-            } else {
-                this.transactionProvince.isValid = true;
-                this.transactionProvince.errorMessage = "";
-            }
-
-            return isValid;
-        },
+        // validateTransactionForm() {
+        //     let isValid = true;
+        //     if (this.transactionProvince.value === "Tỉnh/Thành phố") {
+        //         this.transactionProvince.isValid = false;
+        //         this.transactionProvince.errorMessage =
+        //             "Vui lòng chọn tỉnh/thành phố";
+        //         isValid = false;
+        //     } else {
+        //         this.transactionProvince.isValid = true;
+        //         this.transactionProvince.errorMessage = "";
+        //     }
+        //     return isValid;
+        // },
     },
     mounted() {
         //call api lấy dữ liệu các tỉnh/huyện/xã
-        this.setEstimateProvinces();
-        this.setTransactionProvinces();
-        this.$store.dispatch("address/getDistricts");
-        this.$store.dispatch("address/getWards");
+        // this.setEstimateProvinces();
+        // this.setTransactionProvinces();
+        // this.$store.dispatch("address/getDistricts");
+        // this.$store.dispatch("address/getWards");
     },
 };
 </script>

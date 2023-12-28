@@ -4,6 +4,7 @@ const Packages = require("../models/packages/packages");
 const PackagesStatus = require("../models/packages/packageStatus");
 const Transactions = require("../models/locations/transactions");
 const Aggregations = require("../models/locations/aggregations");
+const Locations = require("../models/locations/locations");
 
 const { Op } = require("sequelize");
 
@@ -67,10 +68,7 @@ exports.createNewOrder = async (req, res, next) => {
 
         const result = await package_detail.save();
 
-        res.status(201).json({
-            message: "Tạo đơn hàng thành công!",
-            package: result,
-        });
+        res.status(201).json(result.id);
     } catch (err) {
         next(err);
     }
@@ -1040,6 +1038,67 @@ exports.addPackageStatus = async (req, res, next) => {
         if (!error.statusCode) {
             error.statusCode = 500;
         }
+        next(error);
+    }
+};
+
+exports.getPackageProcess = async (req, res, next) => {
+    const package_id = req.params.package_id;
+
+    try {
+        const statuses = await PackagesStatus.findAll({
+            where: { package_id: package_id },
+            order: [["createdAt", "ASC"]],
+        });
+
+        if (statuses.length === 0) {
+            const error = new Error("Không tìm thấy đơn hàng!");
+            error.statusCode = 404;
+            next(error);
+            return
+        }
+
+        let process = [];
+
+        for (let status of statuses) {
+            let value = status.status;
+            if (
+                status.status !== "Đang giao hàng" &&
+                status.status !== "Giao thất bại" &&
+                status.status !== "Giao thành công"
+            ) {
+                const location = await Locations.findOne({
+                    where: { id: status.location_id },
+                });
+                if (location.type === "Transaction") {
+                    const transaction = await Transactions.findOne({
+                        where: { location_id: status.location_id },
+                    });
+                    value +=
+                        " " +
+                        transaction.district +
+                        ", " +
+                        transaction.province;
+                } else if (location.type === "Aggregation") {
+                    const aggregation = await Aggregations.findOne({
+                        where: { location_id: status.location_id },
+                    });
+                    value += " " + aggregation.province;
+                }
+            }
+            process.push({
+                time: formatDate(status.createdAt),
+                status: value,
+            });
+        }
+
+        res.status(200).json({
+            package_id: package_id,
+            createdAt: formatDate(statuses[0].createdAt),
+            status: statuses[statuses.length - 1].status,
+            process: process,
+        });
+    } catch (error) {
         next(error);
     }
 };

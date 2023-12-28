@@ -416,6 +416,7 @@
 </template>
 
 <script>
+import html2pdf from "html2pdf.js";
 export default {
     props: ["employee_id"],
     data() {
@@ -622,7 +623,7 @@ export default {
 
                 try {
                     this.isLoading = true;
-                    await this.$store.dispatch(
+                    const package_id = await this.$store.dispatch(
                         "package/createNewOrder",
                         formData,
                     );
@@ -632,6 +633,9 @@ export default {
                         type: "success",
                     });
                     this.resetForm();
+                    this.$router.push(
+                        `/receipt/${package_id}`,
+                    );
                 } catch (error) {
                     this.isLoading = false;
                     this.error = error.message;
