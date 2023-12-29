@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main class="pt-20">
         <div id="delivery-receipt" class="flex flex-col gap-8 pt-4">
             <!-- banner  -->
             <div class="flex items-center justify-between px-12">
