@@ -41,7 +41,7 @@
                             type="text"
                             placeholder="ID đơn hàng"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByPackageId($event.target.value)"
+                            @keyup.enter="searchByPackageId($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -49,7 +49,7 @@
                             type="text"
                             placeholder="Ngày nhập kho"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByTimeArrived($event.target.value)"
+                            @keyup.enter="searchByTimeArrived($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 w-3/12 border-e-2 border-white p-1">
@@ -57,7 +57,7 @@
                             type="text"
                             placeholder="Địa chỉ người nhận"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="
+                            @keyup.enter="
                                 searchByReceiverAddress($event.target.value)
                             "
                         />
@@ -111,6 +111,7 @@
             :show="!!error"
             title="Có lỗi xảy ra!"
             @close="error = null"
+            @exit="error=null"
         >
             <p>{{ error }}</p>
         </base-dialog>
@@ -262,6 +263,7 @@ export default {
         },
         async getPackageStatusByLocationId() {
             try {
+                this.isLoading = true
                 const res = await this.$store.dispatch(
                     "package/getAggregationPackageInWarehouse",
                     this.location_id,
@@ -270,6 +272,7 @@ export default {
             } catch (error) {
                 this.error = error.message;
             }
+            this.isLoading = false
         },
         //Phần search
         removeAccents(str) {

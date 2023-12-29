@@ -36,7 +36,9 @@
                             type="text"
                             placeholder="ID đơn hàng"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByPackageId($event.target.value)"
+                            @keyup.enter="
+                                searchByPackageId($event.target.value)
+                            "
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -44,7 +46,9 @@
                             type="text"
                             placeholder="Ngày xuất kho"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByTimeExport($event.target.value)"
+                            @keyup.enter="
+                                searchByTimeExport($event.target.value)
+                            "
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -52,7 +56,7 @@
                             type="text"
                             placeholder="Nơi đến"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="
+                            @keyup.enter="
                                 searchByNextDestination($event.target.value)
                             "
                         />
@@ -97,6 +101,7 @@
             :show="!!error"
             title="Có lỗi xảy ra!"
             @close="error = null"
+            @exit="error = null"
         >
             <p>{{ error }}</p>
         </base-dialog>
@@ -110,25 +115,35 @@ export default {
         return {
             location_id: null,
             error: null,
+            isLoading: false,
             packageStatuses: [],
         };
     },
     methods: {
         async getLocationId() {
-            const res = await this.$store.dispatch(
-                "manager/getEmployeeById",
-                this.leader_id,
-            );
+            try {
+                const res = await this.$store.dispatch(
+                    "manager/getEmployeeById",
+                    this.leader_id,
+                );
 
-            this.location_id = res.location_id;
+                this.location_id = res.location_id;
+            } catch (error) {
+                this.error = error.message;
+            }
         },
         async getPackageStatusByLocationId() {
-            const res = await this.$store.dispatch(
-                "package/getTransactionExportPackages",
-                this.location_id,
-            );
-            this.packageStatuses = res;
-            console.log(this.packageStatuses);
+            try {
+                this.isLoading = true;
+                const res = await this.$store.dispatch(
+                    "package/getTransactionExportPackages",
+                    this.location_id,
+                );
+                this.packageStatuses = res;
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false;
         },
         //Phần search
         removeAccents(str) {

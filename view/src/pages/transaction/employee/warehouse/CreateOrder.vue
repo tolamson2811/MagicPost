@@ -409,6 +409,7 @@
             :show="!!error"
             title="Có lỗi xảy ra!"
             @close="error = null"
+            @exit="error = null"
         >
             <p>{{ error }}</p>
         </base-dialog>
@@ -416,7 +417,6 @@
 </template>
 
 <script>
-import html2pdf from "html2pdf.js";
 export default {
     props: ["employee_id"],
     data() {

@@ -1,12 +1,12 @@
 <template>
-    <main class="pt-20 h-screen flex items-center justify-center wrapper">
+    <main class="wrapper flex h-screen items-center justify-center pt-20">
         <!-- login form  -->
         <form
             @submit.prevent="login"
-            class="px-20 py-5 form text-white flex flex-col items-center rounded-lg gap-8 shadow-2xl"
+            class="form flex flex-col items-center gap-8 rounded-lg px-20 py-5 text-white shadow-2xl"
             v-if="loginForm"
         >
-            <h1 class="xs:text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold">
+            <h1 class="xs:text-lg font-bold sm:text-xl md:text-2xl lg:text-3xl">
                 Đăng nhập
             </h1>
             <div class="flex flex-col gap-3 text-xs md:text-sm lg:text-base">
@@ -16,12 +16,12 @@
                         type="text"
                         id="email"
                         placeholder="Email"
-                        class="border border-gray-400 p-2 w-full text-black"
+                        class="w-full border border-gray-400 p-2 text-black"
                         v-model="email.value"
                         @input="email.isValid = true"
                     />
                     <span
-                        class="text-xs lg:text-sm text-rose-400"
+                        class="text-xs text-rose-400 lg:text-sm"
                         v-if="!email.isValid"
                         >{{ email.messageInvalid }}</span
                     >
@@ -32,12 +32,12 @@
                         type="password"
                         id="password"
                         placeholder="Mật khẩu"
-                        class="border border-gray-400 p-2 w-full text-black"
+                        class="w-full border border-gray-400 p-2 text-black"
                         v-model="password.value"
                         @input="password.isValid = true"
                     />
                     <span
-                        class="text-xs lg:text-sm text-rose-400"
+                        class="text-xs text-rose-400 lg:text-sm"
                         v-if="!password.isValid"
                         >{{ password.messageInvalid }}</span
                     >
@@ -47,7 +47,7 @@
                     <label for="remember">Lưu mật khẩu</label>
                 </div>
                 <button
-                    class="bg-white text-black hover:opacity-90 font-bold p-2 mt-2 rounded-md hover:cursor-pointer"
+                    class="mt-2 rounded-md bg-white p-2 font-bold text-black hover:cursor-pointer hover:opacity-90"
                 >
                     Đăng nhập
                 </button>
@@ -55,7 +55,7 @@
             <span class="flex gap-1 text-xs md:text-sm lg:text-base"
                 >Bạn chưa có tài khoản?
                 <p
-                    class="text-green-500 italic underline hover:cursor-pointer hover:text-green-600 font-bold"
+                    class="font-bold italic text-green-500 underline hover:cursor-pointer hover:text-green-600"
                     @click="swithForm('register')"
                 >
                     Đăng ký
@@ -66,10 +66,10 @@
         <!-- register form  -->
         <form
             @submit.prevent="register"
-            class="px-20 py-5 flex flex-col items-center rounded-lg gap-8 form shadow-2xl text-white"
+            class="form flex flex-col items-center gap-8 rounded-lg px-20 py-5 text-white shadow-2xl"
             v-else-if="registerForm"
         >
-            <h1 class="xs:text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold">
+            <h1 class="xs:text-lg font-bold sm:text-xl md:text-2xl lg:text-3xl">
                 Đăng ký
             </h1>
             <div class="flex flex-col gap-3 text-xs md:text-sm lg:text-base">
@@ -79,12 +79,12 @@
                         type="text"
                         id="email"
                         placeholder="Email"
-                        class="border border-gray-400 p-2 w-full text-black"
+                        class="w-full border border-gray-400 p-2 text-black"
                         v-model="email.value"
                         @input="email.isValid = true"
                     />
                     <span
-                        class="text-xs lg:text-sm text-rose-400"
+                        class="text-xs text-rose-400 lg:text-sm"
                         v-if="!email.isValid"
                         >{{ email.messageInvalid }}</span
                     >
@@ -95,12 +95,12 @@
                         type="password"
                         id="password"
                         placeholder="Mật khẩu"
-                        class="border border-gray-400 p-2 w-full text-black"
+                        class="w-full border border-gray-400 p-2 text-black"
                         v-model="password.value"
                         @input="password.isValid = true"
                     />
                     <span
-                        class="text-xs lg:text-sm text-rose-400"
+                        class="text-xs text-rose-400 lg:text-sm"
                         v-if="!password.isValid"
                         >{{ password.messageInvalid }}</span
                     >
@@ -113,12 +113,12 @@
                         type="password"
                         id="confirm-password"
                         placeholder="Mật khẩu"
-                        class="border border-gray-400 p-2 w-full text-black"
+                        class="w-full border border-gray-400 p-2 text-black"
                         v-model="confirmPassword.value"
                         @input="confirmPassword.isValid = true"
                     />
                     <span
-                        class="text-xs lg:text-sm text-rose-400"
+                        class="text-xs text-rose-400 lg:text-sm"
                         v-if="!confirmPassword.isValid"
                         >{{ confirmPassword.messageInvalid }}</span
                     >
@@ -132,17 +132,22 @@
                             @change="term.isValid = true"
                         />
                         <label for="term"
-                            >Tôi đồng ý với các điều khoản của <a href="#" class="text-green-500 italic underline hover:cursor-pointer hover:text-green-600">Magic Post</a></label
+                            >Tôi đồng ý với các điều khoản của
+                            <a
+                                href="#"
+                                class="italic text-green-500 underline hover:cursor-pointer hover:text-green-600"
+                                >Magic Post</a
+                            ></label
                         >
                     </span>
                     <span
-                        class="text-xs lg:text-sm text-yellow-300"
+                        class="text-xs text-yellow-300 lg:text-sm"
                         v-if="!term.isValid"
                         >{{ term.messageInvalid }}</span
                     >
                 </div>
                 <button
-                    class="bg-white p-2 mt-2 rounded-md hover:cursor-pointer font-bold text-black hover:opacity-90"
+                    class="mt-2 rounded-md bg-white p-2 font-bold text-black hover:cursor-pointer hover:opacity-90"
                 >
                     Đăng ký
                 </button>
@@ -150,7 +155,7 @@
             <span class="flex gap-1 text-xs md:text-sm lg:text-base"
                 >Bạn đã có tài khoản?
                 <p
-                    class="text-green-500 italic underline hover:cursor-pointer hover:text-green-600 font-bold"
+                    class="font-bold italic text-green-500 underline hover:cursor-pointer hover:text-green-600"
                     @click="swithForm('login')"
                 >
                     Đăng nhập
@@ -166,6 +171,7 @@
             :show="!!error.title"
             :title="error.title"
             @close="closeDialog"
+            @exit="closeDialog"
         >
             <p>
                 {{ error.message }} <br />
@@ -174,10 +180,14 @@
         </base-dialog>
 
         <!-- success dialog  -->
-        <base-dialog :show="!!success" :title="success" @close="confirmSuccess">
+        <base-dialog
+            :show="!!success"
+            :title="success"
+            @close="confirmSuccess"
+            @exit="confirmSuccess"
+        >
             <p>Bạn có thể sử dụng tài khoản này để đăng nhập vào MagicPost</p>
         </base-dialog>
-
     </main>
 </template>
 
@@ -301,7 +311,7 @@ export default {
         confirmSuccess() {
             this.success = null;
             this.swithForm("login");
-        }
+        },
     },
     computed: {
         registerValidate() {

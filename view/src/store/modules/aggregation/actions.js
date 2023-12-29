@@ -21,10 +21,10 @@ export default {
         }
     },
 
-    async getAllAggregationEmployees(context, payload) {
+    async getAllAggregationEmployees(context, location_id) {
         const response = await fetch(
             context.rootGetters.getApiUrl +
-                `aggregation/leader/account/list?location_id=${payload.location_id}&page=${payload.page}`,
+                `aggregation/leader/account/list?location_id=${location_id}`,
             {
                 method: "GET",
             },

@@ -30,7 +30,7 @@
                             type="text"
                             placeholder="ID tài khoản"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="searchById($event.target.value)"
+                            @keyup.enter="searchById($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -38,7 +38,7 @@
                             type="email"
                             placeholder="Email"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="searchByEmail($event.target.value)"
+                            @keyup.enter="searchByEmail($event.target.value)"
                         />
                     </td>
                     <td
@@ -70,37 +70,6 @@
                     </td>
                 </tr>
             </table>
-
-            <!-- Phân trang  -->
-            <div class="flex items-center justify-center gap-2 px-2">
-                <font-awesome-icon
-                    icon="fa-solid fa-arrow-left"
-                    class="text-lg hover:cursor-pointer"
-                    v-if="currentPage > 1"
-                    @click="switchPage(currentPage - 1)"
-                />
-                <div class="flex items-center justify-center gap-2">
-                    <div
-                        class="flex h-8 w-8 items-center justify-center border border-black hover:bg-indigo-500 hover:text-white"
-                        v-for="page in totalPage"
-                        :key="page"
-                        :class="
-                            page === currentPage
-                                ? 'bg-indigo-500 text-white'
-                                : ''
-                        "
-                        @click="getEmployees(page)"
-                    >
-                        {{ page }}
-                    </div>
-                </div>
-                <font-awesome-icon
-                    icon="fa-solid fa-arrow-right"
-                    class="text-lg hover:cursor-pointer"
-                    v-if="currentPage < totalPage"
-                    @click="switchPage(currentPage + 1)"
-                />
-            </div>
         </div>
         <base-dialog
             :show="!!clickDelete.value"
@@ -129,9 +98,6 @@ export default {
             isLoading: false,
             error: null,
             idFilter: "default",
-            currentPage: 1,
-            totalPage: 0,
-            totalResult: 0,
             employees: [],
             roleFilter: "Vai trò",
             clickDelete: {
@@ -151,10 +117,7 @@ export default {
                 this.employees.sort((a, b) => b.id - a.id);
             } else {
                 this.idFilter = "default";
-                this.getEmployees({
-                    location_id: this.location_id,
-                    page: this.currentPage,
-                });
+                this.getEmployees();
             }
         },
         // Xóa bỏ dấu tiếng Việt
@@ -167,15 +130,9 @@ export default {
         },
         async searchByEmail(string) {
             if (string === "") {
-                this.getEmployees({
-                    location_id: this.location_id,
-                    page: this.currentPage,
-                });
+                this.getEmployees();
             } else {
-                await this.getEmployees({
-                    location_id: this.location_id,
-                    page: this.currentPage,
-                });
+                await this.getEmployees();
                 this.employees = this.employees.filter((employee) =>
                     this.removeAccents(employee.email.toLowerCase()).includes(
                         this.removeAccents(string.toLowerCase()),
@@ -185,46 +142,25 @@ export default {
         },
         async searchById(string) {
             if (string === "") {
-                this.getEmployees({
-                    location_id: this.location_id,
-                    page: this.currentPage,
-                });
+                this.getEmployees();
             } else {
-                await this.getEmployees({
-                    location_id: this.location_id,
-                    page: this.currentPage,
-                });
+                await this.getEmployees();
                 this.employees = this.employees.filter((employee) =>
                     employee.id.toString().includes(string),
                 );
             }
         },
-        async getEmployees(payload) {
+        async getEmployees() {
             try {
                 const result = await this.$store.dispatch(
                     "aggregation/getAllAggregationEmployees",
-                    payload,
+                    this.location_id,
                 );
 
                 this.employees = result.aggregation_employee;
-                this.totalPage = result.totalPage;
-                this.totalResult = result.totalResult;
-
-                //change url
-                this.$router.push({
-                    path: this.$route.path,
-                    query: {
-                        location_id: this.location_id,
-                        page: this.currentPage,
-                    },
-                });
             } catch (error) {
                 this.error = error.message;
             }
-        },
-        switchPage(page) {
-            this.currentPage = page;
-            this.getEmployees(page);
         },
         clickDeleteEmployee(id) {
             this.clickDelete = {
@@ -247,10 +183,7 @@ export default {
                 this.$notify({
                     title: "Xóa tài khoản thành công!",
                 });
-                this.getEmployees({
-                    location_id: this.location_id,
-                    page: this.currentPage,
-                });
+                this.getEmployees();
             } catch (error) {
                 this.error = error.message;
             }
@@ -264,11 +197,15 @@ export default {
             };
         },
         async getLocationId() {
-            const res = await this.$store.dispatch(
-                "manager/getEmployeeById",
-                this.leader_id,
-            );
-            this.location_id = res.location_id;
+            try {
+                const res = await this.$store.dispatch(
+                    "manager/getEmployeeById",
+                    this.leader_id,
+                );
+                this.location_id = res.location_id;
+            } catch (error) {
+                this.error = error.message;
+            }
         },
         confirmError() {
             this.error = null;
@@ -277,20 +214,7 @@ export default {
     async mounted() {
         await this.getLocationId();
         // get page query from url
-        const page = this.$route.query.page;
-        if (page) {
-            this.currentPage = page;
-            this.getEmployees({
-                location_id: this.location_id,
-                page: page,
-            });
-        } else {
-            // if no page query, get page 1
-            this.getEmployees({
-                location_id: this.location_id,
-                page: 1,
-            });
-        }
+        this.getEmployees();
     },
 };
 </script>

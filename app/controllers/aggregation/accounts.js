@@ -56,7 +56,7 @@ exports.createLeaderAccount = async (req, res, next) => {
         const aggregationDoc = await Aggregations.findOne({
             where: { province: province },
         });
-        if (aggregationDoc) {
+        if (aggregationDoc.leader_id) {
             const error = new Error(
                 "Tỉnh/Thành phố này đã có trưởng điểm tập kết!"
             );
@@ -87,6 +87,10 @@ exports.createLeaderAccount = async (req, res, next) => {
         });
 
         await employee.save();
+
+        //Lưu leader_id vào aggregation
+        result.leader_id = newAccount.id;
+        await result.save();
 
         // Trả về response
         res.status(201).json({
@@ -169,16 +173,8 @@ exports.createNewAggregationEmployee = async (req, res, next) => {
 exports.getAllAggregationEmployee = async (req, res, next) => {
     const location_id = req.query.location_id;
 
-    const page = req.query.page || 1; // Default to page 1
-    const limit = 20; // Number of records per page
-    const offset = (page - 1) * limit;
-
-    const totalResult = await Employees.count();
-    const totalPages = Math.ceil(totalResult / limit);
     try {
         const aggregation_employee = await Employees.findAll({
-            limit: limit,
-            offset: offset,
             where: { role: "Aggregation Employee", location_id: location_id },
             attributes: ["id", "account_id", "location_id"],
             include: [
@@ -200,8 +196,6 @@ exports.getAllAggregationEmployee = async (req, res, next) => {
 
         res.status(200).json({
             aggregation_employee: employees,
-            totalPages: totalPages,
-            totalResult: totalResult,
         });
     } catch (err) {
         if (!err.statusCode) {

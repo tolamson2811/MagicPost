@@ -32,15 +32,24 @@ exports.getAllTransactions = async (req, res, next) => {
             const employee = await Employees.findAll({
                 where: { location_id: transaction.location_id },
             });
-            const leader = await Accounts.findOne({
-                where: { id: transaction.leader_id },
-            });
-            result.push({
-                id: transaction.location_id,
-                address: `${transaction.district}, ${transaction.province}`,
-                leader: leader.email,
-                employee_quantity: employee.length,
-            });
+            if (transaction.leader_id) {
+                const leader = await Accounts.findOne({
+                    where: { id: transaction.leader_id },
+                });
+                result.push({
+                    id: transaction.location_id,
+                    address: `${transaction.district}, ${transaction.province}`,
+                    leader: leader.email,
+                    employee_quantity: employee.length,
+                });
+            } else {
+                result.push({
+                    id: transaction.location_id,
+                    address: `${transaction.district}, ${transaction.province}`,
+                    leader: "Chưa có",
+                    employee_quantity: employee.length,
+                });
+            }
         }
         res.status(200).json(result);
     } catch (err) {

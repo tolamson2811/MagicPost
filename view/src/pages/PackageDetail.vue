@@ -8,7 +8,9 @@
                 class="flex w-full flex-col items-center gap-4"
                 id="element-convert-pdf"
             >
-                <h1 class="mx-auto text-sm md:text-base lg:text-lg font-bold text-sky-900">
+                <h1
+                    class="mx-auto text-sm font-bold text-sky-900 md:text-base lg:text-lg"
+                >
                     Thông tin đơn hàng
                 </h1>
                 <table class="w-full text-xs md:text-sm lg:text-base">
@@ -147,7 +149,9 @@
             </div>
             <!-- Trạng thái giao hàng  -->
             <div class="flex w-full flex-col items-center gap-4">
-                <h1 class="mx-auto text-sm md:text-base lg:text-lg font-bold text-sky-900">
+                <h1
+                    class="mx-auto text-sm font-bold text-sky-900 md:text-base lg:text-lg"
+                >
                     Trạng thái giao hàng
                 </h1>
                 <table class="w-full text-xs md:text-sm lg:text-base">
@@ -211,9 +215,9 @@
                 </table>
             </div>
             <!-- Tiến trình vận chuyển  -->
-            <div class="flex w-full flex-col items-center gap-4 mb-4">
+            <div class="mb-4 flex w-full flex-col items-center gap-4">
                 <h1
-                    class="mx-auto text-sm md:text-base lg:text-lg font-bold text-sky-900"
+                    class="mx-auto text-sm font-bold text-sky-900 md:text-base lg:text-lg"
                     v-if="package_process"
                 >
                     Tiến trình vận chuyển
@@ -256,6 +260,15 @@
                 </div>
             </div>
         </div>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <base-dialog
+            :show="!!error"
+            title="Có lỗi xảy ra!"
+            @close="error = null"
+            @exit="error = null"
+        >
+            <p>{{ error }}</p>
+        </base-dialog>
     </div>
 </template>
 
@@ -265,6 +278,7 @@ export default {
     data() {
         return {
             package_detail: {},
+            isLoading: false,
             error: null,
             package_status: [],
             package_process: null,
@@ -273,28 +287,39 @@ export default {
     methods: {
         async getPackageDetail() {
             try {
+                this.isLoading = true;
                 this.package_detail = await this.$store.dispatch(
                     "package/getPackageDetail",
                     this.package_id,
                 );
             } catch (error) {
-                console.log(error);
                 this.error = error.message;
             }
+            this.isLoading = false;
         },
         async getDeliveryStatus() {
-            this.package_status = await this.$store.dispatch(
-                "package/getDeliveryStatus",
-                this.package_id,
-            );
+            try {
+                this.isLoading = true;
+                this.package_status = await this.$store.dispatch(
+                    "package/getDeliveryStatus",
+                    this.package_id,
+                );
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false;
         },
         async getPackageProcess() {
-            this.package_process = await this.$store.dispatch(
-                "package/getPackageProcess",
-                this.package_id,
-            );
-
-            console.log(this.currentLink);
+            try {
+                this.isLoading = true;
+                this.package_process = await this.$store.dispatch(
+                    "package/getPackageProcess",
+                    this.package_id,
+                );
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false;
         },
     },
     mounted() {

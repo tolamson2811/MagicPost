@@ -10,24 +10,6 @@
                         class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
                     >
                         ID
-                        <!-- <font-awesome-icon
-                            icon="fa-solid fa-arrows-up-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'default'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-up"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'increase'"
-                            @click="toggleIdFilter()"
-                        />
-                        <font-awesome-icon
-                            icon="fa-solid fa-arrow-down"
-                            class="hover:cursor-pointer"
-                            v-if="idFilter === 'decrease'"
-                            @click="toggleIdFilter()"
-                        /> -->
                     </th>
                     <th
                         class="border border-e-2 border-white bg-indigo-500 px-4 py-1 text-white"
@@ -66,7 +48,9 @@
                             type="text"
                             placeholder="ID điểm tập kết"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="searchByAggregationId($event.target.value)"
+                            @keyup.enter="
+                                searchByAggregationId($event.target.value)
+                            "
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -74,7 +58,7 @@
                             type="text"
                             placeholder="Tên điểm tập kết "
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="searchByName($event.target.value)"
+                            @keyup.enter="searchByName($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -82,7 +66,7 @@
                             type="text"
                             placeholder="Số lượng đơn hàng"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="
+                            @keyup.enter="
                                 searchByPackageQuantity($event.target.value)
                             "
                         />
@@ -107,6 +91,15 @@
                 </tr>
             </table>
         </div>
+        <base-dialog
+            :show="!!error"
+            title="Có lỗi xảy ra!"
+            @close="error = null"
+            @exit="error = null"
+        >
+            <p>{{ error }}</p>
+        </base-dialog>
+        <base-spinner v-if="isLoading"></base-spinner>
     </div>
 </template>
 
@@ -116,6 +109,8 @@ export default {
         return {
             totalPackageFilter: "default",
             aggregations: [],
+            error: null,
+            isLoading: false,
         };
     },
     methods: {
@@ -151,9 +146,15 @@ export default {
             }
         },
         async getAggregations() {
-            this.aggregations = await this.$store.dispatch(
-                "aggregation/getPackageStatistics",
-            );
+            try {
+                this.isLoading = true;
+                this.aggregations = await this.$store.dispatch(
+                    "aggregation/getPackageStatistics",
+                );
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false
         },
         //Phần search
         removeAccents(str) {

@@ -210,6 +210,15 @@
         >
             In biên nhận chuyển phát
         </button>
+
+        <base-dialog
+            :show="!!error"
+            title="Có lỗi xảy ra"
+            @exit="confirmError"
+            @close="confirmError"
+        >
+            <p>Đơn hàng không tồn tại!</p>
+        </base-dialog>
     </main>
 </template>
 
@@ -235,9 +244,8 @@ export default {
                     this.package_id,
                 );
 
-                console.log(this.package_detail);
+                this.exportToPDF(this.package_id);
             } catch (error) {
-                console.log(error);
                 this.error = error.message;
             }
         },
@@ -246,6 +254,10 @@ export default {
             html2pdf(document.getElementById("delivery-receipt"), {
                 filename: `Biên nhận chuyển phát đơn hàng ${package_id}.pdf`,
             });
+        },
+        confirmError() {
+            this.error = null;
+            this.$router.push("/homepage");
         },
     },
     computed: {
@@ -259,7 +271,6 @@ export default {
     },
     async mounted() {
         await this.getPackageDetail();
-        this.exportToPDF(this.package_id);
     },
 };
 </script>

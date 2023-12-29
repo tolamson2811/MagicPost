@@ -4,9 +4,6 @@ import store from "./store/index.js";
 
 const NotFound = defineAsyncComponent(() => import("./pages/NotFound.vue"));
 
-const PackageHistory = defineAsyncComponent(
-    () => import("./pages/customer/PackageHistory.vue"),
-);
 const HomePage = defineAsyncComponent(() => import("./pages/HomePage.vue"));
 const AuthPage = defineAsyncComponent(
     () => import("./pages/auth/AuthPage.vue"),
@@ -35,9 +32,7 @@ const StatisticTransaction = defineAsyncComponent(
 const PackageDetail = defineAsyncComponent(
     () => import("./pages/PackageDetail.vue"),
 );
-const PackageList = defineAsyncComponent(
-    () => import("./pages/customer/PackageList.vue"),
-);
+
 // Route của điểm tập kết
 const LeaderAggregation = defineAsyncComponent(
     () => import("./pages/aggregation/leader/LeaderAggregation.vue"),
@@ -158,22 +153,6 @@ const router = createRouter({
                 {
                     path: "statistic/transaction",
                     component: StatisticTransaction,
-                },
-            ],
-        },
-        {
-            path: "/customer/:customer_id",
-            redirect: (to) => {
-                const { params } = to;
-                return `/customer/${params.customer_id}/history`;
-            },
-            props: true,
-            component: PackageHistory,
-            children: [
-                {
-                    path: "history",
-                    component: PackageList,
-                    props: true,
                 },
             ],
         },

@@ -31,15 +31,24 @@ exports.getAllAggregation = async (req, res, next) => {
             const employee = await Employees.findAll({
                 where: { location_id: aggregation.location_id },
             });
-            const leader = await Accounts.findOne({
-                where: { id: aggregation.leader_id },
-            });
-            result.push({
-                id: aggregation.location_id,
-                address: aggregation.province,
-                leader: leader.email,
-                employee_quantity: employee.length,
-            });
+            if (aggregation.leader_id) {
+                const leader = await Accounts.findOne({
+                    where: { id: aggregation.leader_id },
+                });
+                result.push({
+                    id: aggregation.location_id,
+                    address: aggregation.province,
+                    leader: leader.email,
+                    employee_quantity: employee.length,
+                });
+            } else {
+                result.push({
+                    id: aggregation.location_id,
+                    address: aggregation.province,
+                    leader: "Chưa có",
+                    employee_quantity: employee.length,
+                });
+            }
         }
         res.status(200).json(result);
     } catch (err) {

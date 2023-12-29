@@ -53,7 +53,7 @@
                             type="text"
                             placeholder="ID điểm tập kết"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="searchByAggregationId($event.target.value)"
+                            @keyup.enter="searchByAggregationId($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -61,7 +61,7 @@
                             type="text"
                             placeholder="Tên điểm tập kết"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="searchByName($event.target.value)"
+                            @keyup.enter="searchByName($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -69,7 +69,7 @@
                             type="text"
                             placeholder="Số lượng nhân viên"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="
+                            @keyup.enter="
                                 searchByEmployeeQuantity($event.target.value)
                             "
                         />
@@ -79,7 +79,7 @@
                             type="text"
                             placeholder="Email trưởng điểm tập kết"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="searchByLeader($event.target.value)"
+                            @keyup.enter="searchByLeader($event.target.value)"
                         />
                     </td>
                 </tr>
@@ -104,10 +104,21 @@
                     </td>
                 </tr>
             </table>
-            <p class="px-2 font-bold italic text-rose-500 text-xs lg:text-sm xl:text-base">
+            <p
+                class="px-2 text-xs font-bold italic text-rose-500 lg:text-sm xl:text-base"
+            >
                 {{ aggregations.length }} điểm tập kết
             </p>
         </div>
+        <base-dialog
+            :show="!!error"
+            title="Có lỗi xảy ra!"
+            @close="error = null"
+            @exit="error = null"
+        >
+            <p>{{ error }}</p>
+        </base-dialog>
+        <base-spinner v-if="isLoading"></base-spinner>
     </div>
 </template>
 
@@ -118,6 +129,8 @@ export default {
             idFilter: "default",
             quantityFilter: "default",
             aggregations: [],
+            error: null,
+            isLoading: false,
         };
     },
     methods: {
@@ -151,9 +164,15 @@ export default {
             }
         },
         async getAllAggregations() {
-            this.aggregations = await this.$store.dispatch(
-                "aggregation/getAllAggregations",
-            );
+            try {
+                this.isLoading = true;
+                this.aggregations = await this.$store.dispatch(
+                    "aggregation/getAllAggregations",
+                );
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false;
         },
         //Phần search
         // Xóa bỏ dấu tiếng Việt

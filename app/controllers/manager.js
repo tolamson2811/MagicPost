@@ -8,16 +8,8 @@ const Employees = require("../models/users/employees");
 exports.getAllEmployees = async (req, res, next) => {
     try {
         let employees = [];
-        const page = req.query.page || 1; // Default to page 1
-        const limit = 20; // Number of records per page
-        const offset = (page - 1) * limit;
-
-        const totalResult = await Employees.count();
-        const totalPages = Math.ceil(totalResult / limit);
 
         const employeesLoaded = await Employees.findAll({
-            limit: limit,
-            offset: offset,
             include: [
                 {
                     model: Accounts,
@@ -69,8 +61,6 @@ exports.getAllEmployees = async (req, res, next) => {
 
         res.status(200).json({
             employees: employees,
-            totalPages: totalPages,
-            totalResult: totalResult,
         });
     } catch (err) {
         if (!err.statusCode) {

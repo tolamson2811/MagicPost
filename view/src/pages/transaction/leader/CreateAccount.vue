@@ -169,11 +169,17 @@ export default {
             this.confirmPassword.errorMessage = "";
         },
         async getLocationId() {
-            const res = await this.$store.dispatch(
-                "manager/getEmployeeById",
-                this.leader_id,
-            );
-            this.location_id = res.location_id;
+            try {
+                this.isLoading = true;
+                const res = await this.$store.dispatch(
+                    "manager/getEmployeeById",
+                    this.leader_id,
+                );
+                this.location_id = res.location_id;
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false
         },
         confirmError() {
             this.error = null;

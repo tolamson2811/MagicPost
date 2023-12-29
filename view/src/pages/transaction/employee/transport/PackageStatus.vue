@@ -45,7 +45,7 @@
                             type="text"
                             placeholder="ID đơn hàng"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchById($event.target.value)"
+                            @keyup.enter="searchById($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -53,7 +53,7 @@
                             type="text"
                             placeholder="Địa chỉ nhận"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="
+                            @keyup.enter="
                                 searchByReceiverAddress($event.target.value)
                             "
                         />
@@ -63,7 +63,7 @@
                             type="text"
                             placeholder="Họ và tên người nhận"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByReceiverName($event.target.value)"
+                            @keyup.enter="searchByReceiverName($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -71,7 +71,7 @@
                             type="text"
                             placeholder="SĐT người nhận"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByReceiverPhone($event.target.value)"
+                            @keyup.enter="searchByReceiverPhone($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1"></td>
@@ -224,6 +224,7 @@
             :show="!!error"
             title="Có lỗi xảy ra!"
             @close="error = null"
+            @exit="error = null"
         >
             <p>{{ error }}</p>
         </base-dialog>
@@ -263,15 +264,15 @@ export default {
         },
         async getPackages() {
             try {
+                this.isLoading = true;
                 this.packages = await this.$store.dispatch(
                     "package/getDeliveringPackage",
                     this.location_id,
                 );
-
-                console.log(this.packages);
             } catch (error) {
                 this.error = error.message;
             }
+            this.isLoading = false;
         },
         async getLocationId() {
             try {

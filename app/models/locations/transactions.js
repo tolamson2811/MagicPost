@@ -14,7 +14,7 @@ const Transactions = sequelize.define("Transactions", {
     },
     leader_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     province: {
         type: Sequelize.STRING,

@@ -13,8 +13,6 @@ export default {
             body: JSON.stringify(payload),
         });
 
-        console.log(response);
-
         const responseData = await response.json();
 
         if (!response.ok) {
@@ -42,8 +40,6 @@ export default {
             body: JSON.stringify(payload),
         });
 
-        console.log(response);
-
         const responseData = await response.json();
 
         if (!response.ok) {
@@ -59,10 +55,10 @@ export default {
     },
 
     //Lấy tất cả thông tin tài khoản trưởng điểm
-    async getAllLeader(context, page) {
+    async getAllLeader(context) {
         let apiUrl =
             (await context.rootGetters.getApiUrl) +
-            `manager/account?page=${page}`;
+            `manager/account`;
         const response = await fetch(apiUrl, {
             method: "GET",
             headers: {

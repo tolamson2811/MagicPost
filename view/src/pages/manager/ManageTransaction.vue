@@ -53,7 +53,7 @@
                             type="text"
                             placeholder="ID điểm giao dịch"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="searchByTransactionId($event.target.value)"
+                            @keyup.enter="searchByTransactionId($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -61,7 +61,7 @@
                             type="text"
                             placeholder="Tên điểm giao dịch"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="searchByName($event.target.value)"
+                            @keyup.enter="searchByName($event.target.value)"
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -69,7 +69,7 @@
                             type="text"
                             placeholder="Số lượng nhân viên"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="
+                            @keyup.enter="
                                 searchByEmployeeQuantity($event.target.value)
                             "
                         />
@@ -79,7 +79,7 @@
                             type="text"
                             placeholder="Email trưởng điểm giao dịch"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @keyup="searchByLeader($event.target.value)"
+                            @keyup.enter="searchByLeader($event.target.value)"
                         />
                     </td>
                 </tr>
@@ -110,6 +110,15 @@
                 {{ transactions.length }} điểm giao dịch
             </p>
         </div>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <base-dialog
+            :show="!!error"
+            title="Có lỗi xảy ra!"
+            @close="erorr = null"
+            @exit="error = null"
+        >
+            <p>{{ error }}</p>
+        </base-dialog>
     </div>
 </template>
 
@@ -120,6 +129,8 @@ export default {
             idFilter: "default",
             quantityFilter: "default",
             transactions: [],
+            isLoading: false,
+            error: null,
         };
     },
     methods: {
@@ -153,9 +164,15 @@ export default {
             }
         },
         async getAllTransactions() {
-            this.transactions = await this.$store.dispatch(
-                "transaction/getAllTransactions",
-            );
+            try {
+                this.isLoading = true;
+                this.transactions = await this.$store.dispatch(
+                    "transaction/getAllTransactions",
+                );
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false;
         },
         //Phần search
         // Xóa bỏ dấu tiếng Việt

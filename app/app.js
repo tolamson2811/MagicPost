@@ -157,6 +157,67 @@ sequelize
             });
         }
 
+        //auto add điểm tập kết
+        const aggregationExists = await Locations.findOne({
+            where: { type: "Aggregation" },
+        });
+        if (!aggregationExists) {
+            const provinces = await fetch(
+                "https://provinces.open-api.vn/api/?depth=1",
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            const provincesData = await provinces.json();
+            for (let province of provincesData) {
+                const newLocation = new Locations({
+                    type: "Aggregation",
+                });
+                await newLocation.save();
+
+                const newAggregation = new Aggregations({
+                    location_id: newLocation.id,
+                    province: province.name,
+                });
+                await newAggregation.save();
+            }
+        }
+
+        //auto add điểm giao dịch
+        const transactionExists = await Locations.findOne({
+            where: { type: "Transaction" },
+        });
+        if (!transactionExists) {
+            const provinces = await fetch(
+                "https://provinces.open-api.vn/api/?depth=2",
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            const provincesData = await provinces.json();
+            for (let province of provincesData) {
+                for (let district of province.districts) {
+                    const newLocation = new Locations({
+                        type: "Transaction",
+                    });
+                    await newLocation.save();
+
+                    const newTransaction = new Transactions({
+                        location_id: newLocation.id,
+                        province: province.name,
+                        district: district.name,
+                    });
+                    await newTransaction.save();
+                }
+            }
+        }
+
         app.listen(8080);
     })
     .catch((err) => {

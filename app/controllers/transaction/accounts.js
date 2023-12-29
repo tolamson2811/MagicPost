@@ -59,7 +59,7 @@ exports.createLeaderAccount = async (req, res, next) => {
         const transactionDoc = await Transactions.findOne({
             where: { province: province, district: district },
         });
-        if (transactionDoc) {
+        if (transactionDoc.leader_id) {
             const error = new Error(
                 "Quận/huyện này đã có trưởng điểm giao dịch!"
             );
@@ -95,6 +95,10 @@ exports.createLeaderAccount = async (req, res, next) => {
 
         await employee.save();
 
+        // Lưu leader_id vào bảng transaction
+        result.leader_id = newAccount.id;
+        await result.save();
+
         // Trả về response
         res.status(201).json({
             message: "Tạo tài khoản trưởng điểm giao dịch thành công!",
@@ -125,6 +129,7 @@ exports.createNewTransactionEmployee = async (req, res, next) => {
         const error = new Error(errorMessage);
         error.statusCode = 422;
         next(error);
+        return
     }
 
     const email = req.body.email;

@@ -50,7 +50,9 @@
                             type="text"
                             placeholder="ID đơn hàng"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByPackageId($event.target.value)"
+                            @keyup.enter="
+                                searchByPackageId($event.target.value)
+                            "
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -58,7 +60,7 @@
                             type="text"
                             placeholder="Địa chỉ nhận"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="
+                            @keyup.enter="
                                 searchByReceiverAddress($event.target.value)
                             "
                         />
@@ -68,7 +70,9 @@
                             type="text"
                             placeholder="Họ và tên người nhận"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByReceiverName($event.target.value)"
+                            @keyup.enter="
+                                searchByReceiverName($event.target.value)
+                            "
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -76,7 +80,9 @@
                             type="text"
                             placeholder="SĐT người nhận"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByReceiverPhone($event.target.value)"
+                            @keyup.enter="
+                                searchByReceiverPhone($event.target.value)
+                            "
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -84,7 +90,9 @@
                             type="text"
                             placeholder="Thời gian giao hàng"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByTimeDelivery($event.target.value)"
+                            @keyup.enter="
+                                searchByTimeDelivery($event.target.value)
+                            "
                         />
                     </td>
                     <td class="mt-1 border-e-2 border-white p-1">
@@ -92,7 +100,9 @@
                             type="text"
                             placeholder="Lí do"
                             class="w-full rounded border border-black px-2 py-1 text-center outline-green-500"
-                            @input="searchByFailReason($event.target.value)"
+                            @keyup.enter="
+                                searchByFailReason($event.target.value)
+                            "
                         />
                     </td>
                     <td
@@ -140,6 +150,15 @@
                 </tr>
             </table>
         </div>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <base-dialog
+            :show="!!error"
+            title="Có lỗi xảy ra!"
+            @close="error = null"
+            @exit="error = null"
+        >
+            <p>{{ error }}</p>
+        </base-dialog>
     </div>
 </template>
 
@@ -150,22 +169,34 @@ export default {
         return {
             location_id: null,
             packages: [],
+            isLoading: false,
+            error: null,
         };
     },
     methods: {
         async getLocationId() {
-            const res = await this.$store.dispatch(
-                "manager/getEmployeeById",
-                this.employee_id,
-            );
+            try {
+                const res = await this.$store.dispatch(
+                    "manager/getEmployeeById",
+                    this.employee_id,
+                );
 
-            this.location_id = res.location_id;
+                this.location_id = res.location_id;
+            } catch (error) {
+                this.error = error.message;
+            }
         },
         async getFailedDeliveredPackage() {
-            this.packages = await this.$store.dispatch(
-                "package/getFailedDeliveryPackage",
-                this.location_id,
-            );
+            try {
+                this.isLoading = true;
+                this.packages = await this.$store.dispatch(
+                    "package/getFailedDeliveryPackage",
+                    this.location_id,
+                );
+            } catch (error) {
+                this.error = error.message;
+            }
+            this.isLoading = false;
         },
         //Phần search
         removeAccents(str) {
