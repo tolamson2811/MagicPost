@@ -67,5 +67,3 @@ npm start
 cd view
 npm run dev
 ```
-
-Congratulations! You have successfully installed the Magic Post project. For more details on usage and contribution, refer to the "Usage" and "Contribution" sections in the README.
